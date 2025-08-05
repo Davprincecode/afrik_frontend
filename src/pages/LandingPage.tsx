@@ -10,6 +10,7 @@ import Testimonies from '../component/Testimonies'
 import BookingSection from '../component/BookingSection'
 import Blog from '../component/Blog'
 import Footer from '../component/Footer'
+import Vlog from '../component/Vlog'
 
 
 
@@ -26,6 +27,7 @@ return(
   <Testimonies/>
   <BookingSection/>
   <Blog/>
+  <Vlog/>
   <Footer/>
 </div>
 )}

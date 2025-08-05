@@ -10,9 +10,9 @@ function Services() {
   return (
     <div className='services'>
         <div className="servicesHeader">
-            <h4>services</h4>
+            <h1>services</h1>
         </div>
-        <div className="servicesCon flex-center gap-10 justification-between">
+        <div className="servicesCon flex-center gap-20 justification-between">
 
               <div className="servicesItem">
                   <div className="servicesImg">
@@ -22,7 +22,7 @@ function Services() {
                     color & style consultation
                   </div>
                   <div className="learnMore">
-                    <NavLink to="#">
+                    <NavLink to="/our-services">
                         learn more...
                     </NavLink>
                   </div>
@@ -35,7 +35,7 @@ function Services() {
                     personal styling
                   </div>
                   <div className="learnMore">
-                    <NavLink to="#">
+                    <NavLink to="/our-services">
                         learn more...
                     </NavLink>
                   </div>
@@ -48,7 +48,7 @@ function Services() {
                     wardrobe management
                   </div>
                   <div className="learnMore">
-                    <NavLink to="#">
+                    <NavLink to="/our-services">
                         learn more...
                     </NavLink>
                   </div>
@@ -62,7 +62,7 @@ function Services() {
                       Shoots, AD’s, Movies.
                   </div>
                   <div className="learnMore">
-                    <NavLink to="#">
+                    <NavLink to="/our-services">
                         learn more...
                     </NavLink>
                   </div>
@@ -75,7 +75,7 @@ function Services() {
                     Corporate Image Consulting
                   </div>
                   <div className="learnMore">
-                    <NavLink to="#">
+                    <NavLink to="/our-services">
                         learn more...
                     </NavLink>
                   </div>

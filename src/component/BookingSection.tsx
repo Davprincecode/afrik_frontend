@@ -8,18 +8,19 @@ function BookingSection() {
     <div className='bookingSection'>
         <div className="leftBooking" style={{backgroundImage :  `url(${bookingText})`}}>
             <div className="bookingHeader">
-                <h1>Book a <br /> Consultation</h1>
+                <h1> <span className='bookSpace'>Book a</span>  <br /> Consultation</h1>
                 <div className="schedule">
                   <NavLink to="#">schedule now</NavLink>  
                 </div>
-                
             </div>
             <div className="bookingBody">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, 
-                    magna sit amet efficitur suscipit, justo leo malesuada lacus, 
-                    in dignissim mauris libero et erat. Curabitur non nisi vitae turpis gravida 
-                    venenatis. Nulla facilisi. In hac habitasse platea dictumst. 
-                    Suspendisse potenti. Proin a malesuada arcu. 
+              <h4>Transform Your Style with Expert Guidance</h4>
+                <p>
+                  Book a personalized consultation and get tailored advice on fashion,
+                  lifestyle, and image enhancement. Whether you need a wardrobe revamp, 
+                  personal styling tips, or a complete image makeover, 
+                  we’ll help you define a look that reflects confidence,
+                  sophistication, and your unique personality. 
                 </p>
             </div>
         </div>

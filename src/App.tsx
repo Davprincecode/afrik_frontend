@@ -19,6 +19,9 @@ import ContactUs from "./pages/ContactUs";
 import AboutUs from "./pages/AboutUs";
 import OurServices from "./pages/OurServices";
 import Notification from "./component/Notification";
+import LoginBtn from "./pages/LoginBtn";
+import BlogList from "./pages/BlogList";
+import BlogDetails from "./pages/BlogDetails";
 
 
 
@@ -46,10 +49,11 @@ const {baseUrl} = userAuth();
       theme="colored"
       />
       <Routes>
+        
+          <Route path="/test-google" element={<LoginBtn />} />
+
+
           <Route path="/" element={<LandingPage />} />
-          <Route path="/contact-us" element={<ContactUs />} />
-          <Route path="/about-us" element={<AboutUs/>} />
-          <Route path="/our-services" element={<OurServices/>} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/notification" element={<Notification />} />
@@ -58,6 +62,16 @@ const {baseUrl} = userAuth();
           <Route path="/forgetpassword" element={<ForgetPassword/>} />
           <Route path="/changepassword/:token" element={<ChangePassword/>} />
           <Route path="/verifyotp" element={<VerifyOtp />} />
+
+       {/* ============================================== */}
+          <Route path="/contact-us" element={<ContactUs />} />
+          <Route path="/about-us" element={<AboutUs/>} />
+          <Route path="/our-services" element={<OurServices/>} />
+          <Route path="/our-blog" element={<BlogList/>} />
+          <Route path="/blog-details" element={<BlogDetails/>} />
+
+       {/* =============================================== */}
+
 
       {/* ====================== admin ================== */}
       <Route path="/admin">

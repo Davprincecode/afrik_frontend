@@ -30,73 +30,82 @@ function Product() {
                 <div className="arrowLeft">
                     <FaChevronLeft />
                 </div>
-                <div className="product">
-                    <div className="productImage">
-                        <img src={product1} />
-                    </div>
-                    <div className="productDetails">
-                        <div className="productTitle flex-center">
-                            <h2>Aroma diffuser</h2>
-                            <div className="price">
-                                <span>₦</span>25,000
+
+                <div className="flex-center productItemWrapper">
+
+                    
+                    <div className="product">
+                        <div className="productImage">
+                            <img src={product1} />
+                        </div>
+                        <div className="productDetails">
+                            <div className="productTitle flex-center">
+                                <h2>Aroma diffuser</h2>
+                                <div className="price">
+                                    <span>₦</span>25,000
+                                </div>
+                            </div>
+                            <div className="productDetail">
+                                <div className="productDescription">
+                                Original product comes in three styles of color, usb charger
+                                </div>
+                                <div className="productIcon">
+                                    <FiShoppingCart />
+                                    <div className="plusIcon"><FaPlus /></div>
+                                </div>
                             </div>
                         </div>
-                        <div className="productDetail">
-                            <div className="productDescription">
-                               Original product comes in three styles of color, usb charger
+                    </div>
+
+                    <div className="product">
+                        <div className="productImage">
+                            <img src={product2} />
+                        </div>
+                        <div className="productDetails">
+                            <div className="productTitle  flex-center">
+                                <h2>Aroma diffuser</h2>
+                                <div className="price">
+                                    <span>₦</span>25,000
+                                </div>
                             </div>
-                            <div className="productIcon">
-                                <FiShoppingCart />
-                                <div className="plusIcon"><FaPlus /></div>
+                            <div className="productDetail">
+                                <div className="productDescription">
+                                Original product comes in three styles of color, usb charger
+                                </div>
+                                <div className="productIcon">
+                                    <FiShoppingCart />
+                                    <div className="plusIcon"><FaPlus /></div>
+                                </div>
                             </div>
                         </div>
                     </div>
+
+                    <div className="product">
+                        <div className="productImage">
+                            <img src={product3} />
+                        </div>
+                        <div className="productDetails">
+                            <div className="productTitle  flex-center">
+                                <h2>Aroma diffuser</h2>
+                                <div className="price">
+                                    <span>₦</span>25,00000
+                                </div>
+                            </div>
+                            <div className="productDetail">
+                                <div className="productDescription">
+                                Original product comes in three styles of color, usb charger
+                                </div>
+                                <div className="productIcon">
+                                    <FiShoppingCart />
+                                    <div className="plusIcon"><FaPlus /></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
                 </div>
 
-                <div className="product">
-                    <div className="productImage">
-                        <img src={product2} />
-                    </div>
-                    <div className="productDetails">
-                        <div className="productTitle  flex-center">
-                            <h2>Aroma diffuser</h2>
-                            <div className="price">
-                                <span>₦</span>25,000
-                            </div>
-                        </div>
-                        <div className="productDetail">
-                            <div className="productDescription">
-                               Original product comes in three styles of color, usb charger
-                            </div>
-                            <div className="productIcon">
-                                <FiShoppingCart />
-                                <div className="plusIcon"><FaPlus /></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="product">
-                    <div className="productImage">
-                        <img src={product3} />
-                    </div>
-                    <div className="productDetails">
-                        <div className="productTitle  flex-center">
-                            <h2>Aroma diffuser</h2>
-                            <div className="price">
-                                <span>₦</span>25,00000
-                            </div>
-                        </div>
-                        <div className="productDetail">
-                            <div className="productDescription">
-                               Original product comes in three styles of color, usb charger
-                            </div>
-                            <div className="productIcon">
-                                <FiShoppingCart />
-                                <div className="plusIcon"><FaPlus /></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
                 <div className="arrowRight">
                     <FaChevronRight />
                 </div>

@@ -1,9 +1,9 @@
 import React from 'react'
 import Header from '../component/Header'
 import Footer from '../component/Footer'
-import contactImg from '../assets/images/contactus2.png'
+import contactImg from '../assets/images/contactus.png'
 import { BiSolidPhoneCall } from 'react-icons/bi'
-import { FaDiscord, FaEnvelope, FaInstagram, FaTwitter } from 'react-icons/fa'
+import { FaDiscord, FaEnvelope, FaInstagram, FaTwitter, FaWhatsapp } from 'react-icons/fa'
 import { FaLocationDot } from 'react-icons/fa6'
 
 function ContactUs() {
@@ -26,14 +26,18 @@ function ContactUs() {
                     <p className="contactTitledetails">Here`s how you can reach out</p> 
 
 
-                    <div className="flex-center gap-10 contact"><div className="contactIcon"><BiSolidPhoneCall /></div> <p>+2348166527278</p></div>
-                    <div className="flex-center gap-10 contact"><div className="contactIcon"><FaEnvelope /></div> <p>fade@gmail.com</p></div>
-                    <div className="flex-center gap-10 contact"><div className="contactIcon"><FaLocationDot /></div> <p>132 dartmouth street lekki phase 1</p></div>
+                    <div className="flex-center gap-10 contact"><div className="contactIcon"><BiSolidPhoneCall /></div> <p>+2347077744145</p></div>
+                    <div className="flex-center gap-10 contact"><div className="contactIcon"><FaEnvelope /></div> <p>contact@loveafrikgroup.com</p></div>
+                    <div className="flex-center gap-10 contact"><div className="contactIcon"><FaLocationDot /></div> <p>Lagos, Nigeria.</p></div>
                     <div className="dotLine"></div>
                     <div className="businessHour">
                         <div className="hour"><h4>Business Hours</h4></div>
                         <p>monday - friday</p>
                         <p>9am - 5pm</p>
+                        <a href="https://wa.me/2347077744145" target='_blank' className="whats-app">
+                          <FaWhatsapp />
+                          <p>Chat us on whatsapp</p>
+                        </a>
                     </div>
 
                     <div className="socialMedia flex-center gap-20">
