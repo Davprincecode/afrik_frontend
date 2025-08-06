@@ -1569,7 +1569,7 @@ margin-bottom: 20px;
 }
 .vlogBottom{
   text-align: center;
-  margin-top: 0px;
+  margin-top: 50px;
 }
 .vlogBottom a{
 color: var(--secondary1);
@@ -1590,19 +1590,15 @@ color: var(--secondary1);
   gap: 20px;
 }
 .vlogCon{
-width: 30%;
-/* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1);
-border-radius: 10px; */
+  position: relative;
+  width: 30%;
 }
 .vlogImage{
 width: 100%;
-height: 200px;
-}
-.vlogImage img{
- /* border-top-left-radius: 10px;
-border-top-right-radius: 10px; */
+height: 520px;
 }
 .vlogContent{
+  display: none;
 padding: 20px;
 text-align: center;
 }
@@ -1624,7 +1620,29 @@ font-variant: small-caps;
 font-size: 16px;
 color: #4B5563;
 }
+.HoverCard{
+  display: none !important;
+}
+iframe{
+  width: 100% !important;
+  min-width: 100% !important;
+  height: 100%;
+}
+@media(max-width : 800px){
 
+  .vlogConFlex{
+    display: block;
+  }
+.vlogCon{
+  width: 100%;
+  margin-bottom: 20px;
+}
+.vlogImage {
+    width: 100%;
+    height: 520px;
+}
+
+}
 @media(max-width: 500px){
   .vlogHeader{
     margin-top: 40px;

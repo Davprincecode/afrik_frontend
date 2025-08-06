@@ -1,8 +1,21 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import blogImg from '../assets/images/blogpic.png'
 import { NavLink } from 'react-router-dom'
 
 function Vlog() {
+
+ useEffect(() => {
+  const script = document.createElement('script');
+  script.src = '//www.instagram.com/embed.js';
+  script.async = true;
+  script.onload = () => {
+    if ((window as any).instgrm) {
+      (window as any).instgrm.Embeds.process();
+    }
+  };
+  document.body.appendChild(script);
+}, []);;
+
   return (
    <div className='vlog'>
           <div className="vlogHeader">
@@ -14,42 +27,33 @@ function Vlog() {
               <div className="vlogCon">
 
                 <div className="vlogImage">
-                    <video src="https://www.instagram.com/reel/DGz3Ef4oZOV/embed"></video>
-                     {/* <iframe
-        src="https://www.instagram.com/reel/DGh4dmdMqU1/?igsh=dXNpN2V4ZjhybHFr"
-        width="100%"
-        height="100%"
-        frameBorder="0"
-        scrolling="no"
-        allowTransparency={true}
-        allowFullScreen={true}
-        title="Instagram Reel"
-      ></iframe> */}
+                      <blockquote
+                      className="instagram-media"
+                      data-instgrm-permalink="https://www.instagram.com/reel/DGh4dmdMqU1/"
+                      data-instgrm-version="14"
+                      style={{ width: '100%', margin: 'auto' }}
+                      ></blockquote>
                 </div>
 
                 <div className="vlogContent">
                     <div className="vlogHeading">
                         Make your Dream a Reality
-                    </div>
-                   
+                    </div>                   
                 </div>
               </div>
               
               <div className="vlogCon">
                 <div className="vlogImage">
-                   <iframe
-                        src="https://www.instagram.com/reel/DGh4dmdMqU1/embed"
-                        width="100%"
-                        height="100%"
-                        frameBorder="0"
-                        scrolling="no"
-                        allowTransparency={true}
-                        allowFullScreen={true}
-                        title="Instagram Reel"
+                  <blockquote
+                      className="instagram-media"
+                      data-instgrm-permalink="https://www.instagram.com/reel/DGz3Ef4oZOV/"
+                      data-instgrm-version="14"
+                      style={{ width: '100%', margin: 'auto' }}
                     >
-
-                    </iframe>
+                    </blockquote>
                 </div>
+
+                   
                 <div className="vlogContent">
                     <div className="vlogHeading">
                        Tacky is not a Vibe
@@ -60,7 +64,13 @@ function Vlog() {
 
               <div className="vlogCon">
                 <div className="vlogImage">
-                    <img src={blogImg}/>
+                    <blockquote
+                      className="instagram-media"
+                      data-instgrm-permalink="https://www.instagram.com/reel/C4zx66eM-M4/"
+                      data-instgrm-version="14"
+                      style={{ width: '100%', margin: 'auto' }}
+                    >
+                    </blockquote>
                 </div>
                 <div className="vlogContent">
                     <div className="vlogHeading">
