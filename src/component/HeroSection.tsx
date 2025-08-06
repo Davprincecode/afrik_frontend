@@ -1,21 +1,93 @@
 import React from 'react'
 import hero1 from '../assets/images/hero1.png'
+import hero2 from '../assets/images/hero2.png'
+import hero3 from '../assets/images/hero3.png'
+import hero4 from '../assets/images/hero4.png'
+import mobileHero1 from '../assets/images/mobilehero1.png'
+import mobileHero2 from '../assets/images/mobilehero2.png'
+import mobileHero3 from '../assets/images/mobilehero3.png'
+import mobileHero4 from '../assets/images/mobilehero4.png'
+import Carousel from 'react-multi-carousel'
 
 function HeroSection() {
+
+
+const responsive = {
+    superLargeDesktop: {
+      // the naming can be any, depends on you.
+      breakpoint: { max: 4000, min: 3000 },
+      items: 1
+    },
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 1
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 1
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 1
+    }
+  }
+
   return (
     <div className='hero'>
 
+
+<Carousel 
+      responsive={responsive}
+      autoPlay={true}
+      swipeable={true}
+      draggable={true}
+      showDots={true}
+      infinite={true}
+      partialVisible={false}
+     >
         <div className="heroImgCon">
            <div className="heroImg">
             <img src={hero1} alt="" />
            </div> 
            <div className="heroText">
-              <div className="heroHeader">Where Luxury Meets Legacy.</div>
+              <div className="heroHeader"> <h1>Refine your Image.</h1></div>
+              <div className="heroBody">Discover the power of intentional presence, because how you’re seen should reflect who you truly are</div>
+              <div className="heroBtn">
+                book consultation
+              </div>
+           </div>
+        </div>
+        <div className="heroImgCon">
+           <div className="heroImg">
+            <img src={hero2} alt="" />
+           </div> 
+           <div className="heroText">
+              <div className="heroHeader"><h1>Where Luxury Meets Legacy.</h1></div>
               <div className="heroBody">Curated fashion, signature scents, and expert consulting—crafted for those who live beyond trends.</div>
               <div className="heroBtn">shop now</div>
            </div>
         </div>
-        
+        <div className="heroImgCon">
+           <div className="heroImg">
+            <img src={hero3} alt="" />
+           </div> 
+           <div className="heroText">
+              <div className="heroHeader"><h1>Where Luxury Meets Legacy</h1>.</div>
+              <div className="heroBody">Curated fashion, signature scents, and expert consulting—crafted for those who live beyond trends.</div>
+              <div className="heroBtn">shop now</div>
+           </div>
+        </div>
+        <div className="heroImgCon">
+           <div className="heroImg">
+            <img src={hero4} alt="" />
+           </div> 
+           <div className="heroText">
+              <div className="heroHeader"><h1>Where Luxury Meets Legacy.</h1> </div>
+              <div className="heroBody">Curated fashion, signature scents, and expert consulting—crafted for those who live beyond trends.</div>
+              <div className="heroBtn">shop now</div>
+           </div>
+        </div>
+        </Carousel>
     </div>
   )
 }

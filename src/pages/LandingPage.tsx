@@ -1,5 +1,5 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { NavLink, useLocation } from 'react-router-dom'
 import Header from '../component/Header'
 import HeroSection from '../component/HeroSection'
 import HeroContext from '../component/HeroContext'
@@ -11,11 +11,16 @@ import BookingSection from '../component/BookingSection'
 import Blog from '../component/Blog'
 import Footer from '../component/Footer'
 import Vlog from '../component/Vlog'
+import Gallery from '../component/Gallery'
 
 
 
 const LandingPage  = () => {
- 
+ const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 return(
 <div>
   <Header />
@@ -23,6 +28,8 @@ return(
   <HeroContext/>
   <Services/>
   <Product/>
+  <Gallery/>
+  {/* ----- */}
   <Partner/>
   <Testimonies/>
   <BookingSection/>

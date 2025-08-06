@@ -17,39 +17,43 @@ function Partner() {
         <div className="partnerHeader">
          Brands we’ve worked with
         </div>
-        <div className="partnerFlex flex-center gap-10">
-            <div className="partnerImg">
-                <img src={partner1} />
-            </div>
-            <div className="partnerImg">
-                <img src={partner2} />
-            </div>
-            
-            <div className="partnerImg">
-                <img src={partner4} />
-            </div>
-            <div className="partnerImg">
-                <img src={partner5} />
-            </div>
-            <div className="partnerImg">
-                <img src={partner6} />
-            </div>
-            <div className="partnerImg">
-                <img src={partner3} />
-            </div>
-            <div className="partnerImg">
-                <img src={partner8} />
-            </div>
-            <div className="partnerImg">
-                <img src={partner7} />
-            </div>
-            <div className="partnerImg">
-                <img src={partner9} />
-            </div>
-            <div className="partnerImg">
-                <img src={partner10} />
+         
+         <div className="partnerFlexCon">
+            <div className="partnerFlex flex-center gap-10">
+                <div className="partnerImg">
+                    <img src={partner1} />
+                </div>
+                <div className="partnerImg">
+                    <img src={partner2} />
+                </div>
+                
+                <div className="partnerImg">
+                    <img src={partner4} />
+                </div>
+                <div className="partnerImg">
+                    <img src={partner5} />
+                </div>
+                <div className="partnerImg">
+                    <img src={partner6} />
+                </div>
+                <div className="partnerImg">
+                    <img src={partner3} />
+                </div>
+                <div className="partnerImg">
+                    <img src={partner8} />
+                </div>
+                <div className="partnerImg">
+                    <img src={partner7} />
+                </div>
+                <div className="partnerImg">
+                    <img src={partner9} />
+                </div>
+                <div className="partnerImg">
+                    <img src={partner10} />
+                </div>
             </div>
         </div>
+
     </div>
   )
 }

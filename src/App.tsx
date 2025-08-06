@@ -22,6 +22,7 @@ import Notification from "./component/Notification";
 import LoginBtn from "./pages/LoginBtn";
 import BlogList from "./pages/BlogList";
 import BlogDetails from "./pages/BlogDetails";
+import AnimatedShuffleList from "./pages/AnimatedShuffleList";
 
 
 
@@ -62,6 +63,8 @@ const {baseUrl} = userAuth();
           <Route path="/forgetpassword" element={<ForgetPassword/>} />
           <Route path="/changepassword/:token" element={<ChangePassword/>} />
           <Route path="/verifyotp" element={<VerifyOtp />} />
+
+          <Route path="/shuffle" element={<AnimatedShuffleList />} />
 
        {/* ============================================== */}
           <Route path="/contact-us" element={<ContactUs />} />

@@ -1,5 +1,7 @@
 import React from 'react'
-import blogImg from '../assets/images/blogpic.png'
+import blogImg1 from '../assets/images/blogpic1.png'
+import blogImg2 from '../assets/images/blogpic2.png'
+import blogImg3 from '../assets/images/blogpic3.png'
 import { NavLink } from 'react-router-dom'
 
 function Blog() {
@@ -13,7 +15,7 @@ function Blog() {
 
               <div className="blogCon">
                 <div className="blogImage">
-                    <img src={blogImg}/>
+                    <img src={blogImg1}/>
                 </div>
                 <div className="blogContent">
                     <div className="blogHeading">
@@ -27,7 +29,7 @@ function Blog() {
               
               <div className="blogCon">
                 <div className="blogImage">
-                    <img src={blogImg}/>
+                    <img src={blogImg2}/>
                 </div>
                 <div className="blogContent">
                     <div className="blogHeading">
@@ -41,7 +43,7 @@ function Blog() {
 
               <div className="blogCon">
                 <div className="blogImage">
-                    <img src={blogImg}/>
+                    <img src={blogImg3}/>
                 </div>
                 <div className="blogContent">
                     <div className="blogHeading">
