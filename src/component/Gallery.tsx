@@ -19,6 +19,8 @@ import mobilegallery7 from '../assets/images/mobilegallery7.png'
 import mobilegallery8 from '../assets/images/mobilegallery8.png'
 import mobilegallery9 from '../assets/images/mobilegallery9.png'
 import ImagePreviewModal from './ImagePreviewModal'
+import { IoEyeSharp } from 'react-icons/io5'
+import { LiaEyeSolid } from 'react-icons/lia'
 
 
 
@@ -63,22 +65,22 @@ function Gallery() {
             <div className="galleryCon">
                <div className="gallery1">
                 <img src={gallery1} />
-                <div className="preview" onClick={() => openModal(0)}>View full image</div>
+                <div className="preview" onClick={() => openModal(0)}><LiaEyeSolid /></div>
               </div>
                <div className="flex justification-between">
                 <div className="gallerycons" style={{width: "48%"}}>
                     <div className="gallery2">
                         <img src={gallery2} />
-                    <div className="preview" onClick={() => openModal(1)}>View full image</div>
+                    <div className="preview" onClick={() => openModal(1)}><LiaEyeSolid /></div>
                     </div>
                     <div className="gallery3">
                         <img src={gallery3} />
-                        <div className="preview" onClick={() => openModal(2)}>View full image</div>
+                        <div className="preview" onClick={() => openModal(2)}><LiaEyeSolid /></div>
                     </div>
                 </div>
                 <div className="gallery4"  style={{width: "48%"}}>
                     <img src={gallery4} />
-                    <div className="preview" onClick={() => openModal(3)}>View full image</div>
+                    <div className="preview" onClick={() => openModal(3)}><LiaEyeSolid /></div>
                     </div>
                </div>
             </div>
@@ -87,25 +89,25 @@ function Gallery() {
                  <div className="flex justification-between">
                     <div className="gallery5">
                         <img src={gallery5}/>
-                        <div className="preview" onClick={() => openModal(4)}>View full image</div>
+                        <div className="preview" onClick={() => openModal(4)}><LiaEyeSolid /></div>
                     </div>
                     <div className="gallery6">
                         <img src={gallery6}/>
-                        <div className="preview" onClick={() => openModal(5)}>View full image</div>
+                        <div className="preview" onClick={() => openModal(5)}><LiaEyeSolid /></div>
                     </div>
                  </div>
                  <div className="gallery7">
                     <img src={gallery7}/>
-                    <div className="preview" onClick={() => openModal(6)}>View full image</div>
+                    <div className="preview" onClick={() => openModal(6)}><LiaEyeSolid /></div>
                 </div>
                  <div className="flex justification-between">
                     <div className="gallery8">
                         <img src={gallery8}/>
-                        <div className="preview" onClick={() => openModal(7)}>View full image</div>
+                        <div className="preview" onClick={() => openModal(7)}><LiaEyeSolid /></div>
                     </div>
                     <div className="gallery9">
                         <img src={gallery9}/>
-                        <div className="preview" onClick={() => openModal(8)}>View full image</div>
+                        <div className="preview" onClick={() => openModal(8)}><LiaEyeSolid /></div>
                     </div>
                  </div>
             </div>
@@ -118,21 +120,21 @@ function Gallery() {
                         <div className="flex mobileGa">
                            <div className="mobileGallery1">
                             <img src={mobilegallery1} />
-                            <div className="preview" onClick={() => openModal(9)}>View full image</div>
+                            <div className="preview" onClick={() => openModal(9)}><LiaEyeSolid /></div>
                             </div>
                            <div className="mobileGallery2">
                             <img src={mobilegallery2} />
-                            <div className="preview" onClick={() => openModal(10)}>View full image</div>
+                            <div className="preview" onClick={() => openModal(10)}><LiaEyeSolid /></div>
                             </div> 
                         </div>
                         <div className="mobileGallery3">
                             <img src={mobilegallery3} />
-                            <div className="preview" onClick={() => openModal(11)}>View full image</div>
-                            </div>
+                            <div className="preview" onClick={() => openModal(11)}><LiaEyeSolid /></div>
+                        </div>
                  </div>
                 <div className="mobileGallery4">
                     <img src={mobilegallery4} />
-                    <div className="preview" onClick={() => openModal(12)}>View full image</div>
+                    <div className="preview" onClick={() => openModal(12)}><LiaEyeSolid /></div>
                     </div>
             </div>
 
@@ -142,28 +144,28 @@ function Gallery() {
                     <div className="mobile">
                         <div className="mobileGallery5">
                             <img src={mobilegallery5} />
-                            <div className="preview" onClick={() => openModal(13)}>View full image</div>
+                            <div className="preview" onClick={() => openModal(13)}><LiaEyeSolid /></div>
                             </div>
                         <div className="mobileGallery6">
                             <img src={mobilegallery6} />
-                            <div className="preview" onClick={() => openModal(14)}>View full image</div>
+                            <div className="preview" onClick={() => openModal(14)}><LiaEyeSolid /></div>
                             </div>
                     </div> 
 
                    <div className="mobileGallery7">
                     <img src={mobilegallery7} />
-                    <div className="preview" onClick={() => openModal(15)}>View full image</div>
+                    <div className="preview" onClick={() => openModal(15)}><LiaEyeSolid /></div>
                     </div>
                    
 
                    <div className="mobile">
                         <div className="mobileGallery8">
                             <img src={mobilegallery8} />
-                            <div className="preview" onClick={() => openModal(16)}>View full image</div>
+                            <div className="preview" onClick={() => openModal(16)}><LiaEyeSolid /></div>
                             </div>
                         <div className="mobileGallery9">
                             <img src={mobilegallery9} />
-                            <div className="preview" onClick={() => openModal(17)}>View full image</div>
+                            <div className="preview" onClick={() => openModal(17)}><LiaEyeSolid /></div>
                             </div>
                    </div>
 

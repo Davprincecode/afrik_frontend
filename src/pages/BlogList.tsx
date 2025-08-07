@@ -9,6 +9,8 @@ import latestblog1 from '../assets/images/lblog1.jpg'
 import latestblog2 from '../assets/images/lblog2.jpg'
 import latestblog3 from '../assets/images/lblog3.jpg'
 import Header from '../component/Header'
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
+import { CiSearch } from 'react-icons/ci'
 
 function BlogList() {
   return (
@@ -28,14 +30,21 @@ function BlogList() {
         <div className="our-blog-sub-wrapper">
 
         <div className="our-blog-top-con">
-          <div className="our-blog-search">
-            <input type="text" />
-        </div>
+
+            <div className="our-blog-top-header flex-center justification-between">
+                <div className="our-blog-top-title">
+                    <h1>our <span>articles</span> </h1>
+                </div>
+                <div className="our-blog-search">
+                    <input type="text" placeholder='search'/>
+                    <CiSearch />
+                </div>  
+            </div>
+            
 
         <div className="our-blog-top flex">
 
                 <div className="our-blog-main-con">
-
                     <div className="our-blog-main-image">
                     <img src={blog1} />
                     </div>
@@ -45,7 +54,6 @@ function BlogList() {
                         <div className="our-blog-body"><p>Stay ahead of the curve! Explore the latest trends influencing the real estate market this year.</p></div>
                         <div className="our-blog-button"><NavLink to="#">Read more <LuArrowUpRight /> </NavLink></div>
                     </div>
-
                 </div>
 
                 <div className="our-blog-sub-flex">
@@ -80,6 +88,20 @@ function BlogList() {
 
         
         <div className="our-latest-blog">
+
+             <div className="our-latest-header flex-center justification-between">
+                    <div className="our-latest-title">
+                        <h1>latest <span>blog</span> </h1>
+                    </div>
+                    <div className="our-latest-arrow flex-center gap-20">
+                        <div className="latest-left-arrow">
+                            <IoIosArrowBack />
+                        </div>
+                        <div className="latest-right-arrow">
+                            <IoIosArrowForward />
+                        </div>
+                    </div> 
+             </div>
 
             <div className="our-latest-blog-containers flex gap-20">
 

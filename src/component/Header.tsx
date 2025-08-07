@@ -12,7 +12,7 @@ import { FiShoppingCart } from 'react-icons/fi';
 
 function Header() {
 const [navOpen, setNavOpen] = useState(false);
-const [signin, setSignin] = useState<boolean>(true);
+const [signin, setSignin] = useState<boolean>(false);
 const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -49,8 +49,8 @@ const navFunction = () =>{
                   <ul className={navOpen ? "openNavBar" : "closeNavBar"}>
                       <li> <NavLink to="/"> Home </NavLink> </li>
                       <li><NavLink to="/about-us">about us</NavLink></li>
+                      <li><NavLink to="/our-services">services</NavLink></li>
                       <li><NavLink to="#">shop</NavLink></li>
-                      <li><NavLink to="#">portofolio</NavLink> </li>
                       <li><NavLink to="#">consultation</NavLink> </li>
                       <li><NavLink to="#">blog</NavLink> </li>
                       <li><NavLink to="/contact-us">contact us</NavLink> </li>
@@ -67,8 +67,9 @@ const navFunction = () =>{
                                           20
                                         </div>
                                       </div>
-                                      <div className="userIcon">
+                                      <div className="flex-center gap-5 userIcon">
                                           <FaRegCircleUser />
+                                          <IoIosArrowDown className='userArrow' />
                                       </div>
                               </div>
                           ) : (

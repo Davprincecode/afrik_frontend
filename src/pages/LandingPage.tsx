@@ -12,6 +12,7 @@ import Blog from '../component/Blog'
 import Footer from '../component/Footer'
 import Vlog from '../component/Vlog'
 import Gallery from '../component/Gallery'
+import Youtube from '../component/Youtube'
 
 
 
@@ -35,6 +36,7 @@ return(
   <BookingSection/>
   <Blog/>
   <Vlog/>
+  <Youtube />
   <Footer/>
 </div>
 )}

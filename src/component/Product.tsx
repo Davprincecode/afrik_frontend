@@ -141,9 +141,11 @@ function Product() {
                                     <div className="productDescription">
                                     {item.productDetail}
                                     </div>
+                                    <div className="productIconWrap">
                                     <div className="productIcon">
                                         <FiShoppingCart />
                                         <div className="plusIcon"><FaPlus /></div>
+                                    </div>
                                     </div>
                                 </div>
                             </div>

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import blogImg from '../assets/images/blogpic.png'
 import { NavLink } from 'react-router-dom'
+import { FiInstagram } from 'react-icons/fi';
 
 function Vlog() {
 
@@ -14,7 +15,7 @@ function Vlog() {
     }
   };
   document.body.appendChild(script);
-}, []);;
+}, []);
 
   return (
    <div className='vlog'>
@@ -22,6 +23,15 @@ function Vlog() {
              <h1>vlog</h1>
           </div>
            
+           <div className="vlogLogoTitle flex-center gap-10">
+                           <div className="vlogoIcon">
+                           <FiInstagram /> 
+                           </div>
+                           <div className="vlogTitle">
+                               <h1>Instagram Reels</h1>
+                           </div>
+            </div>
+
           <div className="vlogConFlex flex gap-10">
 
               <div className="vlogCon">
@@ -37,7 +47,7 @@ function Vlog() {
 
                 <div className="vlogContent">
                     <div className="vlogHeading">
-                        Make your Dream a Reality
+                        Knowing the Right Neckline
                     </div>                   
                 </div>
               </div>
@@ -52,11 +62,10 @@ function Vlog() {
                     >
                     </blockquote>
                 </div>
-
-                   
+  
                 <div className="vlogContent">
                     <div className="vlogHeading">
-                       Tacky is not a Vibe
+                      Skirt length best for you
                     </div>
                     
                 </div>
@@ -74,7 +83,7 @@ function Vlog() {
                 </div>
                 <div className="vlogContent">
                     <div className="vlogHeading">
-                       I am African Fashion
+                       Personal or Fashion Stylist
                     </div>
                    
                 </div>

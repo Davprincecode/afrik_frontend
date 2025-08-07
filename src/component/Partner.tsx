@@ -1,17 +1,20 @@
 import React from 'react'
-import partner1 from '../assets/images/partner1.jpg'
-import partner2 from '../assets/images/partner2.jpg'
-import partner3 from '../assets/images/partner3.jpg'
-import partner4 from '../assets/images/partner4.jpg'
-import partner5 from '../assets/images/partner5.jpg'
-import partner6 from '../assets/images/partner6.jpg'
-import partner7 from '../assets/images/partner7.jpg'
-import partner8 from '../assets/images/partner8.jpg'
-import partner9 from '../assets/images/partner9.jpg'
-import partner10 from '../assets/images/partner10.jpg'
+import partner1 from '../assets/images/brandlogo/partner1.png'
+import partner2 from '../assets/images/brandlogo/partner2.png'
+import partner3 from '../assets/images/brandlogo/partner3.png'
+import partner4 from '../assets/images/brandlogo/partner4.png'
+import partner5 from '../assets/images/brandlogo/partner5.png'
+import partner6 from '../assets/images/brandlogo/partner6.png'
+import partner7 from '../assets/images/brandlogo/partner7.png'
+import partner8 from '../assets/images/brandlogo/partner8.png'
+import partner9 from '../assets/images/brandlogo/partner9.png'
+import partner10 from '../assets/images/brandlogo/partner10.png'
 
 
 function Partner() {
+
+   const items = [partner1, partner2, partner3, partner4, partner5, partner6, partner7, partner8, partner9, partner10]
+
   return (
     <div className="partnerCon">
         <div className="partnerHeader">
@@ -19,11 +22,15 @@ function Partner() {
         </div>
          
          <div className="partnerFlexCon">
-            <div className="partnerFlex flex-center gap-10">
-                <div className="partnerImg">
-                    <img src={partner1} />
+            <div className="partnerFlex">
+
+                {[...items, ...items].map((item, index) => (
+          
+          <div className="partnerImg" key={index}>
+                    <img src={item} />
                 </div>
-                <div className="partnerImg">
+        ))}
+                {/* <div className="partnerImg">
                     <img src={partner2} />
                 </div>
                 
@@ -50,7 +57,7 @@ function Partner() {
                 </div>
                 <div className="partnerImg">
                     <img src={partner10} />
-                </div>
+                </div> */}
             </div>
         </div>
 

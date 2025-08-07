@@ -12,7 +12,7 @@ function Services() {
         <div className="servicesHeader">
             <h1>services</h1>
         </div>
-        <div className="servicesCon flex-center gap-20 justification-between">
+        <div className="servicesCon flex-center gap-20 justification-center">
 
               <div className="servicesItem">
                   <div className="servicesImg">

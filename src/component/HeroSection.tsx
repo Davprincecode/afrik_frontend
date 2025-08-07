@@ -8,6 +8,7 @@ import mobileHero2 from '../assets/images/mobilehero2.png'
 import mobileHero3 from '../assets/images/mobilehero3.png'
 import mobileHero4 from '../assets/images/mobilehero4.png'
 import Carousel from 'react-multi-carousel'
+import { NavLink } from 'react-router-dom'
 
 function HeroSection() {
 
@@ -38,7 +39,7 @@ const responsive = {
 
 <Carousel 
       responsive={responsive}
-      autoPlay={true}
+      autoPlay={false}
       swipeable={true}
       draggable={true}
       showDots={true}
@@ -48,43 +49,45 @@ const responsive = {
         <div className="heroImgCon">
            <div className="heroImg">
             <img src={hero1} alt="" />
+            <div className="gradientOverlay"></div>
            </div> 
            <div className="heroText">
               <div className="heroHeader"> <h1>Refine your Image.</h1></div>
               <div className="heroBody">Discover the power of intentional presence, because how you’re seen should reflect who you truly are</div>
-              <div className="heroBtn">
-                book consultation
-              </div>
+              <div className="heroBtn"><NavLink to="#">book consultation</NavLink></div>
            </div>
         </div>
         <div className="heroImgCon">
            <div className="heroImg">
             <img src={hero2} alt="" />
+            <div className="gradientOverlay"></div>
            </div> 
            <div className="heroText">
-              <div className="heroHeader"><h1>Where Luxury Meets Legacy.</h1></div>
-              <div className="heroBody">Curated fashion, signature scents, and expert consulting—crafted for those who live beyond trends.</div>
-              <div className="heroBtn">shop now</div>
+              <div className="heroHeader"><h1>Elevate your Style.</h1></div>
+              <div className="heroBody">Step into a look that speaks your language. Confident, effortless, and entirely you.</div>
+              <div className="heroBtn"><NavLink to="#">book consultation</NavLink></div>
            </div>
         </div>
         <div className="heroImgCon">
            <div className="heroImg">
             <img src={hero3} alt="" />
+            <div className="gradientOverlay"></div>
            </div> 
            <div className="heroText">
-              <div className="heroHeader"><h1>Where Luxury Meets Legacy</h1>.</div>
-              <div className="heroBody">Curated fashion, signature scents, and expert consulting—crafted for those who live beyond trends.</div>
-              <div className="heroBtn">shop now</div>
+              <div className="heroHeader"><h1>Align your Look with your Vision.</h1></div>
+              <div className="heroBody">Style with strategy. We help you dress for the life, brand, or role you’re building.</div>
+              <div className="heroBtn"><NavLink to="#">book consultation</NavLink></div>
            </div>
         </div>
         <div className="heroImgCon">
            <div className="heroImg">
             <img src={hero4} alt="" />
+            <div className="gradientOverlay"></div>
            </div> 
            <div className="heroText">
-              <div className="heroHeader"><h1>Where Luxury Meets Legacy.</h1> </div>
-              <div className="heroBody">Curated fashion, signature scents, and expert consulting—crafted for those who live beyond trends.</div>
-              <div className="heroBtn">shop now</div>
+              <div className="heroHeader"><h1>Scent the Mood. Live the Luxury.</h1> </div>
+              <div className="heroBody">Transform your space with rich, refined fragrances that awaken the senses and leave a lasting impression.</div>
+              <div className="heroBtn"><NavLink to="#">shop now</NavLink></div>
            </div>
         </div>
         </Carousel>

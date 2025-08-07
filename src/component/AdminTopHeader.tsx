@@ -6,8 +6,7 @@ import profileImg from '../assets/images/profile.jpg'
 import { NavLink } from 'react-router-dom';
 import { LuKeyRound } from 'react-icons/lu';
 import { MdMessage } from 'react-icons/md';
-import AdminNotification from './AdminNotification';
-import AdminProfile from './AdminProfile';
+
 import { toast } from 'react-toastify';
 
 interface SideNavProps {
@@ -134,17 +133,7 @@ const AdminTopHeader: React.FC<SideNavProps> = ({ open, setOpen }) => {
 
     
      
-     {
-       notification && (
-        <AdminNotification loading={loading} notificationData={notificationData}/>
-       )
-     }
-
-     {
-      adminProfile && (
-        <AdminProfile />
-      )
-    }
+    
     
 
     </div>

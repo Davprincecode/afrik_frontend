@@ -3,8 +3,7 @@ import { FaBars, FaSignOutAlt } from 'react-icons/fa'
 import { userAuth } from '../pages/context/AuthContext';
 import profileImg from '../assets/images/profile.jpg';
 import { IoIosArrowDropdown } from 'react-icons/io';
-import AdminProfile from './AdminProfile';
-import UserProfile from './UserProfile';
+
 
 interface SideNavProps {
   open: boolean;
@@ -60,11 +59,7 @@ const TopHeader: React.FC<SideNavProps> = ({ open, setOpen }) => {
     </div>
 
 
-    {
-      userProfile && (
-        <UserProfile />
-      )
-    }
+   
 
 
       </div>
