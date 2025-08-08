@@ -23,7 +23,7 @@ function ContactUs() {
                 <div className="contactInfo" style={{backgroundImage : `url(${contactImg})`}}>
 
                     <h1 className='contactTitle'>Contact Information</h1>
-                    <p className="contactTitledetails">Here`s how you can reach out</p> 
+                    <p className="contactTitledetails">Here`s how you can reach us</p> 
 
 
                     <div className="flex-center gap-10 contact"><div className="contactIcon"><BiSolidPhoneCall /></div> <p>+2347077744145</p></div>
@@ -54,14 +54,22 @@ function ContactUs() {
                 </div>
 
                 <div className="contactForm">
+
+                  <div className="input inputCon">
+                    <label >Message Type</label>
+                    <select >
+                      <option value="">Select Type</option>
+                    </select>
+                  </div>
+
                   <div className="inputFlex flex-center gap-20">
-                    <div className='input'> <label>first Name</label><input type="text"/></div>
-                    <div className='input'> <label>email</label><input type="email"/></div>
+                    <div className='input'> <label>Name <span>(First Name & Last Name)</span></label><input type="text"/></div>
+                    <div className='input'> <label>Email</label><input type="email"/></div>
                   </div>  
 
                   <div className="inputFlex flex-center gap-10">
-                    <div className='input'> <label>city/state</label><input type="text"/></div>
-                    <div className='input'> <label>phone number</label><input type="email"/></div>
+                    <div className='input'> <label>City/State</label><input type="text"/></div>
+                    <div className='input'> <label>Phone Number</label><input type="email"/></div>
                   </div>  
 
                   <div className="text-area">

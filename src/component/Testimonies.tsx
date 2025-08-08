@@ -54,7 +54,7 @@ function Testimonies() {
 
   useEffect(() => {
     const updateSize = () => {
-      setVisibleCount(window.innerWidth < 768 ? 2 : 3);
+      setVisibleCount(window.innerWidth < 768 ? 1 : 1);
     };
     updateSize();
     window.addEventListener('resize', updateSize);
@@ -88,17 +88,9 @@ function Testimonies() {
 
 {/* ----------------------------------------------------------------- */}
 
-<div className="testimoniesCon flex  gap-10">
+<div className="testimoniesCon">
 
-      <div className="arrowContainer">
-          <div className="arrowLeft" onClick={shuffleLeft}>
-          <FaChevronLeft />
-        </div>
-
-        <div className="arrowRight" onClick={shuffleRight}>
-          <FaChevronRight/>
-        </div>
-      </div>
+     
       
 
       <div className="testimoniesFlex flex gap-6 overflow-hidden w-full">
@@ -113,15 +105,24 @@ function Testimonies() {
               transition={{ duration: 0.4 }}
               className="testimoniesContainers w-full md:w-[30%] bg-white rounded-lg p-4 flex-shrink-0 shadow"
             >
+               <div className="arrowContainer arrowTestimonies">
+          <div className="arrowLeft" onClick={shuffleLeft}>
+          <FaChevronLeft />
+        </div>
+
+        <div className="arrowRight" onClick={shuffleRight}>
+          <FaChevronRight/>
+        </div>
+      </div>
               <div className="reviewBody text-sm text-gray-800 mb-3">{item.text}</div>
 
               <div className="reviewsStar flex gap-1 mb-2">
                 {[...Array(5)].map((_, i) => (
                   <span key={i}>
                     {i < item.stars ? (
-                      <IoIosStar className="text-yellow-500" />
+                      <IoIosStar className="starFilled" />
                     ) : (
-                      <IoIosStarOutline className="text-gray-400" />
+                      <IoIosStarOutline className="star" />
                     )}
                   </span>
                 ))}

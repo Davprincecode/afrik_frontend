@@ -88,13 +88,13 @@ img{
 /* ============== navbar ==============================  */
 .navcontainer{
   position: fixed;
-    left: 0px;
-    right: 0px;
-    top: 0px;
+  left: 0px;
+  right: 0px;
+  top: 0px;
   display: flex;
   align-items: center;
-  gap: 50px;
-  padding: 5px 40px;
+  gap: 100px;
+  padding: 15px 40px;
   z-index: 99;
   text-transform: capitalize;
 }
@@ -105,6 +105,9 @@ img{
   background-color: var(--primary1);
 }
 .navcontainer.scrolled a{
+  color: white;
+}
+.navcontainer.scrolled p{
   color: white;
 }
 .navcontainer.scrolled svg{
@@ -122,8 +125,8 @@ img{
     border-bottom: 2px solid; 
 }
 .logocontainer{
-  width: 250px;
-  height: 70px;
+  width: 150px;
+  /* height: 70px; */
 }
 .logocontainer img{
   object-fit: contain;
@@ -147,7 +150,7 @@ img{
   border-radius: 10px;
 }
 .itemscontainer ul li a{
-
+text-transform: uppercase;
 }
 .itemscontainer ul li:hover{
  
@@ -230,13 +233,14 @@ color: white;
   width: 100%;
   height: 100%;
   transition: top 0.9s ease-out;
+  overflow: hidden;
 }
 .itemscontainer .openNavBar{
     background: white;
-    padding-top: 50px;
+    padding: 20px 40px 90px 40px;
     display: block;
     position: fixed;
-    top: 92px;
+    top: 69px;
     left: 0px;
     right: 0px;
     text-align: center;
@@ -245,9 +249,21 @@ color: white;
     width: 100%;
     height: 100%;
     transition: top 0.9s ease-out;
+    border-top: 8px solid var(--secondary1);
+    overflow: auto;
 }
 .itemscontainer ul li {
   padding: 10px 20px;
+}
+.itemscontainer ul li a {
+    display: block;
+    padding: 10px 0px;
+    border-radius: 10px;
+    width: 100%;
+    text-transform: uppercase;
+    font-weight: bold;
+    background-color: white;
+    box-shadow: 0px 0px 9.6px 0px #00000014;
 }
 .scrolled .itemscontainer a {
       color: var(--nav-text);
@@ -265,7 +281,7 @@ color: white;
   right: 0px;
   left: 0px;
   width: 100%;
-  height: 92px;
+  height: 70px;
   background-color: rgb(0,0,0);
   background-color: rgba(0,0,0,0.4);
   z-index: 100;
@@ -519,9 +535,9 @@ cursor: pointer;
 
 /* ============== hero section ============ */
 .hero{
-    margin-top: 92px;
+    margin-top: 70px;
     width: 100%;
-    height: calc(100vh - 92px);
+    height: calc(100vh - 81px);
 }
 .hero .react-multiple-carousel__arrow{
 display: none;
@@ -1345,51 +1361,39 @@ text-align: center;
 margin-bottom: 30px;
 }
 .testimoniesHeader p{
-color: var(--secondary1);
-font-size: 16px;
+color: var(--primary3);
+font-size: 70px;
 font-weight: 400;
-font-family: var(--body);
-text-transform: uppercase;
+line-height: 100%;
+font-family: 'Biloxi Script', cursive;
 }
 .testimoniesHeader h1{
 text-transform: uppercase;
 font-family: var(--header1);
 font-weight: 400;
-font-size: 30px;
+font-size: 20px;
+color: var(--primary1);
+line-height: 100%;
 }
-
-
-/* .testimoniesCon{
-justify-content: center;
-}
-.testimoniesFlex{
-display: flex;
-width: 100%;
-gap: 30px;
-}
-.testimoniesContainers{
-    border: 1px solid var(--primary3);
-    width: 33%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-radius: 20px;
-    padding: 40px 20px;
-    gap: 10px;
-} */
-
 
 .testimoniesCon {
   overflow: hidden;
 }
 .arrowContainer{
   position: absolute;
-  top: 55%;
   right: 5px;
   left: 5px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+.arrowTestimonies{
+    top: 50% !important;
+    left: 20px;
+    right: 20px;
+}
+.arrowTestimonies svg{
+  font-size: 20px !important;
 }
 .testimoniesFlex {
   display: flex;
@@ -1399,18 +1403,13 @@ gap: 30px;
 }
 
 .testimoniesContainers {
-    flex-shrink: 0;
-    border: 1px solid var(--primary3);
-    width: 30%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    border-radius: 20px;
-    padding: 40px 20px;
+    text-align: center !important;
+    padding: 40px;
     gap: 10px;
 }
-
-
 
 .testimoniesImage{
     width: 100px;
@@ -1432,28 +1431,22 @@ gap: 30px;
 .reviewsStar{
 
 }
-.userReviewCount svg{
-color: var(--primary3);
+.starFilled{
+  color: var(--primary3);
 }
-.userReviewNotCount svg{
-color: #C4C4C4;
+.star{
+  color: #C4C4C4;
 }
 @media(max-width : 850px){
       .testimoniesFlex{
       flex-wrap: wrap;
       justify-content: center;
       }
-    .testimoniesContainers{
-        width: 45%;
-    }
 }
 @media(max-width : 700px){
- .testimoniesContainers{
-        width: 100%;
-    }
-    .thirdTestimonies{
+    /* .thirdTestimonies{
       display: none;
-    }
+    } */
 }
 /* =================== Testimonies end ============ */
 
@@ -1775,6 +1768,12 @@ iframe{
 .contactUs .navcontainer a{
     color: white;
 }
+.contactUs .navcontainer p{
+    color: white;
+}
+.contactUs .navcontainer svg{
+    color: white;
+}
 .contactUs .logo {
     display: none;
 }
@@ -1808,8 +1807,8 @@ box-shadow: 0px 0px 60px 10px rgba(0, 0, 0, 0.3);
 }
 .contactInfo{
   width: 40%;
-  background-color: var(--primary3);
-  background-blend-mode: multiply;
+  background-color: #292102;
+    background-blend-mode: multiply;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -1818,7 +1817,7 @@ box-shadow: 0px 0px 60px 10px rgba(0, 0, 0, 0.3);
   padding: 40px;
 }
 .contactInfo .contactTitle{
-
+margin-bottom: 5px;
 }
 .contactInfo .contactTitledetails{
 margin-bottom: 20px;
@@ -1837,6 +1836,7 @@ padding-left: 30px;
 }
 .businessHour .hour{
 color: #FFE0B2;
+margin-bottom: 10px;
 }
 .businessHour p{
 
@@ -1846,7 +1846,7 @@ color: #FFE0B2;
   align-items: center;
   width: fit-content;
   gap: 5px;
-  margin: 5px 0px;
+  margin: 20px 0px;
   background-color: #28c76f;
   color: white;
   border-radius: 50px;
@@ -1861,8 +1861,11 @@ margin-top: 30px;
 .socialMedia .social a{
   background-color: #FFE0B2;
   border-radius: 50%;
-  padding: 10px 7px 7px 7px;
   color: black;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .insta{
   background-color: white !important;
@@ -1874,13 +1877,27 @@ margin-top: 30px;
   width: 60%;
 }
 .contactForm .inputFlex{
-margin-bottom: 40px;
-gap: 30px;
+  margin: 15px 0px;
+  gap: 30px;
 }
 .contactForm .inputFlex label{
 text-transform: capitalize;
+/* color: #8D8D8D; */
+/* margin-bottom: 5px; */
+}
+.inputCon select{
+padding: 10px;
 color: #8D8D8D;
-margin-bottom: 5px;
+background-color: #F6F2ED;
+outline: none;
+border: none;
+border: 1px solid #8D8D8D;
+}
+.inputCon label{
+  margin-bottom: 5px;
+}
+.input label span{
+ color: #8D8D8D;
 }
 .contactForm input{
 
@@ -1895,7 +1912,7 @@ margin-bottom: 5px;
   outline: none;
   border-bottom: 1px solid #8D8D8D;
   background-color: #F6F2ED;
-  padding-bottom: 2px;
+  padding: 5px;
 }
 .text-area{
   
@@ -1973,6 +1990,12 @@ cursor: pointer;
 .aboutUs .navcontainer a{
     color: white;
 }
+.aboutUs .navcontainer p{
+    color: white;
+}
+.aboutUs .navcontainer svg{
+    color: white;
+}
 .aboutUs .logo {
     display: none;
 }
@@ -1998,12 +2021,12 @@ margin: 40px 0px;
 }
 .aboutUsFlex{
 display: flex;
-gap: 20px;
+gap: 50px;
 padding: 10px;
 }
 .aboutUsFounderFlex{
 display: flex;
-gap: 10px;
+gap: 50px;
 padding: 10px;
 margin-top: 20px;
 }
@@ -2026,11 +2049,14 @@ height: 400px;
 object-fit: contain;
 }
 .aboutUsBody{
-width: 60%;
+width: 52%;
 text-align: justify;
+display: flex;
+align-items: center;
+flex-direction: column;
 }
 .aboutUsFounderBody{
-width: 60%;
+width: 52%;
 }
 .loveFounderIntro p{
   margin-bottom: 15px;
@@ -2061,24 +2087,29 @@ position: relative;
   top: 10px;
   left: 50%;
   z-index: -1;
-  width: 120px;
-  height: 120px;
+  width: 170px;
+  height: 170px;
   background-color: #FFF6E8;
   border-radius: 50%;
   transform: translate(-50%, -50%);
   box-shadow: 0 0 0 2px white;
 }
+.innerCircle{
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 140px;
+  height: 140px;
+  border: 3px solid #D3AF37;
+  border-radius: 50%;
+      display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .visionHeader{
-position: absolute;
-top: -40px;
-right: 0px;
-left: 0px;
 margin: 0 auto;
 width: 100px;
-padding: 20px;
-border-radius: 50%;
-border: 2px solid #D3AF37;
-background-color: #FFF6E8;
 }
 .visionHeader img{
 object-fit: contain;
@@ -2086,6 +2117,7 @@ object-fit: contain;
 .visionCon h2{
 text-transform: capitalize;
 margin-bottom: 20px;
+margin-top: 20px;
 }
 .visionCon p{
 
@@ -2105,11 +2137,11 @@ margin-bottom: 20px;
   display: none;
 }
 .aboutHeaderDesk{
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 .aboutFounderHeader{
-width: 300px;
-height: 100px;
+width: 200px;
+/* height: 100px; */
 }
 .aboutFounderHeader img{
 object-fit: contain;
@@ -2133,16 +2165,7 @@ object-fit: contain;
 .founderImage img{
 object-fit: cover;
 }
-.topLabel{
-  position: absolute;
-  bottom: 58px;
-  right: 0px;
-  left: 0px;
-  margin: 0 auto;
-  width: 250px;
-  height: 10px;
-  background-color: var(--secondary1);
-}
+
 .founderDetails{
  position: absolute;
   bottom: -50px;
@@ -2154,6 +2177,7 @@ object-fit: cover;
   background-color: white;
   text-align: center;
   padding: 15px 0px;
+  border-top: 8px solid var(--secondary1);
 }
 .temitope p{
   font-size: 40px !important;
@@ -2204,9 +2228,12 @@ display: none;
 .desktopAbout{
   display: none;
 }
+.aboutImage{
+      margin: 0px -20px;
+}
 .mobileAbout{
   display: block;
-  width: 105%;
+  width: 100%;
    object-fit: cover !important;
 }
 .ourfounderdesktop{
@@ -2222,7 +2249,7 @@ display: block;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 40px;
+  margin-bottom: 10px;
 }
 .founderFlex{
  flex-wrap: wrap;
@@ -2247,7 +2274,7 @@ height: 520px;
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
-  gap: 30px;
+  gap: 50px;
   }
  .aboutUsFounderFlex{
   display: flex;
@@ -2297,10 +2324,6 @@ height: 520px;
 .aboutFounder{
   padding: 40px 20px;
 }
-.topLabel{
-  width: 200px;
-  bottom: 50px;
-}
 .founderDetails{
   width: 200px;
 }
@@ -2317,6 +2340,12 @@ height: 520px;
 .ourServices .navcontainer a{
     color: white;
 }
+.ourServices .navcontainer p{
+    color: white;
+}
+.ourServices .navcontainer svg{
+    color: white;
+}
 .ourServices .logo {
     display: none;
 }
@@ -2329,7 +2358,7 @@ height: 520px;
     border-bottom: 2px solid; 
 }
 .ourServicesCon{
- margin-top: 80px;
+ margin-top: 70px;
 }
 .ourServicesHeader{
   background-color: rgba(0, 0, 0, 1);
@@ -2478,6 +2507,12 @@ object-fit: contain;
     color: white;
 }
 .our-blog .navcontainer a{
+    color: white;
+}
+.our-blog .navcontainer p{
+    color: white;
+}
+.our-blog .navcontainer svg{
     color: white;
 }
 .our-blog .logo {
@@ -2687,8 +2722,8 @@ font-size: 18px;
   padding: 30px;
 }
 .footerLogo{
-width: 250px;
-height: 70px;
+width: 150px;
+/* height: 70px; */
 margin-bottom: 40px;
 }
 .footerLogo img{

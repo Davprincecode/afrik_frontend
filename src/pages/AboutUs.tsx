@@ -86,7 +86,10 @@ function AboutUs() {
 
                 <div className="visionCon">
                     <div className="circle"></div>
-                     <div className="visionHeader"><img src={vission} /></div>
+                    <div className="innerCircle">
+                        <div className="visionHeader"><img src={vission} /></div>
+                    </div>
+                     
                      <h2>our vision</h2>
                      <p>
                         Our vision is to build a globally recognized African brand at the forefront of image
@@ -97,7 +100,10 @@ function AboutUs() {
 
                 <div className="visionCon">
                     <div className="circle"></div>
-                     <div className="visionHeader"><img src={mission} /></div>
+                    <div className="innerCircle">
+                       <div className="visionHeader"><img src={mission} /></div> 
+                    </div>
+                     
                      <h2>our mission</h2>
                      <p>
                         Our mission is to redefine the narrative of luxury fashion and 
@@ -109,7 +115,10 @@ function AboutUs() {
 
                 <div className="visionCon coreCon">
                     <div className="circle"></div>
-                     <div className="visionHeader"><img src={core} /></div>
+                    <div className="innerCircle">
+                        <div className="visionHeader"><img src={core} /></div>
+                    </div>
+                     
                      <h2>our mission</h2>
                      <p className='core'>
                        ►Excellence
@@ -149,7 +158,6 @@ function AboutUs() {
                             <h4>adesola owoeye</h4>
                             <p>certified image consultant & stylist</p>
                         </div>
-                        <div className="topLabel"></div>
                     </div>
                 </div>
 

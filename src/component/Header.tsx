@@ -76,7 +76,7 @@ const navFunction = () =>{
                               <div className="signin">
                                   <NavLink to='#' className='flex-center gap-5'>
                                       <p>sign in</p>
-                                      <IoIosArrowDown />
+                                      <IoIosArrowDown className='signinIcon'/>
                                   </NavLink>
                               </div>
                           )
