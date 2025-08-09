@@ -11,6 +11,8 @@ import core from '../assets/images/core.png'
 import aboutHeader from '../assets/images/aboutus.png'
 import abtHeader from '../assets/images/foundersign.png'
 import founder from '../assets/images/founder.jpg'
+import founderDesk from '../assets/images/founderNamedesk.png'
+import founderMobile from '../assets/images/founderNameMobile.png'
 import { useLocation } from 'react-router-dom'
 
 
@@ -158,11 +160,9 @@ function AboutUs() {
                     <div className="founderImage">
                         <img src={founder} />
                         <div className="founderDetails">
-                            <div className="temitope">
-                                <p>temitope</p>
-                            </div>
-                            <h4>adesola owoeye</h4>
-                            <p>certified image consultant & stylist</p>
+                            <img src={founderDesk} className="founderDesk" />
+                            <img src={founderMobile} className="founderMobile" />
+                            
                         </div>
                     </div>
                 </div>

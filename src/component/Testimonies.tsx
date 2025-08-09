@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 import { IoIosStar, IoIosStarOutline } from 'react-icons/io'
-import review1 from '../assets/images/review1.jpg'
-import review2 from '../assets/images/review2.jpg'
-import review3 from '../assets/images/review3.jpg'
+import testimoniesDesk from '../assets/images/testimonialDesk.png'
+import testimoniesMobile from '../assets/images/testimonialsMobile.png'
+
 import { AnimatePresence, motion } from 'framer-motion'
 
 
@@ -78,8 +78,11 @@ function Testimonies() {
 
   return (
     <div className='testimonies'>
-         <div className="testimoniesHeader">
-              <p>Testimonials</p>
+         <div className="testimoniesHeader flex-center ">
+               <div className="testimoniesHeaderImg">
+                <img src={testimoniesDesk}  className="testimoniesDesk" />
+                {/* <img src={testimoniesMobile}  className="testimoniesMobile" /> */}
+               </div>
               <h1>What our clients say about us.</h1>
          </div>
 
