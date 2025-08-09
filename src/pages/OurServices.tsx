@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import service1 from '../assets/images/service1.png';
 import service2 from '../assets/images/service2.png';
 import service3 from '../assets/images/service3.png';
@@ -8,9 +8,15 @@ import Header from '../component/Header'
 import service from '../assets/images/ourservices.png'
 import Footer from '../component/Footer'
 import { FaArrowLeft } from 'react-icons/fa'
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 
 function OurServices() {
+  const { pathname } = useLocation();
+  
+  useEffect(() => {
+      window.scrollTo(0, 0);
+    }, [pathname]);
+    
   return (
    <div className='ourServices'>
        <Header />

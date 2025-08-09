@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Header from '../component/Header'
 import Footer from '../component/Footer'
 import aboutUs from '../assets/images/ceomix.png'
@@ -11,9 +11,15 @@ import core from '../assets/images/core.png'
 import aboutHeader from '../assets/images/aboutus.png'
 import abtHeader from '../assets/images/foundersign.png'
 import founder from '../assets/images/founder.jpg'
+import { useLocation } from 'react-router-dom'
 
 
 function AboutUs() {
+    const { pathname } = useLocation();
+    
+      useEffect(() => {
+        window.scrollTo(0, 0);
+      }, [pathname]);
   return (
     <div className='aboutUs'>
        <Header />
@@ -119,7 +125,7 @@ function AboutUs() {
                         <div className="visionHeader"><img src={core} /></div>
                     </div>
                      
-                     <h2>our mission</h2>
+                     <h2>our core value</h2>
                      <p className='core'>
                        ►Excellence
                      </p>

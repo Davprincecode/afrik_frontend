@@ -1,12 +1,18 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Header from '../component/Header'
 import Footer from '../component/Footer'
 import contactImg from '../assets/images/contactus.png'
 import { BiSolidPhoneCall } from 'react-icons/bi'
 import { FaDiscord, FaEnvelope, FaInstagram, FaTwitter, FaWhatsapp } from 'react-icons/fa'
 import { FaLocationDot } from 'react-icons/fa6'
+import { useLocation } from 'react-router-dom'
 
 function ContactUs() {
+  const { pathname } = useLocation();
+  
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, [pathname]);
   return (
     <div className='contactUs'>
         <Header />

@@ -23,8 +23,9 @@ function Services() {
                   </div>
                   <div className="learnMore">
                     <NavLink to="/our-services">
-                        learn more...
+                        learn more
                     </NavLink>
+                    <span>...</span> 
                   </div>
               </div>
               <div className="servicesItem">
@@ -32,12 +33,13 @@ function Services() {
                    <img src={service2} alt="" />
                   </div>
                   <div className="servicesTitle">
-                    personal styling
+                    personal <br /> styling
                   </div>
                   <div className="learnMore">
                     <NavLink to="/our-services">
-                        learn more...
+                        learn more
                     </NavLink>
+                    <span>...</span> 
                   </div>
               </div>
               <div className="servicesItem">
@@ -49,8 +51,9 @@ function Services() {
                   </div>
                   <div className="learnMore">
                     <NavLink to="/our-services">
-                        learn more...
+                        learn more
                     </NavLink>
+                    <span>...</span> 
                   </div>
               </div>
               <div className="servicesItem">
@@ -63,8 +66,9 @@ function Services() {
                   </div>
                   <div className="learnMore">
                     <NavLink to="/our-services">
-                        learn more...
+                        learn more
                     </NavLink>
+                    <span>...</span> 
                   </div>
               </div>
               <div className="servicesItem">
@@ -76,8 +80,9 @@ function Services() {
                   </div>
                   <div className="learnMore">
                     <NavLink to="/our-services">
-                        learn more...
+                        learn more
                     </NavLink>
+                    <span>...</span> 
                   </div>
               </div>
 

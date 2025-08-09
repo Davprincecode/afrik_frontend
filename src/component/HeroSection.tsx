@@ -15,7 +15,6 @@ function HeroSection() {
 
 const responsive = {
     superLargeDesktop: {
-      // the naming can be any, depends on you.
       breakpoint: { max: 4000, min: 3000 },
       items: 1
     },
@@ -39,7 +38,7 @@ const responsive = {
 
 <Carousel 
       responsive={responsive}
-      autoPlay={false}
+      autoPlay={true}
       swipeable={true}
       draggable={true}
       showDots={true}

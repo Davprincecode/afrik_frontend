@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { LuArrowUpRight } from 'react-icons/lu'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import blogHeader from '../assets/images/blogHeader.jpg'
 import blog1 from '../assets/images/blog1.jpg'
 import blog2 from '../assets/images/blog2.jpg'
@@ -13,6 +13,11 @@ import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
 import { CiSearch } from 'react-icons/ci'
 
 function BlogList() {
+    const { pathname } = useLocation();
+      
+      useEffect(() => {
+          window.scrollTo(0, 0);
+        }, [pathname]);
   return (
     <div className="our-blog">
 

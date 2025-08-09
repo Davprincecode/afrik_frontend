@@ -1,24 +1,22 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import history from 'connect-history-api-fallback';
 
 export default defineConfig({
-  plugins: [react()],
-  server: {
-    proxy: {
-      // Proxy for Maskawa Sub API
-      "/api/maskawa": {
-        target: "https://maskawasubapi.com",
-        changeOrigin: true,
-        secure: false,
-        rewrite: (path) => path.replace(/^\/api\/maskawa/, "/api"),
-      },
-      // Proxy for SmartSpeedData API
-      "/api/smartspeed": {
-        target: "https://smartspeedtelecom.com",
-        changeOrigin: true,
-        secure: false,
-        rewrite: (path) => path.replace(/^\/api\/smartspeed/, "/api"),
-      },
-    },
-  },
+  plugins: [
+    react(),
+    //   {
+    //   name: 'custom-history-fallback',
+    //   configureServer(server) {
+    //     server.middlewares.use(
+    //       history({
+    //         index: '/index.html',
+    //         disableDotRule: true,
+    //       })
+    //     );
+    //   },
+    // }
+
+  ]
+  
 });

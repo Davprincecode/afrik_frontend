@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import logo from '../../assets/images/logo.png';
 import {toast } from 'react-toastify';
-import {NavLink, useNavigate, useParams } from 'react-router-dom';
+import {NavLink, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { userAuth } from '../context/AuthContext';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { RxCross2 } from 'react-icons/rx';
@@ -21,7 +21,11 @@ function Register() {
   const [switchPassword, setSwitchPassword] = useState<boolean>(false);
   const [auth, setAuth] = useState<string>('signup');
   const {baseUrl, webLogo} = userAuth();  
-
+const { pathname } = useLocation();
+  
+  useEffect(() => {
+      window.scrollTo(0, 0);
+    }, [pathname]);
   useEffect(() => {
     if (confirmPassword && confirmPassword !== password) {
       setError(false);

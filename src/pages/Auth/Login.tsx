@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import logo from '../../assets/images/logo1.png';
 
 import {toast } from 'react-toastify';
-import {NavLink, useNavigate } from 'react-router-dom';
+import {NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { userAuth } from '../context/AuthContext';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
@@ -14,7 +14,11 @@ function Login() {
   const [loading, setLoading] = useState<boolean>(false);
   const [switchPassword, setSwitchPassword] = useState<boolean>(false);
   const {baseUrl, setTrp, setUserAccountDetails, setTransactions, setSellingPrice, setNetwork, setProvider, setProviderList, setProviderAirtime, setProviderBill, setProviderCable, setSiteName, setBaseColor, setSecondaryColor, setWebLogo, setWhatsAppLink, loginAuth, logInUser, webLogo} = userAuth();  
-
+const { pathname } = useLocation();
+  
+  useEffect(() => {
+      window.scrollTo(0, 0);
+    }, [pathname]);
   const handleLogin = async () => {
     setLoading(true);
     const raw = {
