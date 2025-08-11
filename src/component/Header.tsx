@@ -8,6 +8,7 @@ import { FaRegCircleUser } from 'react-icons/fa6';
 import { IoIosArrowDown } from 'react-icons/io';
 import { BsCart2 } from 'react-icons/bs';
 import { FiShoppingCart } from 'react-icons/fi';
+import ComingSoon from './ComingSoon';
 
 
 function Header() {
@@ -30,8 +31,14 @@ const [isScrolled, setIsScrolled] = useState(false);
 const navFunction = () =>{
     setNavOpen(!navOpen)
 }
+
+  const [popAction, setPopAction] = useState<boolean>(false);
+// onClick={() => setPopAction(!popAction)}
   return (
     <div>
+
+      <ComingSoon popAction={popAction} setPopAction={setPopAction} />
+
               {/* <!-- ========nav section============== --> */}
             <div className={navOpen ? "sideNavOverall sideNavOverallChange":"sideNavOverall"}  onClick={navFunction}>
             </div>
@@ -50,9 +57,9 @@ const navFunction = () =>{
                       <li> <NavLink to="/"> Home </NavLink> </li>
                       <li><NavLink to="/about-us">about us</NavLink></li>
                       <li><NavLink to="/our-services">services</NavLink></li>
-                      <li><NavLink to="#">shop</NavLink></li>
-                      <li><NavLink to="#">consultation</NavLink> </li>
-                      <li><NavLink to="#">blog</NavLink> </li>
+                      <li onClick={() => setPopAction(!popAction)}><NavLink to="#">shop</NavLink></li>
+                      <li onClick={() => setPopAction(!popAction)}><NavLink to="#">consultation</NavLink> </li>
+                      <li onClick={() => setPopAction(!popAction)}><NavLink to="#">blog</NavLink> </li>
                       <li><NavLink to="/contact-us">contact us</NavLink> </li>
                   </ul>
 

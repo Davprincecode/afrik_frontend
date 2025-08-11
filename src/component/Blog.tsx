@@ -1,12 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import blogImg1 from '../assets/images/blogpic1.png'
 import blogImg2 from '../assets/images/blogpic2.png'
 import blogImg3 from '../assets/images/blogpic3.png'
 import { NavLink } from 'react-router-dom'
+import ComingSoon from './ComingSoon'
 
 function Blog() {
+  
+   const [popAction, setPopAction] = useState<boolean>(false);
+
   return (
     <div className='blog'>
+       <ComingSoon popAction={popAction} setPopAction={setPopAction} />
           <div className="blogHeader">
              <h1>Blog</h1>
           </div>
@@ -57,11 +62,10 @@ function Blog() {
               
 
 
-             
-
+            
           </div>
           
-          <div className="blogBottom">
+          <div className="blogBottom"  onClick={() => setPopAction(!popAction)}>
                <NavLink to="#">GO TO BLOG</NavLink> 
              </div>
     </div>

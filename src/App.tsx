@@ -65,7 +65,7 @@ const {baseUrl} = userAuth();
           <Route path="/changepassword/:token" element={<ChangePassword/>} />
           <Route path="/verifyotp" element={<VerifyOtp />} />
 
-          <Route path="/coming-soon" element={<ComingSoon />} />
+          {/* <Route path="/coming-soon" element={<ComingSoon />} /> */}
 
           <Route path="/shuffle" element={<AnimatedShuffleList />} />
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import Header from '../component/Header'
 import HeroSection from '../component/HeroSection'
@@ -16,21 +16,27 @@ import Youtube from '../component/Youtube'
 
 
 
+
 const LandingPage  = () => {
  const { pathname } = useLocation();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
+
+   
+  
+    
 return(
 <div>
+
+  
   <Header />
   <HeroSection />
   <HeroContext/>
   <Services/>
   <Product/>
   <Gallery/>
-  {/* ----- */}
   <Partner/>
   <Testimonies/>
   <BookingSection/>

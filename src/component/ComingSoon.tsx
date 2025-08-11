@@ -1,16 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { FaWhatsapp } from 'react-icons/fa'
 import { RxCross2 } from 'react-icons/rx'
 import logo from '../assets/images/logo.png'
 
-function ComingSoon() {
+interface comingSoonInterface {
+    popAction : boolean,
+    setPopAction: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const ComingSoon : React.FC<comingSoonInterface> = ({popAction, setPopAction}) => {
+  
+
   return (
     
-       <div className="comingWrapper">
+       <div className="comingWrapper" style={{display : popAction ? "flex" : "none"}}>
 
         <div className="comingCon">
             <div className="comingSoonHeader">
-                <div className="comingIcon">
+                <div className="comingIcon" onClick={() => setPopAction(!popAction)}>
                     <RxCross2 />
                 </div>
             </div>

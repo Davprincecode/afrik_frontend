@@ -10,6 +10,7 @@ import product6 from '../assets/images/product6.png'
 import product7 from '../assets/images/product7.png'
 import { NavLink } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
+import ComingSoon from './ComingSoon'
 
 
 
@@ -93,16 +94,17 @@ function Product() {
       return [last, ...rest];
     });
   };
-
+const [popAction, setPopAction] = useState<boolean>(false);
   return (
     <div className='productCon'>
+        <ComingSoon popAction={popAction} setPopAction={setPopAction} />
          <div className="productContainer flex-center gap-20">
 
             <div className="productHeader">
                 <div className="productHeaderTitle">
                     BestSellers
                 </div>
-                <div className="productShop">
+                <div className="productShop" onClick={() => setPopAction(!popAction)}>
                     <NavLink to="#" className="shopBtn">
                         view shop
                     </NavLink>
