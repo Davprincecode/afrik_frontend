@@ -29,8 +29,6 @@ const LandingPage  = () => {
     
 return(
 <div>
-
-  
   <Header />
   <HeroSection />
   <HeroContext/>
