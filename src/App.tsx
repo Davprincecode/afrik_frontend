@@ -24,6 +24,7 @@ import BlogList from "./pages/BlogList";
 import BlogDetails from "./pages/BlogDetails";
 import AnimatedShuffleList from "./pages/AnimatedShuffleList";
 import ComingSoon from "./component/ComingSoon";
+import Shop from "./pages/Shop";
 
 
 
@@ -75,6 +76,7 @@ const {baseUrl} = userAuth();
           <Route path="/our-services" element={<OurServices/>} />
           <Route path="/our-blog" element={<BlogList/>} />
           <Route path="/blog-details" element={<BlogDetails/>} />
+          <Route path="/shop" element={<Shop/>} />
 
        {/* =============================================== */}
 

@@ -12,58 +12,32 @@ import { NavLink } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import ComingSoon from './ComingSoon'
 
-
-
 const data = [
         {
             id: 1,
-            productName: 'Aroma diffuser',
-            productPrice : 25000,
-            productDetail : 'Original product comes in three styles of color, usb charger',
+            productName: 'Cream Indulgence Diffuser',
+            productPrice : 22500,
+            productDetail : 'Sweet & creamy, elegant mildly floral, yummy & relaxing, rich & earthy…',
             productImage : product1
         },
         {
             id: 2,
-            productName: 'Aroma diffuser',
-            productPrice : 55000,
-            productDetail : 'Original product comes in three styles of color, usb charger',
+            productName: 'Spicy Obsession Diffuser',
+            productPrice : 36000,
+            productDetail : 'A rare blend of spicy and citrus fragrances. The perfect memory of liveliness and ...',
             productImage : product2
         },
         {
             id: 3,
-            productName: 'Aroma diffuser',
-            productPrice : 65000,
-            productDetail : 'Original product comes in three styles of color, usb charger',
+            productName: 'Dark Seduction Diffuser',
+            productPrice : 27000,
+            productDetail : 'A strong, masculine & sexy scent leaving your space with a rich, mysterious yet... ',
             productImage : product3
-        },
-        {
-            id: 4,
-            productName: 'Aroma diffuser',
-            productPrice : 25000,
-            productDetail : 'Original product comes in three styles of color, usb charger',
-            productImage : product4
-        },
-        {
-            id: 5,
-            productName: 'Aroma diffuser',
-            productPrice : 55000,
-            productDetail : 'Original product comes in three styles of color, usb charger',
-            productImage : product5
-        },
-        {
-            id: 6,
-            productName: 'Aroma diffuser',
-            productPrice : 65000,
-            productDetail : 'Original product comes in three styles of color, usb charger',
-            productImage : product6
-        },
-        {
-            id: 7,
-            productName: 'Aroma diffuser',
-            productPrice : 65000,
-            productDetail : 'Original product comes in three styles of color, usb charger',
-            productImage : product7
-        },
+        }
+        
+        
+        
+        
  ]
 
 function Product() {
@@ -136,7 +110,7 @@ const [popAction, setPopAction] = useState<boolean>(false);
                                 <div className="productTitle flex-center">
                                     <h2>{item.productName}</h2>
                                     <div className="price">
-                                        <span>₦</span>{item.productPrice}
+                                        <span>₦</span>{item.productPrice.toLocaleString()}
                                     </div>
                                 </div>
                                 <div className="productDetail">

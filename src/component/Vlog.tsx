@@ -93,7 +93,7 @@ function Vlog() {
           </div>
           
           <div className="vlogBottom">
-               <NavLink to="#">VIEW MORE</NavLink> 
+               <a href="https://www.instagram.com/temiloveafrik/?utm_source=ig_embed&ig_rid=63500371-fa37-4d0a-a491-46a4f509cd41&ig_mid=7BAD6E23-5A2C-473D-9ED4-BB17FACF703D" target='_blank'>VIEW MORE</a> 
              </div>
     </div>
   )

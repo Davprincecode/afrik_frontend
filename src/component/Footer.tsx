@@ -55,6 +55,9 @@ function Footer() {
         <div><NavLink to="#">cookies</NavLink></div>
       </div>
      </div>
+     <div className="copyright" style={{marginTop : "10px"}}>
+      © Design: gazadanladi.corp@gmail.com
+     </div>
 
     </div>
   )

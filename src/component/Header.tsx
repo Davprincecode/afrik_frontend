@@ -80,7 +80,7 @@ const navFunction = () =>{
                                       </div>
                               </div>
                           ) : (
-                              <div className="signin">
+                              <div className="signin" onClick={() => setPopAction(!popAction)}>
                                   <NavLink to='#' className='flex-center gap-5'>
                                       <p>sign in</p>
                                       <IoIosArrowDown className='signinIcon'/>

@@ -44,6 +44,9 @@ const responsive = {
       showDots={true}
       infinite={true}
       partialVisible={false}
+      autoPlaySpeed={2000}
+      customTransition="all .5"
+      transitionDuration={500}
      >
         <div className="heroImgCon">
            <div className="heroImg">

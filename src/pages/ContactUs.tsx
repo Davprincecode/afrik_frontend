@@ -33,7 +33,7 @@ function ContactUs() {
 
 
                     <div className="flex-center gap-10 contact"><div className="contactIcon"><BiSolidPhoneCall /></div> <p>+2347077744145</p></div>
-                    <div className="flex-center gap-10 contact"><div className="contactIcon"><FaEnvelope /></div> <p>contact@loveafrikgroup.com</p></div>
+                    <div className="flex-center gap-10 contact"><div className="contactIcon"><FaEnvelope /></div> <p>hello@loveafrikgroup.com </p></div>
                     <div className="flex-center gap-10 contact"><div className="contactIcon"><FaLocationDot /></div> <p>Lagos, Nigeria.</p></div>
                     <div className="dotLine"></div>
                     <div className="businessHour">

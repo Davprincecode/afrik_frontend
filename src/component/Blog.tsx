@@ -27,7 +27,7 @@ function Blog() {
                         Make your Dream a Reality
                     </div>
                     <div className="blogParagh">
-                        <p>As you begin creating your own diffuser blends, it’s important to keep a few ...</p>
+                        <p>A few months ago, the phrase “living the dream” felt distant, like it’s something ....</p>
                     </div>
                 </div>
               </div>
@@ -41,7 +41,7 @@ function Blog() {
                        Tacky is not a Vibe
                     </div>
                     <div className="blogParagh">
-                        <p>As you begin creating your own diffuser blends, it’s important to keep a few ....</p>
+                        <p>As a Lover of Elegance and Defender of Good Taste, let’s talk about a word that ...</p>
                     </div>
                 </div>
               </div>
@@ -55,7 +55,7 @@ function Blog() {
                        I am African Fashion
                     </div>
                     <div className="blogParagh">
-                        <p>As you begin creating your own diffuser blends, it’s important to keep a few ....</p>
+                        <p>For the longest time, whenever African fashion was mentioned in conversations or ...</p>
                     </div>
                 </div>
               </div>

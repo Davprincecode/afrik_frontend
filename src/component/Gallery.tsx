@@ -81,15 +81,15 @@ function Gallery() {
         </div>
 
 
-        <div className= {`galleryWrapper flex galleryContainer ${fade ? "fade-in" : "fade-out"}`}>
+        <div className= {`galleryWrapper  flex gap-10 galleryContainer ${fade ? "fade-in" : "fade-out"}`}>
 
             <div className="galleryCon">
                <div className="gallery1 galleryImg">
                 <img src={images[0]} />
                 <div className="preview" onClick={() => openModal(0)}><LiaEyeSolid /></div>
               </div>
-               <div className="flex justification-between">
-                <div className="gallerycons" style={{width: "48%"}}>
+               <div className="flex justification-between gap-10">
+                <div className="gallerycons">
                     <div className="gallery2 galleryImg">
                         <img src={images[1]} />
                     <div className="preview" onClick={() => openModal(1)}><LiaEyeSolid /></div>
@@ -99,7 +99,7 @@ function Gallery() {
                         <div className="preview" onClick={() => openModal(2)}><LiaEyeSolid /></div>
                     </div>
                 </div>
-                <div className="gallery4 galleryImg"  style={{width: "48%"}}>
+                <div className="gallery4 galleryImg">
                     <img src={images[3]} />
                     <div className="preview" onClick={() => openModal(3)}><LiaEyeSolid /></div>
                     </div>
@@ -107,7 +107,7 @@ function Gallery() {
             </div>
 
             <div className="galleryCon">
-                 <div className="flex justification-between">
+                 <div className="flex justification-between gap-10">
                     <div className="gallery5 galleryImg">
                         <img src={images[4]}/>
                         <div className="preview" onClick={() => openModal(4)}><LiaEyeSolid /></div>
@@ -121,7 +121,7 @@ function Gallery() {
                     <img src={images[6]}/>
                     <div className="preview" onClick={() => openModal(6)}><LiaEyeSolid /></div>
                 </div>
-                 <div className="flex justification-between">
+                 <div className="flex justification-between gap-10">
                     <div className="gallery8 galleryImg">
                         <img src={images[7]}/>
                         <div className="preview" onClick={() => openModal(7)}><LiaEyeSolid /></div>
