@@ -21,7 +21,7 @@ function OurServices() {
     }, [pathname]);
     
   return (
-   <div className='ourServices'>
+   <div className='ourServices pageNav'>
        <Header />
 
        <div className="ourServicesCon">

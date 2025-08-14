@@ -23,7 +23,7 @@ function AboutUs() {
         window.scrollTo(0, 0);
       }, [pathname]);
   return (
-    <div className='aboutUs'>
+    <div className='aboutUs pageNav'>
        <Header />
          <div className="aboutUsCon">
 

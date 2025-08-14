@@ -22,7 +22,7 @@ function BlogList() {
           window.scrollTo(0, 0);
         }, [pathname]);
   return (
-    <div className="our-blog">
+    <div className="our-blog pageNav">
         <Header />
         <div className="our-blog-container">
 

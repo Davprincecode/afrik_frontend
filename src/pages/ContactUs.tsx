@@ -14,7 +14,8 @@ function ContactUs() {
       window.scrollTo(0, 0);
     }, [pathname]);
   return (
-    <div className='contactUs'>
+
+    <div className='contactUs pageNav'>
         <Header />
         
        <div className="contactUsCon">

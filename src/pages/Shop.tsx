@@ -79,7 +79,7 @@ function Shop() {
     const [product, setProduct] = useState(data);
     const [filter, setFilter] = useState<boolean>(false);
   return (
-    <div className="shop-con">
+    <div className="shop-con pageNav">
     <Header />
 
     <div className="shop-container">
@@ -202,7 +202,6 @@ function Shop() {
                             <div className="color color2"></div>
                             <div className="color color3"></div>
                             <div className="color color4"></div>
-
                         </div>
                     </div>
 
@@ -249,7 +248,6 @@ function Shop() {
             </div>
              
              <div className="flex-center product-con">
-
                 {product.map((item, index) => (
                    <div className="shopProduct"  key={index}>
                         <div className="shopProductImage">
@@ -277,7 +275,6 @@ function Shop() {
                    </div>
                 ))
                 }
-                
              </div>
         </div>
     </div>

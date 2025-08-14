@@ -20,7 +20,7 @@ function BlogDetails() {
         window.scrollTo(0, 0);
       }, [pathname]);
   return (
-    <div className="blog-details">
+    <div className="blog-details pageNav">
       <Header/> 
       <div className="blog-details-con">
 
