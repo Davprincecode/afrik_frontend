@@ -29,7 +29,7 @@ function Services() {
                   </div>
               </div>
               <div className="servicesItem">
-                  <div className="servicesImg">
+                  <div className="servicesImg" style={{width : "80px"}}>
                    <img src={service2} alt="" />
                   </div>
                   <div className="servicesTitle">
@@ -56,8 +56,8 @@ function Services() {
                     <span>...</span> 
                   </div>
               </div>
-              <div className="servicesItem">
-                  <div className="servicesImg">
+              <div className="servicesItem" >
+                  <div className="servicesImg" style={{width : "70px"}}>
                    <img src={service4} alt="" />
                   </div>
                   <div className="servicesTitle">
@@ -71,8 +71,8 @@ function Services() {
                     <span>...</span> 
                   </div>
               </div>
-              <div className="servicesItem">
-                  <div className="servicesImg">
+              <div className="servicesItem" >
+                  <div className="servicesImg" style={{width : "80px"}}>
                    <img src={service5} alt="" />
                   </div>
                   <div className="servicesTitle">

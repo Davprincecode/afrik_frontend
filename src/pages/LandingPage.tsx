@@ -15,18 +15,13 @@ import Gallery from '../component/Gallery'
 import Youtube from '../component/Youtube'
 
 
-
-
 const LandingPage  = () => {
- const { pathname } = useLocation();
+//  const { pathname } = useLocation();
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
-
-   
-  
-    
+//   useEffect(() => {
+//     window.scrollTo(0, 0);
+//   }, [pathname]);
+      
 return(
 <div>
   <Header />

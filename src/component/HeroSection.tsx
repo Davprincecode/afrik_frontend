@@ -44,7 +44,7 @@ const responsive = {
       showDots={true}
       infinite={true}
       partialVisible={false}
-      autoPlaySpeed={2000}
+      autoPlaySpeed={10000}
       customTransition="all .5"
       transitionDuration={500}
      >
@@ -54,7 +54,7 @@ const responsive = {
             <div className="gradientOverlay"></div>
            </div> 
            <div className="heroText">
-              <div className="heroHeader"> <h1>Refine your Image.</h1></div>
+              <div className="heroHeader"> <h1>Refine your image.</h1></div>
               <div className="heroBody">Discover the power of intentional presence, because how you’re seen should reflect who you truly are</div>
               <div className="heroBtn"><NavLink to="#">book consultation</NavLink></div>
            </div>
@@ -65,7 +65,7 @@ const responsive = {
             <div className="gradientOverlay"></div>
            </div> 
            <div className="heroText">
-              <div className="heroHeader"><h1>Elevate your Style.</h1></div>
+              <div className="heroHeader"><h1>Elevate your style.</h1></div>
               <div className="heroBody">Step into a look that speaks your language. Confident, effortless, and entirely you.</div>
               <div className="heroBtn"><NavLink to="#">book consultation</NavLink></div>
            </div>
@@ -76,7 +76,7 @@ const responsive = {
             <div className="gradientOverlay"></div>
            </div> 
            <div className="heroText">
-              <div className="heroHeader"><h1>Align your Look with your Vision.</h1></div>
+              <div className="heroHeader"><h1>Align your look with your vision.</h1></div>
               <div className="heroBody">Style with strategy. We help you dress for the life, brand, or role you’re building.</div>
               <div className="heroBtn"><NavLink to="#">book consultation</NavLink></div>
            </div>
@@ -87,7 +87,7 @@ const responsive = {
             <div className="gradientOverlay"></div>
            </div> 
            <div className="heroText">
-              <div className="heroHeader"><h1>Scent the Mood. Live the Luxury.</h1> </div>
+              <div className="heroHeader"><h1>Scent the mood. Live the luxury.</h1> </div>
               <div className="heroBody">Transform your space with rich, refined fragrances that awaken the senses and leave a lasting impression.</div>
               <div className="heroBtn"><NavLink to="#">shop now</NavLink></div>
            </div>

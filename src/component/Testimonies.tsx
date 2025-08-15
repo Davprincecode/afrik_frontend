@@ -13,36 +13,32 @@ const data = [
     id: 1,
     name: 'Martindale Heart Ononye',
     position: 'Founder/Ceo, Hearts Entertainment',
-    stars: 4,
-    text: `It's almost impossible to remember all the projects I've had Temi and her team work with me on...`,
+    stars: 5,
+    text: `It's almost impossible to remember all the projects I've had Temi and her team work with me on, but one thing is for sure, everytime they come on my project it's with a touch of excellence. As long at I know I have Loveafrik on my team to style any production or photoshoot, I'm at rest because the result will always be outstanding.`,
   },
   {
     id: 2,
     name: 'Anuoluwapo Kabiawu',
     position: '',
-    stars: 5,
-    text: `Temi’s professionalism is superb. She is an excellent listener...`,
+    stars: 4,
+    text: `Temi’s professionalism is superb. She is an excellent listener, patient, and willing to work in any situation.  Maintain your efforts; the sky is only the beginning. `,
   },
   {
     id: 3,
     name: 'AyeeSha Omadibi',
     position: 'Founder, Hustle Africa. Lagos, Nigeria.',
-    stars: 3,
-    text: `My first ever personal brand shoot...`,
+    stars: 5,
+    text: `My first ever personal brand shoot, I didn't know what to expect. I just knew I wanted nice photos.  Then I got introduced to Temi of LoveAfrik, who was not just nice and professional, she was and is very knowledgeable. I went from complete indifference to understanding what fabrics and colours were great for my skin tone.
+Every outfit and accessory was deliberately and thoughtfully put together.
+My conclusion is that Temi knows her onions and I wouldn't hesitate to refer LoveAfrik again and again.`,
   },
   {
     id: 4,
-    name: 'Obafemi david',
-    position: 'Founder, Hustle Africa. Lagos, Nigeria.',
-    stars: 3,
-    text: `My first ever personal brand shoot, I didn't know what to expect. 
-    I just knew I wanted nice photos. 
-    Then I got introduced to Temi of LoveAfrik,
-     who was not just nice and professional,
-      she was and is very knowledgeable. 
-      I went from complete indifference to understanding what fabrics and colours were great for my skin tone. 
-      Every outfit and accessory was deliberately and thoughtfully put together. 
-      My conclusion is that Temi knows her onions and I wouldn't hesitate to refer LoveAfrik again and again.`,
+    name: 'Kunle Flourish Adeniran',
+    position: 'DevOps Engineer Beverly Hills, California, USA.',
+    stars: 5,
+    text: `I needed a change in my suit collection and I asked Temi of LoveAfrik to help out with my request. I showed her a few styles I was interested in, gave her a budget and she got me two complete suits, some waist coats and some addition sports jackets as well. Her interpretation of my taste and request was impeccable, her choices were exactly what I wanted and she went above and beyond to get the best designs and products to satisfy my request.
+I would highly recommend LoveAfrik if you find yourself in need of a fashion consultant for your next personal or business project.`,
   },
   // Add more if needed
 ];

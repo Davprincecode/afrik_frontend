@@ -509,9 +509,9 @@ const [providerBill, setProviderBill] = useState<providerInterface[]>([]);
           
         }
     };
-    fetchData();
+    // fetchData();
     if(role !== "admin"){
-      fetchTransaction();
+      // fetchTransaction();
     }        
   }, [loggedIn]);
 

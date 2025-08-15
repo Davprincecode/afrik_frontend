@@ -36,13 +36,10 @@ const navFunction = () =>{
 // onClick={() => setPopAction(!popAction)}
   return (
     <div>
-
       <ComingSoon popAction={popAction} setPopAction={setPopAction} />
-
               {/* <!-- ========nav section============== --> */}
             <div className={navOpen ? "sideNavOverall sideNavOverallChange":"sideNavOverall"}  onClick={navFunction}>
             </div>
-
           <div className={`navcontainer ${isScrolled ? 'scrolled' : ''}`} >
               <NavLink to="/">
               <div className="logocontainer logo">
@@ -62,8 +59,9 @@ const navFunction = () =>{
                       <li onClick={() => setPopAction(!popAction)}><NavLink to="#">blog</NavLink> </li>
                       <li><NavLink to="/contact-us">contact us</NavLink> </li>
                   </ul>
+              </div>
 
-                  <div className="userControl flex-center">
+              <div className="userControl flex-center">
                         
                         {
                           signin ? (
@@ -98,9 +96,6 @@ const navFunction = () =>{
               </div>
 
                   </div>
-              </div>
-
-              
 
           </div>
         {/* <!-- ===============Nav end================ --> */}

@@ -27,6 +27,9 @@ import ComingSoon from "./component/ComingSoon";
 import Shop from "./pages/Shop";
 import ProductDetails from "./pages/ProductDetails";
 import Cart from "./pages/Cart";
+import BookingCalendar from "./pages/BookingCalendar";
+import Booking from "./pages/Booking";
+import BookingCalendarrs from "./pages/BookingCalendarrs";
 
 
 
@@ -81,6 +84,11 @@ const {baseUrl} = userAuth();
           <Route path="/shop" element={<Shop/>} />
           <Route path="/product-details" element={<ProductDetails/>} />
           <Route path="/cart" element={<Cart/>} />
+
+          <Route path="/booking" element={<Booking/>} />
+
+
+          <Route path="/booking-calendar" element={<BookingCalendarrs/>} />
 
 
        {/* =============================================== */}
