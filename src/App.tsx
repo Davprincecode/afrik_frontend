@@ -30,6 +30,9 @@ import Cart from "./pages/Cart";
 import BookingCalendar from "./pages/BookingCalendar";
 import Booking from "./pages/Booking";
 import BookingCalendarrs from "./pages/BookingCalendarrs";
+import Payment from "./pages/Payment";
+import Consultant from "./pages/Consultant";
+import ConsultantDetails from "./pages/ConsultantDetails";
 
 
 
@@ -84,6 +87,10 @@ const {baseUrl} = userAuth();
           <Route path="/shop" element={<Shop/>} />
           <Route path="/product-details" element={<ProductDetails/>} />
           <Route path="/cart" element={<Cart/>} />
+          <Route path="/payment" element={<Payment/>} />
+
+          <Route path="/consultant" element={<Consultant/>} />
+          <Route path="/consultant-details" element={<ConsultantDetails/>} />
 
           <Route path="/booking" element={<Booking/>} />
 
