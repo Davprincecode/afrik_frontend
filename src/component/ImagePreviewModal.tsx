@@ -1,4 +1,3 @@
-// ImagePreviewModal.tsx
 import React, { useEffect } from 'react';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { RxCross1 } from 'react-icons/rx';

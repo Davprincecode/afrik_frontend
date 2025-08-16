@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import gallery1 from '../assets/images/gallery1.png'
 import gallery2 from '../assets/images/gallery2.png'
 import gallery3 from '../assets/images/gallery3.png'
@@ -8,28 +8,31 @@ import gallery6 from '../assets/images/gallery6.png'
 import gallery7 from '../assets/images/gallery7.png'
 import gallery8 from '../assets/images/gallery8.png'
 import gallery9 from '../assets/images/gallery9.png'
-
-import mobilegallery1 from '../assets/images/mobilegallery1.png'
-import mobilegallery2 from '../assets/images/mobilegallery2.png'
-import mobilegallery3 from '../assets/images/mobilegallery3.png'
-import mobilegallery4 from '../assets/images/mobilegallery4.png'
-import mobilegallery5 from '../assets/images/mobilegallery5.png'
-import mobilegallery6 from '../assets/images/mobilegallery6.png'
-import mobilegallery7 from '../assets/images/mobilegallery7.png'
-import mobilegallery8 from '../assets/images/mobilegallery8.png'
-import mobilegallery9 from '../assets/images/mobilegallery9.png'
 import ImagePreviewModal from './ImagePreviewModal'
-import { IoEyeSharp } from 'react-icons/io5'
 import { LiaEyeSolid } from 'react-icons/lia'
 
 
 
 function Gallery() {
 
-  const [currentIndex, setCurrentIndex] = useState<number | null>(null);
+   const allImages = [
+    gallery1, gallery2, gallery3, gallery4, gallery5, gallery6, gallery7, gallery8, gallery9
+  ];
 
-  const openModal = (index: number) => setCurrentIndex(index);
-  const closeModal = () => setCurrentIndex(null);
+  const [currentIndex, setCurrentIndex] = useState<number | null>(null);
+  const [images, setImages] = useState(allImages);
+  const [fade, setFade] = useState(true); 
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const openModal = (index: number) =>{
+   setCurrentIndex(index); 
+   stopInterval();
+  } 
+
+  const closeModal = () =>{
+   setCurrentIndex(null); 
+   startInterval();
+  } 
 
   const goPrev = () => {
     if (currentIndex !== null && currentIndex > 0) {
@@ -38,20 +41,31 @@ function Gallery() {
   };
 
   const goNext = () => {
-
     if (currentIndex !== null && currentIndex < 17) {
       setCurrentIndex(currentIndex + 1);
     }
   };
 
-  const allImages = [
-    gallery1, gallery2, gallery3, gallery4, gallery5, gallery6, gallery7, gallery8, gallery9
-  ];
+  const startInterval = () => {
+    if (intervalRef.current) return; // already running
+    intervalRef.current = setInterval(() => {
+      setFade(false); // fade out
+      setTimeout(() => {
+        setImages((prev) => shuffleArray(prev));
+        setFade(true); // fade in after shuffle
+      }, 500);
+    }, 5000);
+  };
 
-  const [images, setImages] = useState(allImages);
-  const [fade, setFade] = useState(true); 
+  const stopInterval = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+  };
 
-  // Fisher-Yates shuffle
+
+// Fisher-Yates shuffle
   const shuffleArray = (array: string[]) => {
     let shuffled = [...array];
     for (let i = shuffled.length - 1; i > 0; i--) {
@@ -62,14 +76,8 @@ function Gallery() {
   };
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setFade(false); // start fade-out
-      setTimeout(() => {
-        setImages((prev) => shuffleArray(prev));
-        setFade(true); // fade-in after shuffle
-      }, 500); // fade-out duration
-    }, 5000);
-    return () => clearInterval(interval);
+    startInterval();
+    return () => stopInterval();
   }, []);
   
 
