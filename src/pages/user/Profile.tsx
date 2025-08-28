@@ -94,7 +94,7 @@ const Profile = () => {
 
            <div className="user-profile-main-con">
                 
-                <div className="user-profile-table">
+                {/* <div className="user-profile-table">
                     <h1>Order List</h1>
                     <table>
                     <tr className='table-header'>
@@ -158,7 +158,7 @@ const Profile = () => {
                         </td>
                     </tr>
                     </table>
-                </div>
+                </div> */}
 
                {/* ==================== profile main */}
                 <div className="user-profile-main flex justification-between">

@@ -12,13 +12,17 @@ import ComingSoon from './ComingSoon';
 import { GoQuestion, GoSignIn } from 'react-icons/go';
 import { PiSignInFill } from 'react-icons/pi';
 import AuthComponent from './AuthComponent';
+import { userAuth } from '../pages/context/AuthContext';
+import ButtonPreloader from './ButtonPreloader';
 
 
 function Header() {
 const [navOpen, setNavOpen] = useState(false);
-const [signin, setSignin] = useState<boolean>(true);
 const [subNav, setSubNav] = useState<boolean>(false);
 const [isScrolled, setIsScrolled] = useState(false);
+const [popAction, setPopAction] = useState<boolean>(false);
+const [authAction, setAuthAction] = useState<boolean>(false);
+const {signin, logout, adminLoading} = userAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,13 +42,7 @@ const navFunction = () =>{
 const navSub = () =>{
     setSubNav(!subNav)
 }
-const navSignin = () =>{
-    setSignin(!signin)
-}
 
-
-  const [popAction, setPopAction] = useState<boolean>(false);
-  const [authAction, setAuthAction] = useState<boolean>(false);
 // onClick={() => setPopAction(!popAction)}
 
   return (
@@ -86,9 +84,17 @@ const navSignin = () =>{
                      <div className="auth-mobile-con">
 
                        { signin ? (
-                         <li className='auth-mobile-con-sign-out flex-center justification-center gap-10'><GoSignIn /><NavLink to="#">sign out</NavLink></li> 
+                         
+                          adminLoading ?  (
+                              <li className='auth-mobile-con-sign-out flex-center justification-center gap-10'><GoSignIn />
+                              <ButtonPreloader />
+                              </li> 
+                          ) : (
+                             <li className='auth-mobile-con-sign-out flex-center justification-center gap-10'   onClick={() => logout()}><GoSignIn />sign out</li> 
+                          )
+                      
                        ) : (
-                        <li className="flex-center justification-center gap-10"><PiSignInFill /> <NavLink to="#">log in</NavLink> </li>
+                        <li className="flex-center justification-center gap-10" onClick={() => setAuthAction(!authAction)}><PiSignInFill /> <NavLink to="#">log in</NavLink> </li>
                        )}
                        
                         <li className="flex-center justification-center gap-10"><GoQuestion /> <NavLink to="#">help</NavLink> </li>
@@ -140,14 +146,27 @@ const navSignin = () =>{
             <div className={`signin-container ${isScrolled ? 'scrolled' : ''}`}>
                           <div className="signin-item"><NavLink to="/profile">profile</NavLink></div>
                           <div className="signin-item sign-notification flex-center gap-10"><IoMdNotificationsOutline /><NavLink to="#">notifications</NavLink></div>
-                          <div className="signin-item sign-out flex-center gap-10"><GoSignIn /><NavLink to="#">sign out</NavLink></div>
+
+                          { 
+                            adminLoading ? (
+                                <div className="signin-item sign-out flex-center gap-10"><GoSignIn /><ButtonPreloader /></div>
+                            ) : (
+                               <div className="signin-item sign-out flex-center gap-10"  onClick={() => logout()}><GoSignIn />sign out</div>
+                            )
+                           
+                          }
+                          
+
                           <div className="signin-item sign-help flex-center gap-10"><GoQuestion /><NavLink to="#">help</NavLink></div>
                 </div>
         )
       }
+          {
+            !signin && (
+                <AuthComponent authAction={authAction} setAuthAction={setAuthAction} setSubNav={setSubNav}/>
+            )
+          }
           
-          <AuthComponent authAction={authAction} setAuthAction={setAuthAction}/>
-
         {/* <!-- ===============Nav end================ --> */}
     </div>
   )

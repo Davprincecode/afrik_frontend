@@ -1,7 +1,7 @@
     :root {
         --primary1 : #291C0E; 
         --primary2 : #6E473B;
-        --primary3 : rgba(166, 124, 0, 1); 
+        --primary3 : #a67c00; 
         --secondary1 :  rgba(211, 175, 55, 1); 
         --red-color : #FF0000;
         --secondary2 :  #e4cba94d; 
@@ -12,6 +12,7 @@
         --other-color : #3A3845;
         --border : #807F86;
         --gray : #667085;
+        --inactive-btn : rgb(174 141 31 / 49%);
         --header1 : 'Lora', serif;
         --header2 : "Lato", sans-serif;
         --body : "Lato", sans-serif;
@@ -128,6 +129,7 @@
       justify-content: flex-end;
       border-top: 1px solid var(--border);
       padding-top: 10px;
+      cursor: pointer;
     color: red;
     }
     .sign-out a{
@@ -344,8 +346,11 @@
     .auth-mobile-con svg{
       color: #00000099 !important;
     }
-    .auth-mobile-con-sign-out a, .auth-mobile-con-sign-out svg{
+    .auth-mobile-con-sign-out , .auth-mobile-con-sign-out svg{
     color: red !important;
+    font-size: 18px;
+    font-weight: 400;
+    cursor: pointer;
     }
     .auth-notification svg{
       color: red !important;
@@ -546,6 +551,28 @@
       background-color: var(--primary3);
       text-align: center;
     }
+    .btnFlex .btn.inActive{
+      background-color: var(--inactive-btn) !important;
+    }
+
+
+   .spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid #ccc;
+  border-top: 3px solid #333;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+    
+
+
     .other-part{
 
     }
@@ -636,7 +663,7 @@
     padding-left: 40px;
     }
     .user-profile-main{
-    display: none;
+    /* display: none; */
     gap: 50px;
    
     }
@@ -759,6 +786,9 @@
       text-transform: capitalize;
       text-align: center;
     }
+    .profile-btn.inActive{
+      background-color: var(--inactive-btn) !important;
+    }
 
     .formInputBtn{
       background-color: var(--secondary1);
@@ -769,6 +799,10 @@
       border-radius: 50px;
       margin-top: 20px;
       text-transform: capitalize;
+    }
+
+    .formInputBtn.inActive{
+      background-color: var(--inactive-btn) !important;
     }
 
     .track-con{
@@ -957,6 +991,9 @@ flex: 1;
   text-align: center;
   border-radius: 50px;
   margin-top: 50px;
+}
+.inputBtn.inActive{
+  background-color: var(--inactive-btn) !important;
 }
 
 
@@ -1371,6 +1408,9 @@ flex: 1;
         text-transform: capitalize;
         cursor: pointer;
     }
+    .heroBtn a.inActive{
+      background-color: var(--inactive-btn) !important;
+    }
     .heroImg{
       position: relative;
       background: linear-gradient(270deg, rgba(255, 255, 255, 0) 7.26%, rgba(0, 0, 0, 0.7) 100%);
@@ -1428,6 +1468,9 @@ flex: 1;
               padding: 10px 20px;
               text-transform: capitalize;
           }
+          .heroBtn a.inActive{
+            background-color: var(--inactive-btn) !important;
+          }
           
     }
 
@@ -1464,6 +1507,10 @@ flex: 1;
               border-radius: 50px;
               padding: 10px;
               text-transform: capitalize;
+          }
+
+          .heroBtn a.inActive{
+            background-color: var(--inactive-btn) !important;
           }
           
       .hero .react-multi-carousel-dot button {
@@ -1502,6 +1549,9 @@ flex: 1;
             border-radius: 50px;
             padding: 7px 10px;
             text-transform: capitalize;
+        }
+        .heroBtn a.inActive{
+          background-color: var(--inactive-btn) !important;
         }
     }
     /* ================= hero section end ======== */
@@ -4750,6 +4800,9 @@ flex: 1;
       padding: 15px 0px;
       margin-top: 30px;
       cursor: pointer;
+    }
+    .proceed-btn.inActive{
+      background-color: var(--inactive-btn) !important;
     }
 
     @media(max-width : 620px){

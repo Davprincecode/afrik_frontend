@@ -3,47 +3,95 @@ import logo from '../assets/images/logo.png';
 import {toast } from 'react-toastify';
 import {NavLink, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { userAuth } from '../pages/context/AuthContext';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { RxCross2 } from 'react-icons/rx';
 import { IoMdCheckmark } from 'react-icons/io';
 import { FcGoogle } from 'react-icons/fc';
+import ButtonPreloader from './ButtonPreloader';
+import { address } from 'framer-motion/client';
 
 interface authComponentInterface {
     authAction : boolean,
     setAuthAction: React.Dispatch<React.SetStateAction<boolean>>;
+    setSubNav: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const AuthComponent: React.FC<authComponentInterface> = ({authAction, setAuthAction}) =>{
+const AuthComponent: React.FC<authComponentInterface> = ({authAction, setAuthAction, setSubNav}) =>{
 
   const navigate = useNavigate();
-  const [email, setEmail] = useState<string>('');
-  const [name, setName] = useState<string>('');
+  const [userName, setUserName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState <boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [switchPassword, setSwitchPassword] = useState<boolean>(false);
-  const [auth, setAuth] = useState<string>('signup');
-  const {baseUrl} = userAuth();  
-const { pathname } = useLocation();
+  const [userEmail, setUserEmail] = useState<string>('');
+  const [loginEmail, setLoginEmail] = useState<string>('');
+  const [address1, setAddress1] = useState<string>('');
+  const [phoneNumber1, setPhoneNumber1] = useState<string>('');
+  const[loginPassword, setLoginPassword] = useState<string>('');
+
+   const [errors, setErrors] = useState<string[]>([]);
+
+  const validatePassword = (pwd: string) => {
+    const issues: string[] = [];
+    if (pwd.length < 8) {
+      issues.push('Password must be at least 8 characters.');
+    }
+    const lowerPwd = pwd.toLowerCase();
+    if(userName !== ''){
+        if (lowerPwd.includes(userName.toLowerCase())) {
+              issues.push('Password cannot contain your name.');
+          }
+    }
+    
+    if (lowerPwd.includes(userEmail.toLowerCase())) {
+      issues.push('Password cannot contain your email.');
+    }
+    if (!/[0-9!@#$%^&*(),.?":{}|<>]/.test(pwd)) {
+      issues.push('Password must include at least one number or symbol.');
+    }
+    setErrors(issues);
+  };
+
+   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newPwd = e.target.value;
+    setPassword(newPwd);
+    validatePassword(newPwd);
+  };
+
+
+  const [auth, setAuth] = useState<string>('signin');
+
+  const {baseUrl, loginAuth, logInUser} = userAuth();  
+
+   const { pathname } = useLocation();
   
   useEffect(() => {
       window.scrollTo(0, 0);
     }, [pathname]);
+
+
   useEffect(() => {
     if (confirmPassword && confirmPassword !== password) {
-      setError(false);
-    } else if(confirmPassword && confirmPassword === password) {
-      setError(true);
-    }else{
-      setError(false);
-    }
+      const issues : string[] = [];
+      issues.push('Password and confirm password not match.');
+      setErrors(issues);
+    } 
   }, [password, confirmPassword]);
 
-  const handleLogin = async () => {
+  
+  const switchHandle = (param : string) => {
+   setAuth(param);
+  }
+
+
+  const handleSignUp = async () => {
     setLoading(true);
     const raw = {
-      'name' : name
+     "name" : userName,
+    "email" : userEmail,
+    "password" : password,
+    "phone_number1" : phoneNumber1,
+    "address1" : address1
     };
     const requestOptions: RequestInit = {
       method: 'POST',
@@ -53,13 +101,22 @@ const { pathname } = useLocation();
       body: JSON.stringify(raw),
     };
     try {
-      const response = await fetch(`${baseUrl}/signupuser`, requestOptions);
+      const response = await fetch(`${baseUrl}/auth/signup`, requestOptions);
       setLoading(false);
       if (!response.ok) {
         const errorResponse = await response.json();
         throw new Error(errorResponse.message);
       }
       const result = await response.json();
+  
+      loginAuth(result.data.userId, result.data.name, result.data.email,  result.data.address1, result.data.address2, result.data.phoneNumber1, result.data.phoneNumber2, result.data.city, result.data.city, result.data.postalCode, result.data.profileImage, result.data.role,  result.token);
+      setSubNav(false);
+      toast.success("Signup in successfully!");
+        if(result.data.role == "admin"){
+             navigate("/admin/admin-dashboard");
+              logInUser();
+          }
+      logInUser();
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -70,9 +127,45 @@ const { pathname } = useLocation();
       }
     }
   }
-  
-  const switchHandle = (param : string) => {
-   setAuth(param);
+
+   const handleLogin = async () => {
+    setLoading(true);
+    const raw = {
+      'email' : loginEmail,
+      'password' : loginPassword
+    };
+    const requestOptions: RequestInit = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(raw),
+    };
+    try {
+      const response = await fetch(`${baseUrl}/auth/login`, requestOptions);
+      setLoading(false); 
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        throw new Error(errorResponse.message);
+      }
+      const result = await response.json();
+       loginAuth(result.data.userId, result.data.name, result.data.email,  result.data.address1, result.data.address2, result.data.phoneNumber1, result.data.phoneNumber2, result.data.city, result.data.city, result.data.postalCode, result.data.profileImage, result.data.role,  result.token);
+       setSubNav(false);
+       toast.success("Logged in successfully!");
+        if(result.data.role == "admin"){
+             navigate("/admin/admin-dashboard");
+              logInUser();
+          }
+        logInUser();
+        setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+        toast.error(error.message);
+      } else {
+        toast.error('An unknown error occurred.');
+      }
+    }
   }
 
   return (
@@ -105,17 +198,27 @@ const { pathname } = useLocation();
                     <div className="middle">
                             <div className="form-group">
                                 <label htmlFor="username">Name </label>
-                                <input type="text"  placeholder="Name" className="form--control"  value={name} onChange={(e) => setName(e.target.value)}/>
+                                <input type="text"  placeholder="Name" className="form--control"  value={userName} onChange={(e) => setUserName(e.target.value)}/>
                             </div>
 
                             <div className="form-group">
                                 <label htmlFor="username">Email Id</label>
-                                <input type="text"  placeholder="Email" className="form--control"  value={email} onChange={(e) => setEmail(e.target.value)}/>
+                                <input type="text"  placeholder="Email" className="form--control"  value={userEmail} onChange={(e) => setUserEmail(e.target.value)}/>
+                            </div>
+                               
+                               <div className="form-group">
+                                <label htmlFor="username">Address</label>
+                                <input type="text"  placeholder="Address" className="form--control"  value={address1} onChange={(e) => setAddress1(e.target.value)}/>
+                            </div>
+
+                            <div className="form-group">
+                                <label htmlFor="username">Phone Number</label>
+                                <input type="number"  placeholder="Phone Number" className="form--control"  value={phoneNumber1} onChange={(e) => setPhoneNumber1(e.target.value)}/>
                             </div>
               
                             <div className="form-group" style={{ position : "relative" }}>
                                 <label htmlFor="password">Password </label>
-                                <input id="passwordInput" type= {switchPassword ? "text" : "password"} placeholder="Enter Password" className="form--control" value={password} onChange={(e) => setPassword(e.target.value)}/>
+                                <input id="passwordInput" type= {switchPassword ? "text" : "password"} placeholder="Enter Password" className="form--control" value={password} onChange={handleChange}/>
                             </div>
 
                             <div className="form-group" style={{ position : "relative" }}>
@@ -123,28 +226,35 @@ const { pathname } = useLocation();
                                 <input id="passwordInput" type= {switchPassword ? "text" : "password"} placeholder="Enter Password" className="form--control" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}/>
                             </div>
 
-                            <div className="error-message">
+                            {/* <div className="error-message">
                                 <div className="error-icon flex-center gap-10"><IoMdCheckmark /><p>password strength weak</p></div>
                                 <div className="error-icon flex-center gap-10"><IoMdCheckmark /><p>at least 8 characters</p></div>
-                                <div className="error-icon flex-center gap-10"><IoMdCheckmark /><p>cannot contain your name or email address</p></div>
+                                <div className="error-icon flex-center gap-10"><IoMdCheckmark /><p>cannot contain your name or email address</p>
+                                </div>
                                 <div className="error-icon flex-center gap-10"><IoMdCheckmark /><p>contains a number of symbol</p></div>
-                            </div>
+                            </div> */}
+
+                            <ul>
+        {errors.map((err, idx) => (
+          <li key={idx} style={{ color: 'red' }}>{err}</li>
+        ))}
+      </ul>
 
                         {/* ============= */}
                         <div className="btnFlex">
-                        {  email !== '' && password !== '' && error ? (
+                        {  userEmail !== '' && password !== '' && errors.length < 1 ? (
                         loading ? (
-                        <div className='btn'>
-                          processing.....
+                        <div className='btn inActive'>
+                          <ButtonPreloader />
                         </div>
                         ) : (
-                        <div className='btn' onClick={handleLogin}>
+                        <div className='btn' onClick={handleSignUp}>
                           create account
                         </div>
                         )
                         ) : (
-                          // className="btnInactive"
-                        <div className='btn'>
+                          
+                        <div className='btn inActive'>
                           create account
                         </div>
                         )
@@ -178,38 +288,41 @@ const { pathname } = useLocation();
                   )
                }
 
+
+{/* ----------------------------------------------------------------------------- */}
                {
                   auth == 'signin' && (
                     <div className="middle">
                             <div className="form-group">
                                 <label htmlFor="username">Email Id</label>
-                                <input type="text"  placeholder="Email" className="form--control"  value={email} onChange={(e) => setEmail(e.target.value)}/>
+                                <input type="text"  placeholder="Email" className="form--control"  value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)}/>
                             </div>
               
                             <div className="form-group" style={{ position : "relative" }}>
                                 <label htmlFor="password">Password </label>
-                                <input id="passwordInput" type= {switchPassword ? "text" : "password"} placeholder="Enter Password" className="form--control" value={password} onChange={(e) => setPassword(e.target.value)}/>
+                                <input id="passwordInput" type= {switchPassword ? "text" : "password"} placeholder="Enter Password" className="form--control" value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)}/>
                             </div>
 
                         {/* ============= */}
                         <div className="btnFlex">
-                        {  email !== '' && password !== '' && error ? (
-                        loading ? (
-                        <div className='btn'>
-                          processing.....
-                        </div>
-                        ) : (
-                        <div className='btn' onClick={handleLogin}>
-                          sign in
-                        </div>
-                        )
-                        ) : (
-                          // className="btnInactive"
-                        <div className='btn'>
-                          sign in
-                        </div>
-                        )
-                        }
+                              {  loginEmail !== '' && loginPassword !== '' ? (
+                                    loading ? (
+                                    <div className='btn inActive'>
+                                      <ButtonPreloader />
+                                    </div>
+                                    ) : (
+                                    <div className='btn' onClick={handleLogin}>
+                                      sign in
+                                    </div>
+                                      )
+
+                              ) : (
+                                <div className='btn inActive'>
+                                  sign in
+                                </div>
+                              )
+
+                              }
 
                         </div>
 
