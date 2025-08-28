@@ -1,5 +1,7 @@
 import { NavLink } from "react-router-dom";
 import whiteLogo from "../assets/images/logo-scroll.png";
+import { TiSocialFacebook } from "react-icons/ti";
+import { FaFacebookF, FaInstagram, FaLinkedin } from "react-icons/fa";
 
 
 
@@ -55,8 +57,28 @@ function Footer() {
         <div><NavLink to="#">cookies</NavLink></div>
       </div>
      </div>
+
      <div className="copyright" style={{marginTop : "10px"}}>
-      © Design: gazadanladi.corp@gmail.com
+      {/* © Design: gazadanladi.corp@gmail.com */}
+
+      {/* <div className="flex-center">
+        <div className="social-round">
+
+        </div>
+      </div> */}
+
+      <div className="socialMedia flex-center gap-20">
+                                  <div className="social">
+                                      <a href=""><FaFacebookF /></a>
+                                  </div>
+                                  <div className="social">
+                                      <a href="" className='insta'><FaInstagram /></a>
+                                  </div>
+                                  <div className="social">
+                                      <a href=""><FaLinkedin /></a>
+                                  </div>
+          </div>
+
      </div>
 
     </div>

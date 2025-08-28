@@ -13,7 +13,7 @@ function Login() {
   
   const [loading, setLoading] = useState<boolean>(false);
   const [switchPassword, setSwitchPassword] = useState<boolean>(false);
-  const {baseUrl, setTrp, setUserAccountDetails, setTransactions, setSellingPrice, setNetwork, setProvider, setProviderList, setProviderAirtime, setProviderBill, setProviderCable, setSiteName, setBaseColor, setSecondaryColor, setWebLogo, setWhatsAppLink, loginAuth, logInUser, webLogo} = userAuth();  
+  const {baseUrl,  loginAuth, logInUser} = userAuth();  
 const { pathname } = useLocation();
   
   useEffect(() => {
@@ -49,16 +49,7 @@ const { pathname } = useLocation();
         if(result.data.role !== "admin"){
           toast.success("Logged in successfully!");
           loginAuth(result.data.userId, result.data.userName, result.data.email, result.data.firstName, result.data.lastName, result.data.city, result.data.country, result.data.countryCode, result.data.address, result.data.mobile, result.data.zipCode, result.data.accountNumber, result.data.balance, result.data.bonusBalance, result.data.image, result.data.role, result.token);
-          setUserAccountDetails(result.data.bankAccount);
-          setTransactions(result.data.transaction);
-          setSellingPrice(result.price);
-          setNetwork(result.network);
-          setProvider(result.vtuProvider);
-          setProviderList(result.providerList);
-          setProviderAirtime(result.airtimeProvider);
-          setProviderCable(result.cableProvider);
-          setProviderBill(result.billProvider);
-          setTrp(result.tr_pin);
+         
           logInUser();
           navigate("/user/dashboard");
         } 
@@ -90,12 +81,12 @@ const { pathname } = useLocation();
       <section className="account-section bg_img">
 {/* =================== */}
 <div className="account-section-right">
-        <div className="top text-center">
+        {/* <div className="top text-center">
             <a href="/" className="account-logo">
                 <img src={webLogo} />
             </a>
 			<br/>
-        </div>
+        </div> */}
 
         <div className="middle">
             <form className="account-form" onSubmit={(e) => e.preventDefault()}>               

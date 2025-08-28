@@ -1,15 +1,19 @@
 import { useEffect, useState } from 'react'
-import logo from '../../assets/images/logo.png';
+import logo from '../assets/images/logo.png';
 import {toast } from 'react-toastify';
 import {NavLink, useLocation, useNavigate, useParams } from 'react-router-dom';
-import { userAuth } from '../context/AuthContext';
+import { userAuth } from '../pages/context/AuthContext';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { RxCross2 } from 'react-icons/rx';
 import { IoMdCheckmark } from 'react-icons/io';
 import { FcGoogle } from 'react-icons/fc';
 
-function Register() {
+interface authComponentInterface {
+    authAction : boolean,
+    setAuthAction: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
+const AuthComponent: React.FC<authComponentInterface> = ({authAction, setAuthAction}) =>{
 
   const navigate = useNavigate();
   const [email, setEmail] = useState<string>('');
@@ -72,18 +76,20 @@ const { pathname } = useLocation();
   }
 
   return (
-    <div className="auth-con">
+    <div className="auth-con" style={{display : authAction ? "flex" : "none"}}>
 
       <div className="auth-body">
+
          <div className="auth-cancel">
-          <div className="cancel">
+          <div className="cancel"  onClick={() => setAuthAction(!authAction)}>
             <RxCross2 />
           </div>
          </div>
+
         {/* =================== */}
         <div className="account-section">
 
-                <div className="top">
+                <div className="auth-top">
                     <a href="/" className="account-logo">
                         <img src={logo} />
                     </a>
@@ -242,6 +248,6 @@ const { pathname } = useLocation();
   )
 }
 
-export default Register
+export default AuthComponent
 
 

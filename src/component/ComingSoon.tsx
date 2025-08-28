@@ -14,7 +14,6 @@ const ComingSoon : React.FC<comingSoonInterface> = ({popAction, setPopAction}) =
   return (
     
        <div className="comingWrapper" style={{display : popAction ? "flex" : "none"}}>
-
         <div className="comingCon">
             <div className="comingSoonHeader">
                 <div className="comingIcon" onClick={() => setPopAction(!popAction)}>

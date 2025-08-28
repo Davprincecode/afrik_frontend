@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { FaBars, FaRegUserCircle, FaSignOutAlt } from 'react-icons/fa'
 import { userAuth } from '../pages/context/AuthContext';
-import { IoIosArrowDropdown, IoIosNotificationsOutline, IoMdLogOut } from 'react-icons/io';
-import profileImg from '../assets/images/profile.jpg'
-import { NavLink } from 'react-router-dom';
-import { LuKeyRound } from 'react-icons/lu';
-import { MdMessage } from 'react-icons/md';
+import { IoIosArrowDropdown, IoIosNotificationsOutline} from 'react-icons/io';
+import logo from '../assets/images/logo.png'
+
 
 import { toast } from 'react-toastify';
+import { IoSearchOutline } from 'react-icons/io5';
+import { GoBell } from 'react-icons/go';
+import { NavLink } from 'react-router-dom';
 
 interface SideNavProps {
   open: boolean;
@@ -22,7 +22,7 @@ clickUrl : string
 relationId : string
 }
 
-const AdminTopHeader: React.FC<SideNavProps> = ({ open, setOpen }) => {
+const AdminTopHeader = () => {
   const {baseUrl, token, role, image} = userAuth(); 
   const [loading, setLoading] = useState<boolean>(false);
   
@@ -70,72 +70,57 @@ const AdminTopHeader: React.FC<SideNavProps> = ({ open, setOpen }) => {
             }
         
       };
-      fetchData();
+      // fetchData();
     }, []);
     
 
   return (
     <div>
+
       <div className="topCon">
+        
+          <div className="flex-center justification-between adminTopNav">
 
-            <div className="hamburger"  onClick={() => setOpen(!open)}>
-            <FaBars />
+            <div className="flex-center adminLogoCon">
+              
+              <NavLink to="">
+                <div className="adminTopLogo">
+                    <img src={logo} alt="" />
+                </div>
+              </NavLink>
+
+              <div className="adminTopSearch">
+                  <input type="text" placeholder='Search'/>
+                  <IoSearchOutline className='searchIcon'/>
+              </div>
             </div>
-        
-     <div className="topBalanceFlex">
-            
-        <div className="topLevel">
-            {/* <p>level <span>:</span> {role}</p> */}
-        </div>
 
-        {/*  */}
+            <div className="topNotify" onClick={handleNotification}>
+                <NavLink to='#'>
 
-        {/* <div className="logout" onClick={() => logout()}>
-            <div className="icon"><FaSignOutAlt /></div>
-            <p>Log out</p>
-        </div> */}
+                      {
+                        // notificationData.length > 0 && (
+                        // <div className="notifyDot">
+                          
+                        // </div> 
+                        // )
+                         <div className="notifyDot">
+                          50
+                        </div> 
+                      } 
 
+                        <div className="notifyIcon">
+                           <GoBell />
+                        </div>
+                        </NavLink>
+             </div>
+          
 
-{/* ------------------------- */}
-   <div className="topNotifyCon">
+          </div>
 
-     <div className="topNotify" onClick={handleNotification}>
-     
-     {
-      notificationData.length > 0 && (
-       <div className="notifyDot">
-        
-      </div> 
-      )
-     } 
-
-      <div className="notifyIcon">
-      <IoIosNotificationsOutline />
-      </div>
-     </div>
-
-  <div className="profileWrapUp" onClick={handleProfile}>
-        <div className="topProfile">
-          <img src={image !=='' ? image : profileImg}  />
-        </div>
-        <p className="role">
-          {role}
-        </p>
-        <div className="topArrow">
-          <IoIosArrowDropdown />
-        </div>
-    </div>
-     
-   </div>
-{/* --------------------- */}
-    </div>
       </div>
 
-    
-     
-    
-    
-
+  
     </div>
   )
 }

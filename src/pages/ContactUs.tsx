@@ -3,9 +3,10 @@ import Header from '../component/Header'
 import Footer from '../component/Footer'
 import contactImg from '../assets/images/contactus.png'
 import { BiSolidPhoneCall } from 'react-icons/bi'
-import { FaDiscord, FaEnvelope, FaInstagram, FaTwitter, FaWhatsapp } from 'react-icons/fa'
+import { FaDiscord, FaEnvelope, FaFacebookF, FaInstagram, FaLinkedin,  FaWhatsapp } from 'react-icons/fa'
 import { FaLocationDot } from 'react-icons/fa6'
 import { useLocation } from 'react-router-dom'
+
 
 function ContactUs() {
   const { pathname } = useLocation();
@@ -49,13 +50,13 @@ function ContactUs() {
 
                     <div className="socialMedia flex-center gap-20">
                             <div className="social">
-                                <a href=""><FaTwitter /></a>
+                                <a href=""><FaFacebookF /></a>
                             </div>
                             <div className="social">
                                 <a href="" className='insta'><FaInstagram /></a>
                             </div>
                             <div className="social">
-                                <a href=""><FaDiscord /></a>
+                                <a href=""><FaLinkedin /></a>
                             </div>
                     </div>
                 </div>

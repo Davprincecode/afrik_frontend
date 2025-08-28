@@ -33,6 +33,10 @@ import BookingCalendarrs from "./pages/BookingCalendarrs";
 import Payment from "./pages/Payment";
 import Consultant from "./pages/Consultant";
 import ConsultantDetails from "./pages/ConsultantDetails";
+import VerifyPayment from "./pages/payment/VerifyPayment";
+import Homepage from "./pages/admin/Homepage";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import Profile from "./pages/user/Profile";
 
 
 
@@ -74,11 +78,17 @@ const {baseUrl} = userAuth();
           <Route path="/changepassword/:token" element={<ChangePassword/>} />
           <Route path="/verifyotp" element={<VerifyOtp />} />
 
+
+
+         
+          <Route path="/payment/callback" element={<VerifyPayment />} />
+
           {/* <Route path="/coming-soon" element={<ComingSoon />} /> */}
 
           <Route path="/shuffle" element={<AnimatedShuffleList />} />
 
        {/* ============================================== */}
+          <Route path="/profile" element={<Profile />} />
           <Route path="/contact-us" element={<ContactUs />} />
           <Route path="/about-us" element={<AboutUs/>} />
           <Route path="/our-services" element={<OurServices/>} />
@@ -103,6 +113,8 @@ const {baseUrl} = userAuth();
 
       {/* ====================== admin ================== */}
       <Route path="/admin">
+         <Route path="admin-dashboard" element={<AdminDashboard/>} />
+         <Route path="home-page" element={<Homepage/>} />
       </Route>
       {/* ===================== admin end =================== */}
 
