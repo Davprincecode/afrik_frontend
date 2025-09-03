@@ -11,7 +11,10 @@
      --text-header : #374151;
      --other-color : #3A3845;
      --border : #807F86;
-     
+
+     --line-color : #DBDADE;
+     --gray-text-color : #8B909A;
+      --input-line : #D9E1EC;
      
      --dashboard-bck : #F5F5F5;
      --dashboard-text : #131523;
@@ -162,6 +165,7 @@ font-weight: 600;
 }
 .delete{
     color: red;
+    cursor: pointer;
 }
 .mainGallery{
     flex-wrap: wrap;
@@ -191,6 +195,30 @@ font-weight: 600;
   border: 1px solid #ccc;
   border-radius: 4px;
   color: #1E5EFF;
+}
+.color-image{
+    width: 50%;
+
+}
+.color-image p{
+    color: #5A607F !important;
+    display: block;
+    margin-bottom: 5px;
+}
+.color-image label{
+    width: 100%;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    border: 0.81px solid var(--input-line);
+    color: #A1A7C4;
+    padding: 10px;
+    cursor: pointer;
+     background-color: #D9E4FF;
+     text-align: center;
+}
+.color-image input[type="file"] {
+  display: none; 
 }
 .uploadWrapper p, .imgCounter, .mainGallery p{
     color : #5A607F;
@@ -298,7 +326,7 @@ width: 100%;
 border: none;
 outline: none;
 border-radius: 5px;
-border: 0.81px solid #D9E1EC;
+border: 0.81px solid var(--input-line);
 color: #A1A7C4;
 padding: 10px;
 }
@@ -338,10 +366,10 @@ table {
   width: 100%;
 }
 tr{
-    border-bottom: 1px solid #DBDADE;
+    border-bottom: 1px solid var(--line-color);
 }
 tr th{
-  color: #8B909A;
+  color: var(--gray-text-color);
   font-size: 13px;
   font-weight: 500;
   text-transform: uppercase;
@@ -368,6 +396,10 @@ th {
   color: #0F60FF;  
   cursor: pointer;
 }
+.action-arrow{
+  color: var(--gray-text-color);  
+  cursor: pointer;
+}
 .paid{
 background: #28C76F29;
 color: #28C76F;
@@ -380,13 +412,18 @@ padding: 5px;
     color: #FFC600;
 
  padding: 2px;
-
+cursor: pointer;
     padding: 5px;
     text-transform: capitalize;
     border-radius: 5px;
 }
+.order-pending{
+    color: #FFC600;
+    text-transform: capitalize;
+}
 .orderconfirm{
     background: #0F60FF80;
+    cursor: pointer;
  padding: 2px;
  color: white;
     padding: 5px;
@@ -395,6 +432,7 @@ padding: 5px;
 }
 .ordercancalled{
     background-color: #FF0000;
+    cursor: pointer;
     color: white;
     padding: 5px;
     text-transform: capitalize;
@@ -402,6 +440,7 @@ padding: 5px;
 }
 .orderrefund{
     background: #FF000080;
+    cursor: pointer;
  padding: 2px;
  color: white;
     padding: 5px;
@@ -410,6 +449,7 @@ padding: 5px;
 }
 .ordershipped{
 background: #0F60FF;
+cursor: pointer;
  padding: 2px;
  color: white;
     padding: 5px;
@@ -418,6 +458,7 @@ background: #0F60FF;
 }
 .orderdelivered{
     background: #28C76F;
+    cursor: pointer;
  padding: 2px;
  color: white;
     padding: 5px;
@@ -446,3 +487,468 @@ font-size: 14px;
 .invProductName p{
 
 }
+
+.admin-shop-transactions{
+
+}
+.admin-shop-container{
+
+}
+.admin-shop-header{
+
+}
+.admin-header-list{
+    border-bottom: 1px solid var(--line-color);
+    margin-bottom: 20px;
+}
+.header-list {
+cursor: pointer;
+padding: 10px 20px;
+text-transform: capitalize;
+  color: var(--gray-text-color) ;
+}
+.header-list-active{
+    border-bottom: 1px solid var(--secondary1);
+    color: var(--secondary1) ;
+    font-weight: 700;
+}
+
+.admin-header-form{
+    margin-bottom: 30px;
+}
+.admin-header-form .delete{
+    font-size: 22px;
+    cursor: pointer;
+}
+.admin-header-form .setting-icon{
+    font-size: 24px;
+    cursor: pointer;
+}
+.header-form-filter{
+
+}
+.header-form-filter select{
+width: 200px;
+border: none;
+outline: none;
+border-radius: 5px;
+padding: 10px;
+border-radius: 5px;
+border: 1px solid var(--header-color);
+color: var(--gray-text-color);
+}
+.header-form-input{
+position: relative;
+}
+.header-form-input input{
+    width: 300px;
+    padding: 10px 30px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    border: 1px solid var(--header-color);
+    color: var(--gray-text-color);
+}
+.header-form-input svg{
+    position: absolute;
+    top: 10px;
+    left: 5px;
+    font-size: 18px;
+    color: var(--gray-text-color);
+}
+
+
+/* ============ add product ============= */
+
+.add-product-title{
+    text-align: left !important;
+    font-size: 18px !important;
+    font-weight: bold;
+    margin-bottom: 50px !important;
+}
+.product-form-con{
+
+}
+
+.product-form-top{
+    padding-top: 40px;
+}
+.admin-prd-form{
+    width: 70%;
+    padding-bottom: 40px;
+     border-bottom: 1px solid var(--input-line) !important;
+}
+.admin-prod-title{
+    font-weight: bold;
+    text-transform: capitalize;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+.sub-product h2{
+    text-align: left;
+    margin-top: 20px;
+}
+.prod-category{
+    width: 25%;
+}
+.addTag{
+    background-color: gray;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    text-transform: capitalize;
+}
+.prod-cat-item{
+    margin-bottom: 10px;
+}
+.prod-cat-item input{
+  cursor: pointer;
+}
+.prod-cat-item p{
+ text-transform: capitalize;
+}
+.create-new{
+    color: blue;
+    text-transform: capitalize;
+    margin-top: 20px;
+}
+.btn-wrapper{
+    margin-top: 20px;
+}
+.admin-input .btn{
+    background-color: var(--secondary1);
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    color: white;
+    text-transform: capitalize;
+    width: 100%;
+    font-size: 20px;
+    font-weight: 400;
+}
+.inActive, .btn.inActive, .admin-input.inActive{
+      background-color: var(--inactive-btn) !important;
+    }
+
+    .back-con{
+        text-transform: capitalize;
+        cursor: pointer;
+        color: var(--gray-text-color);
+    }
+    .back-left-arrow{
+        background-color: var(--header-color);
+        padding: 5px;
+        border-radius: 5px;
+
+         line-height: 5px;
+    }
+    .back-con p{
+        /* line-height: 5px; */
+    }
+    .admin-shop-footer{
+        padding: 20px 40px;
+    }
+    .page-con{
+       text-transform: capitalize;
+       color: var(--gray-text-color);
+       /* color: var(--header-color); */
+    }
+    .page-con select{
+    padding: 4px 10px !important;
+    border: none;
+    outline: none;
+    border: 1px solid var(--header-color);
+    border-radius: 5px;
+    }
+    .pagination-number{
+     gap: 10px;
+    }
+    .pagination-num{
+        background-color: var(--header-color);
+        border-radius: 5px;
+        padding: 5px 10px;
+        cursor: pointer;
+    }
+     .pagination-num-arrow{
+        background-color: var(--header-color);
+        border-radius: 5px;
+        padding: 5px;
+        line-height: 5px;
+         cursor: pointer;
+     }
+     .pagination-active{
+        background-color: var(--border);
+        color: white;
+     }
+
+     /* ===================== delete pop up ============= */
+
+        /* Backdrop */
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(128, 128, 128, 0.5); /* gray backdrop */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1000;
+}
+
+.backdrop.show {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+/* Popup Container */
+.popup-container {
+  background-color: white;
+  width: 300px;
+  padding: 20px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+}
+
+/* Slide Animations */
+.slide-in {
+  transform: translateX(0);
+}
+
+.slide-out {
+  transform: translateX(100%);
+}
+
+/* Buttons */
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.cancel-btn {
+  background-color: transparent;
+  border: 1px solid #ccc;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.delete-btn {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+/* ===================== delete pop up end ============ */
+.positionCenter{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+.testimonyPrevCon {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin: 0px auto;
+    width: 90%;
+    gap: 20px;
+}
+.testimonyPrevBody{
+    text-align: center;
+}
+.testimonyPrevCon svg{
+    font-size: 24px;
+}
+.testimonyPrevPosition{
+    text-transform: capitalize;
+}
+
+
+
+
+
+
+.editor-container {
+  border: 1px solid #ccc;
+  padding: 1rem;
+  border-radius: 8px;
+  max-width: 700px;
+  margin: 2rem auto;
+  background: #fff;
+}
+
+.editor-input {
+  min-height: 300px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  outline: none;
+}
+
+.editor-placeholder {
+  color: #aaa;
+  position: absolute;
+  pointer-events: none;
+}
+
+
+.editor-container {
+  border: 1px solid #ccc;
+  padding: 1rem;
+  border-radius: 8px;
+  max-width: 700px;
+  margin: 2rem auto;
+  background: #fff;
+}
+
+.ProseMirror {
+  min-height: 300px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  outline: none;
+}
+
+
+
+
+/* container */
+.editor-container {
+  width: 100%;
+  border: 1px solid #d0d0d0;
+  font-family: Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
+}
+
+/* Tabs row */
+.ribbon-tabs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #efefef;
+  padding: 6px 8px;
+  border-bottom: 1px solid #ccc;
+}
+
+.ribbon-tab {
+  padding: 8px 14px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  color: #333;
+  border-radius: 3px 3px 0 0;
+}
+
+.ribbon-tab.active {
+  background: #fff;
+  border-top: 3px solid #0078d7;
+  box-shadow: 0 -2px 0 rgba(0,0,0,0.03) inset;
+}
+
+/* ribbon content groups */
+.ribbon-content {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 10px;
+  background: #fafafa;
+  border-bottom: 1px solid #ddd;
+}
+
+.ribbon-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-right: 12px;
+  border-right: 1px solid #e2e2e2;
+}
+
+.ribbon-group:last-child {
+  border-right: none;
+}
+
+/* small button style */
+.ribbon-group button, .ribbon-small {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border: 1px solid #cfcfcf;
+  background: #fff;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.ribbon-group button:hover, .ribbon-small:hover {
+  background: #f2f2f2;
+}
+
+/* selects and inputs */
+.ribbon-select {
+  padding: 6px;
+  border: 1px solid #cfcfcf;
+  border-radius: 4px;
+  background: #fff;
+  font-size: 14px;
+}
+
+.ribbon-label {
+  font-size: 12px;
+  color: #666;
+  margin-right: 6px;
+}
+
+/* editor area */
+.text-editor {
+  min-height: 360px;
+}
+
+/* custom table styling inside editor */
+.ql-custom-table {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid #bdbdbd;
+  margin: 8px 0;
+}
+
+.ql-custom-table td {
+  border: 1px solid #d0d0d0;
+  padding: 8px;
+  vertical-align: top;
+  min-width: 40px;
+}
+
+/* map Quill font class names (registered 'font' values) to actual font-families */
+.ql-editor .ql-font-arial { font-family: Arial, Helvetica, sans-serif; }
+.ql-editor .ql-font-georgia { font-family: Georgia, serif; }
+.ql-editor .ql-font-times-new { font-family: "Times New Roman", Times, serif; }
+.ql-editor .ql-font-courier-new { font-family: "Courier New", Courier, monospace; }
+.ql-editor .ql-font-tahoma { font-family: Tahoma, Geneva, sans-serif; }
+.ql-editor .ql-font-verdana { font-family: Verdana, Geneva, sans-serif; }
+
+/* Responsiveness */
+@media (max-width: 800px) {
+  .ribbon-content { gap: 10px; padding: 8px; }
+  .ribbon-group { padding-right: 8px; }
+  .ribbon-tab { padding: 6px 10px; font-size: 14px; }
+  .text-editor { min-height: 300px; }
+}
+

@@ -1,0 +1,223 @@
+import React, { useEffect, useState } from 'react'
+import { IoEyeOutline } from 'react-icons/io5'
+import { RiDeleteBin6Line } from 'react-icons/ri'
+import { NavLink } from 'react-router-dom'
+import { userAuth } from '../../context/AuthContext'
+import { toast } from 'react-toastify'
+import ButtonPreloader from '../../../component/ButtonPreloader'
+import DeletePopup from './DeletePopUp'
+import ImagePreviewModal from '../../../component/ImagePreviewModal'
+
+interface galleryInterface{
+id : number,
+image :  string,
+status :  string,
+}
+
+function BrandLogo() {
+
+
+        const {baseUrl, token} = userAuth();
+        const[galleryImg, setGalleryImg] = useState<galleryInterface[]>([]);
+        const [loading, setLoading] = useState<boolean>(false);
+        const [image, setImage] = useState<File | null>(null);
+        const [showPopup, setShowPopup] = useState(false);
+        const [selectedId, setSelectedId] = useState<number | null>(null);
+        const [currentIndex, setCurrentIndex] = useState<number | null>(null);
+    
+
+
+
+    useEffect(() => {
+       getImage()
+     }, []);
+
+     const handleFileChange = async(event: React.ChangeEvent<HTMLInputElement>) => {
+            setLoading(true);
+          const imagefile = event.target.files?.[0] || null;
+  
+  
+                  if (!imagefile) {
+                      console.error("No image selected");
+                      return;
+                  }
+              const formdata = new FormData();
+              formdata.append('image', imagefile);
+  
+              const myHeaders = new Headers();
+              myHeaders.append("Authorization", token);
+              const requestOptions: RequestInit = {
+                  method: "POST",
+                  headers: myHeaders,
+                  body: formdata,
+                  redirect: "follow"
+              };
+              try {
+                  const response = await fetch(`${baseUrl}/brand-logo`, requestOptions);
+                  if (!response.ok) {
+                  const errorResponse = await response.json();
+                  throw new Error(errorResponse.message);
+                  }
+                  const result = await response.json();    
+                    setGalleryImg(prev => [...prev, result.data]);
+                   setLoading(false); 
+                   toast.success("Data Upload Successfully");       
+              } catch (error) {
+                  setLoading(false); 
+              }
+    }
+  
+    const getImage = async () => {
+            setLoading(true);
+              const myHeaders = new Headers();
+              myHeaders.append("Content-Type", "application/json");
+              myHeaders.append("Authorization", token);
+              const requestOptions: RequestInit = {
+                  method: "GET",
+                  headers: myHeaders,
+                  redirect: "follow"
+              };
+              try {
+                  const response = await fetch(`${baseUrl}/brand-logo`, requestOptions);
+                  if (!response.ok) {
+                  const errorResponse = await response.json();
+                  throw new Error(errorResponse.message);
+                  }
+                  const result = await response.json();   
+                   setGalleryImg(result.data);
+                   setLoading(false);
+              } catch (error) {
+                  
+              }
+    }
+  
+    const formatImagePath = (fullPath: string): string => {
+          const keyword = "images/";
+          const startIndex = fullPath.indexOf(keyword);
+          if (startIndex === -1) return "Invalid path";
+          const sliceStart = startIndex + keyword.length;
+          const shortSegment = fullPath.slice(sliceStart, sliceStart + 15);
+          return `${shortSegment}....`;
+     };
+  
+  
+   const openModal = (index: number) =>{
+     setCurrentIndex(index); 
+    } 
+  
+   const closeModal = () =>{
+     setCurrentIndex(null); 
+    } 
+  
+    const goPrev = () => {
+      if (currentIndex !== null && currentIndex > 0) {
+        setCurrentIndex(currentIndex - 1);
+      }
+    };
+  
+    const goNext = () => {
+      if (currentIndex !== null && currentIndex < 17) {
+        setCurrentIndex(currentIndex + 1);
+      }
+    };
+  
+     const handleDeleteClick = (id: number) => {
+      setSelectedId(id);
+      setShowPopup(true);
+    };
+  
+    const handleDeleteConfirm = async(id: number | string) => {
+  
+       setLoading(true);
+              const myHeaders = new Headers();
+              myHeaders.append("Content-Type", "application/json");
+              myHeaders.append("Authorization", token);
+              const requestOptions: RequestInit = {
+                  method: "DELETE",
+                  headers: myHeaders,
+                  redirect: "follow"
+              };
+              try {
+                  const response = await fetch(`${baseUrl}/brand-logo/${id}`, requestOptions);
+                  if (!response.ok) {
+                  const errorResponse = await response.json();
+                  throw new Error(errorResponse.message);
+                  }
+  
+                  const result = await response.json();
+  
+                   setGalleryImg(prev => prev.filter(item => item.id !== id));
+                  setShowPopup(false);
+                  setSelectedId(null);
+                  setLoading(false);
+  
+                  toast.error("delete successfully");
+  
+              } catch (error) {
+                  
+              }
+    };
+
+  return (
+<div>
+    <h2>brands we have worked with</h2>
+    <div className="uploadGallery">
+        <div className="uploadWrapper">
+                 {
+                                loading ? (
+                                    <ButtonPreloader/>
+                                ) : (
+                                    <>
+                                    <label htmlFor="file-input">Add Files</label>
+                                        <input id="file-input" type="file" onChange={handleFileChange} />
+                                    <p>or drag and drop files</p> 
+                                    </>
+                                )
+                }
+        </div>
+
+        <div className="flex-center justification-between">
+            <div className="imgCounter">
+            50/100
+            </div>
+            <NavLink to="#" className='view'>view all</NavLink>
+        </div>
+    </div>
+
+
+
+    <div className="mainGallery  flex-center">
+    {
+                                galleryImg.map((value, index) => (
+                                    <div className="flex-center gap-10" key={index}>
+                                        <IoEyeOutline className='eye' onClick={() => openModal(index)}/>
+                                        <p>{formatImagePath(value.image)}</p>
+                                    <RiDeleteBin6Line className='delete' onClick={() => handleDeleteClick(value.id)}/>
+                                </div>
+                                ))
+                            }
+    </div>
+
+            {currentIndex !== null && (
+            <ImagePreviewModal
+            src={galleryImg[currentIndex].image}
+            onClose={closeModal}
+            onPrev={goPrev}
+            onNext={goNext}
+            hasPrev={currentIndex > 0}
+            hasNext={currentIndex < galleryImg.length - 1}
+            />
+            )}
+
+            <DeletePopup
+                isOpen={showPopup}
+            itemId={selectedId ?? ""}
+            onCancel={() => setShowPopup(false)}
+            onDelete={handleDeleteConfirm}
+            />
+
+</div>
+  )
+}
+
+export default BrandLogo

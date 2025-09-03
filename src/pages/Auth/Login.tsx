@@ -35,8 +35,6 @@ const { pathname } = useLocation();
   
     try {
       const response = await fetch(`${baseUrl}/signinuser`, requestOptions);   
-      // const results = await response.text();
-      // console.log(results);
       
       if (!response.ok) {
         const errorResponse = await response.json();

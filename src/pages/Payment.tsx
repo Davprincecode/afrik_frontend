@@ -1,26 +1,86 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../component/Header'
 import { FaCcVisa } from 'react-icons/fa'
 import Footer from '../component/Footer'
+import { userAuth } from './context/AuthContext';
+import ButtonPreloader from '../component/ButtonPreloader';
+import { toast } from 'react-toastify';
+
+interface cartInterface {
+   id :  number;
+   product_image  : string;
+   product_size : string;
+   product_color :  string;
+   product_id :  string;
+   product_name :  string;
+   product_price :  number;
+   quantity :  number;
+   total :  number;
+}
 
 
 function Payment() {
 
+const {baseUrl, token} = userAuth();
+ const [loading, setLoading] = useState<boolean>(false);
+const [cart, setCart] = useState<cartInterface[]>([]);
+const [total, setTotal] =useState<number>(0);
+
+ const [name, setName] = useState<string>('');
+ const [email, setEmail] = useState<string>('');
+ const [address, setAddress] = useState<string>('');
+ const [phoneNumber, setPhoneNumber] = useState<number>(0);
+ const [orderNote, setOrderNote] = useState<string>('');
+
+ 
+
+    useEffect(() => {
+          
+          const fetchData = async () => {
+            setLoading(true);
+             const myHeaders = new Headers();
+             myHeaders.append("Content-Type", "application/json");
+             myHeaders.append("Authorization", token);
+             const requestOptions: RequestInit = {
+               method: 'GET',
+               headers: myHeaders,
+               redirect: 'follow'
+             };
+             try {
+               const response = await fetch(`${baseUrl}/get-cart`, requestOptions);  
+                     
+               if (!response.ok) {
+                 const errorResponse = await response.json();
+                 throw new Error(errorResponse.message);
+               }
+                 const result = await response.json();
+                 setCart(result.data);
+                 setTotal(result.total);
+                 setLoading(false);
+             } catch (error) {          
+               
+             }
+          
+         };
+
+      fetchData();
+    
+           }, []);
+
 
      const fetchData = async () => {
-     
-        const tokens: string =  'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIyIiwianRpIjoiNjVkZDgxNWU3ZGQ5ODM5YmJkYzRkYWI0YzViODU1NmEyOGZjODFiYjJmNzJhYWQ5NTI2YjU0NTIwN2NjY2U1ODU1NGFlZGE2OGUxYzFmNzkiLCJpYXQiOjE3NTU4Mjc4MDIuNTc0Njk1LCJuYmYiOjE3NTU4Mjc4MDIuNTc0Njk5LCJleHAiOjE3ODczNjM4MDIuNTQ4Mzc3LCJzdWIiOiIyIiwic2NvcGVzIjpbXX0.E7DOLsowewxviFAVdgyDmks3WfZo4mbWhALC1FiQoYEEPgYypsne0jo3utFMKhKKOXlb1OJG2RmzJUAnP_PpySuV-YazGssXcyTRYf14FzjTGdAvzClTY8NNPky3R5xo3N3fKL9NTgszoSuvDTMNSMeDixA5sf6BaEmYyGZQAAhGEn3FH-TC8AoDmlrTGZQgALk6rYgAqyMl4q-dKwRG0lQH2aOyTHSpiSZqQVVgWNa5R68V_TlaytyNAEmtJjA-SwULzBIWyCnOKHkZ5DIBjC0u6nJr-Dr5dG7paPVuPFKo7RvEaYnR9xpUrZlA8fNGqqdmCSbFgnqV69L2YK9vMr4tpHJHhUe45nxcjocxlQuvipV9DBLJxuRXKdWNPURRAQG3w5XkyRYOWmu6zB2FZrTJ7E5ykM3w8i0Z_2HKpH650psBe2yCHfhZXkGJ1ttjkmK_x8SPNveyyScKIno-N6WszZdWXUTAMN9Y6EfQzK4ZY9zGkfwFur-GPIbJv62Ec6FLMFwvhFk6GkwdqCL9XvnYaP-7gif35_HE62Ej3BcGrPm-ouIL-RINCkIoGwMXtdZ4agxvtC8M8DhWzF8aoaTQiPFNvnh-O7x_nY5m_TPPxjK4vYp2-OnBeqbvmbRiAoeNqXjXpETk0B09CEuN6jIA9gSppgk-1r9eP4pBXE4';
+       setLoading(true);
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Authorization", tokens);
+        myHeaders.append("Authorization", token);
         const raw = JSON.stringify({
-             
-             "email" : "obafemidavprince@gmail.com",
-             "address" : "oke ola osun state",
-             "phoneNumber" : "08138457885",
-             "orderNote" : "hello world",
+             "email" : email,
+             "name" : name,
+             "address" : address,
+             "phoneNumber" : phoneNumber,
+             "orderNote" : orderNote,
              "service_type" : "product",
-             "amount" : 1000,
+             "amount" : total,
              "callBackUrl" : 'http://localhost:5173/payment/callback'
          });
         const requestOptions: RequestInit = {
@@ -30,20 +90,21 @@ function Payment() {
             redirect: "follow"
         };
         try {
-          const response = await fetch(`http://127.0.0.1:8000/api/v1/payment`, requestOptions);   
+          const response = await fetch(`${baseUrl}/payment`, requestOptions);     
           if (!response.ok) {
-            const errorResponse = await response.json();
+            const errorResponse = await response.json();  
             throw new Error(errorResponse.message);
           }
             const result = await response.json();  
-           
-            console.log(result.authorization_url);
-            
+            setLoading(false);
             window.location.href = result.authorization_url;
         } catch (error) {          
-          // if (!isExempted) {
-          //   logout();
-          // }
+         setLoading(false);
+               if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                 toast.error(error.message);
+               } else {
+                 toast.error('An unknown error occurred.');
+               }
         }
      
     };
@@ -66,34 +127,28 @@ function Payment() {
 
                 <div className="formInput">
                     <label >name <span>(First name and Last name)</span>  *</label>
-                    <input type="text" name="" placeholder='full name' />
+                    <input type="text" value={name}  placeholder='full name' onChange={(e) => setName(e.target.value)}/>
                 </div>
                 <div className="formInput">
-                    <label >address</label>
-                    <input type="text" name="" placeholder='address' />
+                    <label >email</label>
+                    <input type="text" value={email} onChange={(e) => setEmail(e.target.value)}/>
                 </div>
 
-                <div className="formInput">
-                     <label >name <span>(First name and Last name)</span>  *</label>
-                    <select name="" id="">
-                        <option value="">hello</option>
-                    </select>
-                </div>
-
+            
                 <div className="formInputFlex">
                        <div className="formInputItem">
-                        <label >address</label>
-                        <input type="text" name="" id="" />
+                        <label >full address</label>
+                        <input type="text" placeholder='address' value ={address} onChange={(e) => setAddress(e.target.value)}/>
                         </div>
                        <div className="formInputItem">
-                        <label >address</label>
-                        <input type="text" name="" id="" />
+                        <label >Mobile Number</label>
+                        <input type="number"  value ={phoneNumber} onChange={(e) => setPhoneNumber(parseInt(e.target.value))}/>
                         </div>
                 </div>
 
-                <div className="formInputFlex">
-                       <div className="formInputItem"><input type="text" name="" id="" /></div>
-                       <div className="formInputItem"><select name="" id=""><option value="">hello world</option></select></div>
+                <div className="formInput textAreaInput">
+                    <label >order note</label>
+                    <textarea  cols={30} rows={10} placeholder='order note' value={orderNote} onChange={(e) => setOrderNote(e.target.value)}></textarea>
                 </div>
 
             </div>
@@ -107,49 +162,48 @@ function Payment() {
                 <div className="billing-body">
 
                     <div className="billing-product-con">
-                        <div className="billing-product flex-center justification-between">
-                            <p>Porcelain Dinner Plate (27cm)</p>
-                            <p>₦122.00</p>
-                         </div>
-                        <div className="billing-product flex-center justification-between">
-                            <p>Luana Bowl</p>
-                            <p>₦2002.00</p>
-                        </div>
-                        <div className="billing-product flex-center justification-between">
-                            <p>Ophelia Matte Natural  Vase</p>
-                            <p>₦12122.00</p>
-                        </div>
+                        {
+                            cart.map((item, index)=>(
+                            <div className="billing-product flex-center justification-between" key={index}>
+                                    <p>{item.product_name} ({item.product_size})</p>
+                                    <p>₦{item.total}</p>
+                            </div>
+                            ))
+                        }
+                        
+
+                         
                     </div>
                      
                      <div className="billing-total">
                         <div className="billing-sub flex-center justification-between">
                           <h2>subtotal</h2>
-                          <h2>₦100</h2>
+                          <h2>₦{total.toLocaleString()}</h2>
                         </div>
-                        <div className="billing-sub-total flex-center justification-between">
+                        {/* <div className="billing-sub-total flex-center justification-between">
                           <h2>shipping</h2>
                           <h2>₦100</h2>
-                        </div>
+                        </div> */}
                      </div>
 
                      <div className="billing-ground-total flex-center justification-between">
                         <h1>total</h1>
-                        <h1>₦500</h1>
+                        <h1>₦{total.toLocaleString()}</h1>
                      </div>
 
                 </div>
 
                 <div className="billing-card form-con">
                     <div className="card-title">payment</div>
-                    <div className="card-header flex-center gap-10">
+                    {/* <div className="card-header flex-center gap-10">
                         <div className="flex-center card-header-title"><input type="radio"/> <p>credit card</p> </div>
                         <div className="flex-center card-header-title"><input type="radio"/> <p>visa card</p> </div>
                         <div className="card-header-title"><FaCcVisa /></div>
                         <div className="card-header-title"><FaCcVisa /></div>
-                    </div>
+                    </div> */}
                     <div className="card-body">
 
-                        <div className="formInput">
+                        {/* <div className="formInput">
                             <input type="text" name="" placeholder='Card number' />
                         </div>
                          <div className="formInput">
@@ -163,11 +217,26 @@ function Payment() {
                             <div className="formInputItem">
                                 <input type="text" name="" placeholder="security code" />
                             </div>
-                        </div>
+                        </div> */}
+                         {
+                            loading ? (
+                              <ButtonPreloader/>
+                            ) : (
+
+                                
+                            name !== '' && email !=='' && address !=='' && phoneNumber > 0  ? (
+                            <div className="paymentBtn" onClick={fetchData}>
+                                place order
+                            </div>
+                            ) : (
+                            <div className="paymentBtn inActive" >
+                                place order
+                            </div>
+                            )
+                                
+                            )
+                         }
                          
-                         <div className="paymentBtn" onClick={fetchData}>
-                            place order
-                         </div>
 
                     </div>
 

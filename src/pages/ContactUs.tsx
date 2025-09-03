@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../component/Header'
 import Footer from '../component/Footer'
 import contactImg from '../assets/images/contactus.png'
@@ -6,14 +6,61 @@ import { BiSolidPhoneCall } from 'react-icons/bi'
 import { FaDiscord, FaEnvelope, FaFacebookF, FaInstagram, FaLinkedin,  FaWhatsapp } from 'react-icons/fa'
 import { FaLocationDot } from 'react-icons/fa6'
 import { useLocation } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import { userAuth } from './context/AuthContext'
+import ButtonPreloader from '../component/ButtonPreloader'
 
 
 function ContactUs() {
   const { pathname } = useLocation();
+  const [loading, setLoading] = useState<boolean>(false);
+  const {baseUrl} = userAuth();
   
     useEffect(() => {
       window.scrollTo(0, 0);
     }, [pathname]);
+
+ const handleContact = async() => {
+    setLoading(true);
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    const raw = JSON.stringify({
+    'messageType' : 'word',
+        'name' : 'obafemi david',
+        'email' : 'obafemidavprince',
+        'address' : 'oke ola',
+        'phoneNumber' :  '0813857885',
+        'message' : 'hello world how are you doing'
+    });
+    const requestOptions: RequestInit = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    try {
+      const response = await fetch(`${baseUrl}/contactus`, requestOptions);
+      const results = await response.text(); 
+      console.log(results);
+      
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        throw new Error(errorResponse.message);
+        }
+        const result = await response.json(); 
+
+       console.log(result);
+       
+      toast.success("Data uploaded successfully");
+    } catch (error: any) {
+      toast.error(error.message || "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  
+ }
+
   return (
 
     <div className='contactUs pageNav'>
@@ -89,9 +136,18 @@ function ContactUs() {
                      
 
                      <div className="contactInputBtn">
-                    <div className="contactBtn">
-                        send message
-                    </div>
+                      {
+                        loading ? (
+                            <div className="contactBtn inActive">
+                                <ButtonPreloader/>
+                            </div>
+                        ) : (
+                      <div className="contactBtn" onClick={handleContact}>
+                          send message
+                      </div>
+                        )
+                      }
+                    
                 </div>
 
 

@@ -1,47 +1,78 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { userAuth } from '../context/AuthContext';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import SuccessfulPayment from '../../component/SuccessfulPayment';
+import ButtonPreloader from '../../component/ButtonPreloader';
 
 function VerifyPayment() {
      const params = new URLSearchParams(window.location.search);
-    const reference = params.get('reference');
-    const tranRef = params.get('trxref');
-    // console.log(reference);
-    // console.log(tranRef);
-    
+     const reference = params.get('reference');
+     const tranRef = params.get('trxref');
+     const [showPopup, setShowPopup] = useState<boolean>(false);
+     const [loading, setLoading] = useState<boolean>(false);
+     const {baseUrl, token} = userAuth(); 
+     const navigate = useNavigate();
 
      const fetchData = async () => {
-        const tokens: string =  'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIyIiwianRpIjoiNjVkZDgxNWU3ZGQ5ODM5YmJkYzRkYWI0YzViODU1NmEyOGZjODFiYjJmNzJhYWQ5NTI2YjU0NTIwN2NjY2U1ODU1NGFlZGE2OGUxYzFmNzkiLCJpYXQiOjE3NTU4Mjc4MDIuNTc0Njk1LCJuYmYiOjE3NTU4Mjc4MDIuNTc0Njk5LCJleHAiOjE3ODczNjM4MDIuNTQ4Mzc3LCJzdWIiOiIyIiwic2NvcGVzIjpbXX0.E7DOLsowewxviFAVdgyDmks3WfZo4mbWhALC1FiQoYEEPgYypsne0jo3utFMKhKKOXlb1OJG2RmzJUAnP_PpySuV-YazGssXcyTRYf14FzjTGdAvzClTY8NNPky3R5xo3N3fKL9NTgszoSuvDTMNSMeDixA5sf6BaEmYyGZQAAhGEn3FH-TC8AoDmlrTGZQgALk6rYgAqyMl4q-dKwRG0lQH2aOyTHSpiSZqQVVgWNa5R68V_TlaytyNAEmtJjA-SwULzBIWyCnOKHkZ5DIBjC0u6nJr-Dr5dG7paPVuPFKo7RvEaYnR9xpUrZlA8fNGqqdmCSbFgnqV69L2YK9vMr4tpHJHhUe45nxcjocxlQuvipV9DBLJxuRXKdWNPURRAQG3w5XkyRYOWmu6zB2FZrTJ7E5ykM3w8i0Z_2HKpH650psBe2yCHfhZXkGJ1ttjkmK_x8SPNveyyScKIno-N6WszZdWXUTAMN9Y6EfQzK4ZY9zGkfwFur-GPIbJv62Ec6FLMFwvhFk6GkwdqCL9XvnYaP-7gif35_HE62Ej3BcGrPm-ouIL-RINCkIoGwMXtdZ4agxvtC8M8DhWzF8aoaTQiPFNvnh-O7x_nY5m_TPPxjK4vYp2-OnBeqbvmbRiAoeNqXjXpETk0B09CEuN6jIA9gSppgk-1r9eP4pBXE4';
+      setLoading(true);
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Authorization", tokens);
+        myHeaders.append("Authorization", token);
         const requestOptions: RequestInit = {
             method: "GET",
             headers: myHeaders,
             redirect: "follow"
         };
         try {
-          const response = await fetch(`http://127.0.0.1:8000/api/v1/payment/${reference}`, requestOptions); 
-          const results = await response.text();
-          console.log(results);
-            
+          const response = await fetch(`${baseUrl}/payment/${reference}`, requestOptions); 
           if (!response.ok) {
             const errorResponse = await response.json();
             throw new Error(errorResponse.message);
           }
-            const result = await response.json();  
-           
-            // console.log(result);
-           
-        } catch (error) {          
-         
+            const result = await response.json();
+            setLoading(false); 
+            toast.success(result.message);
+            navigate("/");
+        } catch (error) { 
+          setLoading(false);         
+          toast.error("Payment not successful");
+          navigate("/payment");
         }
     };
     
-    useEffect(() => {
-        fetchData();
-      }, []);
+    const hasFetched = useRef(false);
+
+  useEffect(() => {
+    if (!hasFetched.current) {
+      fetchData();
+      hasFetched.current = true;
+    }
+  }, []);
+
+  const handleConfirm = () => {
+    navigate("/");
+    setShowPopup(false);
+  }
 
   return (
-    <div>VerifyPayment</div>
+    <div>
+          {
+            loading && (
+              <div className="success-loading">
+                   <ButtonPreloader/>
+                </div>
+            )
+          }
+      
+
+      <SuccessfulPayment 
+            isOpen={showPopup}
+            onCancel={() => setShowPopup(false)}
+            onDelete={handleConfirm}
+      />
+
+    </div>
   )
 }
 

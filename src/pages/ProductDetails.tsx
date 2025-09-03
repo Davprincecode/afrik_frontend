@@ -1,15 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../component/Header'
 import Footer from '../component/Footer'
-import productImg from '../assets/images/product3.jpg'
-import productSub1 from '../assets/images/product3sub1.png'
-import productSub2 from '../assets/images/product3sub2.png'
-import productSub3 from '../assets/images/product3sub3.jpg'
-import productSub4 from '../assets/images/product3sub4.png'
-import product1 from '../assets/images/product1.png'
-import product2 from '../assets/images/product2.png'
-import product3 from '../assets/images/product3.jpg'
-import product4 from '../assets/images/product4.png'
 import { IoIosStar, IoIosStarOutline } from 'react-icons/io'
 import { GoPlus } from 'react-icons/go'
 import { HiOutlineMinusSmall } from 'react-icons/hi2'
@@ -17,38 +8,177 @@ import { CiHeart } from 'react-icons/ci'
 import { FaFacebookF, FaLinkedinIn, FaPlus, FaTwitter } from 'react-icons/fa'
 import { AiFillInstagram } from 'react-icons/ai'
 import { FiShoppingCart } from 'react-icons/fi'
-const data = [
-        {
-            id: 1,
-            productName: 'Aroma diffuser',
-            productPrice : 25000,
-            productDetail : 'Original product comes in three styles of color, usb charger',
-            productImage : product1
-        },
-        {
-            id: 2,
-            productName: 'Aroma diffuser',
-            productPrice : 55000,
-            productDetail : 'Original product comes in three styles of color, usb charger',
-            productImage : product2
-        },
-        {
-            id: 3,
-            productName: 'Aroma diffuser',
-            productPrice : 65000,
-            productDetail : 'Original product comes in three styles of color, usb charger',
-            productImage : product3
-        },
-        {
-            id: 4,
-            productName: 'Aroma diffuser',
-            productPrice : 25000,
-            productDetail : 'Original product comes in three styles of color, usb charger',
-            productImage : product4
-        },
- ]
-function ProductDetails() {
-    const [product, setProduct] = useState(data);
+import { NavLink, useLocation, useParams } from 'react-router-dom'
+import { userAuth } from './context/AuthContext'
+import { toast } from 'react-toastify'
+import ButtonPreloader from '../component/ButtonPreloader'
+
+
+
+ interface ProductInterface {
+    productId: string;
+    productName: string;
+    productColor: string;
+    productDescription: string;
+    productImage: string;
+    discountPrice: number;
+    productPrice: number;
+    productSize: string;
+    availableQty: number;
+    availableStockUnlimited: boolean
+}
+
+function ProductDetails() {    
+    const { productId } = useParams<{ productId: string }>();
+     
+    const [id, setId] =  useState<string>('');
+    const [productName, setProductName] =  useState<string>('');
+    const [productColor, setProductColor] =  useState<string>('');
+    const [productDescription, setProductDesription] =  useState<string>('');
+    const [productImage, setProductImage] =  useState<string>('');
+    const [discountPrice, setDiscountPrice] =  useState<number>(0);
+    const [productPrice, setProductPrice] =  useState<number>(0);
+    const [productSize, setProductSize] =  useState<string>('');
+    const [availableQty, setAvailableQty] =  useState<number>(0);
+    const [availableStockUnlimited, setAvailableStockUnlimited] =  useState<boolean>(false);
+
+    const [quantity, setQuantity] = useState<number>(1);
+
+    const [similarProducts, setSimilarProducts] = useState<ProductInterface[]>([]);
+    const [subProducts, setSubProducts] = useState<ProductInterface[]>([]);
+    
+    const [loading, setLoading] = useState<boolean>(false);
+    const [loadingProductId, setLoadingProductId] = useState<string | null>(null);
+
+    const { pathname } = useLocation();
+    const {baseUrl, cart, setCart, token} = userAuth();
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
+
+
+
+    useEffect(() => {
+
+        const getData = async () => {
+                    setLoading(true);
+                    const myHeaders = new Headers();
+                    myHeaders.append("Content-Type", "application/json");
+                    myHeaders.append("Authorization", token);
+                    const requestOptions: RequestInit = {
+                        method: "GET",
+                        headers: myHeaders,
+                        redirect: "follow"
+                    };
+                    try {
+                        const response = await fetch(`${baseUrl}/product-details/${productId}`, requestOptions);  
+                        if (!response.ok) {
+                        const errorResponse = await response.json();
+                        throw new Error(errorResponse.message);
+                        }
+                        const result = await response.json(); 
+                        
+                        setId(result.data.product.productId);
+                        setProductName(result.data.product.productName);
+                        setProductColor(result.data.product.productColor);
+                        setAvailableQty(result.data.product.availableQty);
+                        setAvailableStockUnlimited(result.data.product.availableStockUnlimited);
+                        setProductDesription(result.data.product.productDescription);
+                        setProductSize(result.data.product.productSize);
+                        setProductPrice(result.data.product.productPrice);
+                        setDiscountPrice(result.data.product.discountPrice);
+                        setProductImage(result.data.product.productImage);
+                        setSimilarProducts(result.data.similarProduct);  
+                        setSubProducts(result.data.subProduct);   
+                        setLoading(false);
+                    } catch (error) {
+                        
+                    }
+            }
+
+        getData();
+    }, []);
+
+    const getProduct = (productId : string, productName : string, productColor : string, availableQty : number,
+        availableStockUnlimited : boolean, productDescription : string, productSize : string,
+        productPrice : number, discount : number, productImage:string) => {
+
+            addToSubProduct();
+            removeSubProduct(productId);            
+            setId(productId);
+            setProductName(productName);
+            setProductColor(productColor);
+            setAvailableQty(availableQty);
+            setAvailableStockUnlimited(availableStockUnlimited);
+            setProductDesription(productDescription);
+            setProductSize(productSize);
+            setProductPrice(productPrice);
+            setDiscountPrice(discount);
+            setProductImage(productImage);
+    }
+
+    const addToSubProduct = () => {
+        const data =  {
+            productId: id,
+            productName: productName,
+            productColor: productColor,
+            productDescription: productDescription,
+            productImage: productImage,
+            discountPrice: discountPrice,
+            productPrice: productPrice,
+            productSize: productSize,
+            availableQty: availableQty,
+            availableStockUnlimited: availableStockUnlimited
+        }
+
+        setSubProducts((prev) => [...prev, data]);
+
+    }
+
+    const removeSubProduct = (productId : string) => {
+       setSubProducts((prev) => prev.filter((p) => p.productId !== productId));
+    }
+
+      const AddToCart = async (productId : string, productName : string, productColor : string, productPrice : number, quantity : number,  productImage : string, productSize : string) => {
+                        setLoadingProductId(productId);
+                        setLoading(true);
+                        const myHeaders = new Headers();
+                        myHeaders.append("Authorization", token);
+                        myHeaders.append("Content-Type", "application/json");
+                        const raw = JSON.stringify({
+                            'product_id' : productId,
+                            'product_image' :  productImage,
+                            'product_size' : productSize,
+                            'product_name' : productName,
+                            'product_color' : productColor,
+                            'product_price' : productPrice,
+                            'quantity' : quantity,
+                           
+                        });
+                        const requestOptions: RequestInit = {
+                            method: "POST",
+                            headers: myHeaders,
+                            body: raw,
+                            redirect: "follow"
+                        };
+                        try {
+                            const response = await fetch(`${baseUrl}/add-to-cart`, requestOptions);
+                        
+                            if (!response.ok) {
+                            const errorResponse = await response.json();
+                            throw new Error(errorResponse.message);
+                            }
+                            const result = await response.json();    
+                            setCart(result);
+                            setLoading(false); 
+                            setLoadingProductId(null);       
+                            toast.success("Product added Successfully");       
+                        } catch (error) {
+                            setLoading(false); 
+                        }
+          }
+
   return (
     <div className="productDetails pageNav">
        <Header/>
@@ -60,45 +190,60 @@ function ProductDetails() {
                <span> Home </span> / Shop
             </div>
 
-             <div className="flex-center shop-cart-con">
-                <div className="shop-cart-icon"><FiShoppingCart /></div>
-                <p className="shop-cart">cart</p>
-                <div className="cartNum">30</div>
-              </div>
+
+            <NavLink to="/cart">
+                <div className="flex-center shop-cart-con">
+                    <div className="shop-cart-icon"><FiShoppingCart /></div>
+                    <p className="shop-cart">cart</p>
+                    <div className="cartNum">{cart}</div>
+                </div>
+            </NavLink>
+
+
           </div>
 
           <div className="flex gap-10 prd-wrapper">
               <div className="prd-con">
                 <div className="prd-img-con">
                     <div className="prd-preview-img">
-                        <img src={productImg} />
+                        <img src={productImage} />
                     </div>
-                    <div className="flex-center sub-img-con">
-                          <div className="sub-img"><img src={productSub1} /></div>
-                          <div className="sub-img"><img src={productSub2} /></div>
-                          <div className="sub-img"><img src={productSub3} /></div>
-                          <div className="sub-img"><img src={productSub4} /></div>
-                          <div className="sub-img"><img src={productSub4} /></div>
-                    </div>
+
+                    <div className="flex-center sub-img-con" >
+                    {
+                        subProducts.map((value, index)=> (
+
+                            
+
+                                <div className="sub-img"  key={index} onClick={() => getProduct(value.productId, value.productName, value.productColor, value.availableQty,
+     value.availableStockUnlimited, value.productDescription, value.productSize,
+      value.productPrice, value.discountPrice, value.productImage) }><img src={value.productImage} /></div>
+                            
+                        ))
+                    }
+                    
+                       </div>
+
+
                 </div>
               </div>
               <div className="prd-details">
-                 <div className="prd-name"><h1>Opulence diffuser black</h1></div>
+                 <div className="prd-name"><h1>{productName}</h1></div>
                  <div className="flex-center gap-10 rate">
                     <div className="moq">moq: <span>10</span></div> 
                     <div className="stock">stock: <span>in stock</span></div>
                 </div>
                 <div className="prd-price">
-                    <h2>₦240,000</h2>
+                    <h2>₦{discountPrice}</h2>
                 </div>
                 <div className="prd-old-price">
-                    ₦20,000
+                    ₦{productPrice}
                 </div>
                 <div className="prd-size">
-                    size: <span>100ml</span>
+                    size: <span>{productSize}</span>
                 </div>
                 <div className="prd-color">
-                    color: <span>black</span>
+                    color: <span>{productColor}</span>
                 </div>
                 <div className="color-type flex-center gap-5">
                     <div className="color black active"></div>
@@ -112,10 +257,22 @@ function ProductDetails() {
                 <div className="flex-center gap-10 qty-con">
                     <div className="flex-center justification-between qty">
                         <div className="decreament"><HiOutlineMinusSmall /></div>
-                        <div className="qty-number">10</div>
+                        <div className="qty-number">{quantity}</div>
                         <div className="increament"><GoPlus /></div>
                     </div>
-                    <div className="add-to-cart">add to cart</div>
+
+                  
+
+                    {
+                        loading ? (
+                            <div className="prealoader inActive">
+                                <ButtonPreloader/>
+                            </div>
+                        ) : (
+                           <div className="add-to-cart" onClick={() => AddToCart(id, productName, productColor, discountPrice, quantity, productImage, productSize) }>add to cart</div>
+                        )
+                    }
+                    
                 </div>
 
                 <div className="flex-center gap-10 buy-con">
@@ -256,7 +413,8 @@ function ProductDetails() {
 
                 <div className="flex-center product-con">
 
-                                {product.map((item, index) => (
+                                { similarProducts.map((item, index) => (
+
                                    <div className="shopProduct"  key={index}>
                                         <div className="shopProductImage">
                                         <img src={item.productImage} />
@@ -270,13 +428,21 @@ function ProductDetails() {
                                         </div>
                                         <div className="shopProductDetail">
                                             <div className="shopProductDescription">
-                                            {item.productDetail}
+                                            {item.productDescription}
                                             </div>
                                             <div className="shopProductIconWrap">
-                                            <div className="shopProductIcon">
-                                                <FiShoppingCart />
-                                                <div className="shopPlusIcon"><FaPlus /></div>
-                                            </div>
+                                                 {
+                                                        loadingProductId === item.productId ? (
+                                                              <ButtonPreloader/>
+                                                        ) : (
+                                                            <div className="shopProductIcon"  onClick={() => AddToCart(item.productId, item.productName, item.productColor, item.discountPrice, 1, item.productImage, item.productSize)}>
+                                                                <FiShoppingCart />
+                                                                <div className="shopPlusIcon"><FaPlus /></div>
+                                                            </div>
+                                                        )
+                                                 }
+                                               
+
                                             </div>
                                         </div>
                                         </div>

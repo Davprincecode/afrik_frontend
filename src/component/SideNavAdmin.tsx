@@ -5,6 +5,7 @@ import { userAuth } from '../pages/context/AuthContext';
 import { LuChartNoAxesCombined } from 'react-icons/lu';
 import { BsShop } from 'react-icons/bs';
 import { GoDeviceCameraVideo } from 'react-icons/go';
+import { RxEnvelopeClosed } from 'react-icons/rx';
 
 
 interface MenuItem {
@@ -26,28 +27,28 @@ interface MenuItem {
     },
     {
       title: 'shop',
-      link: '/admin/admin-dashboard',
+      link: '/admin/admin-shop',
       icon : <BsShop />
     },
     {
       title: 'consultation',
-      link: '/admin/admin-dashboard',
+      link: '/admin/admin-consult',
       icon : <MdHome />
     },
     {
       title: 'blog',
-      link: '/admin/admin-dashboard',
+      link: '/admin/admin-blog',
       icon : <MdHome />
     },
     {
       title: 'vlog',
-      link: '/admin/admin-dashboard',
+      link: '/admin/vlog-page',
       icon : <GoDeviceCameraVideo />
     },
     {
       title: 'message',
-      link: '/admin/admin-dashboard',
-      icon : <MdHome />
+      link: '/admin/admin-message',
+      icon : <RxEnvelopeClosed />
     },
    
   ];

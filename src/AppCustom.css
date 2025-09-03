@@ -554,7 +554,12 @@
     .btnFlex .btn.inActive{
       background-color: var(--inactive-btn) !important;
     }
-
+   .prealoader.inActive{
+    width: 100%;
+     background-color: var(--inactive-btn) !important;
+    padding: 10px;
+    border-radius: 10px;
+   }
 
    .spinner {
   width: 24px;
@@ -597,6 +602,7 @@
     border: 1px solid rgba(70, 95, 241, 0.4);
     padding: 5px 0px;
     border-radius: 5px;
+    cursor: pointer;
     margin: 20px;
     }
     .logContent{
@@ -1791,7 +1797,17 @@ flex: 1;
     .productIcon .plusIcon svg{
     font-size: 14px;
     }
-
+     .productPreloader{
+        height: 100vh;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+     }
+     .productPreloader .spinner{
+       width: 50px;
+       height: 50px;
+     }
     .arrowRight, .arrowLeft{
     background-color: var(--secondary1);
     color: white;
@@ -3594,8 +3610,12 @@ flex: 1;
     .paginationNumber{
 
     }
+    .paginationArrow{
+      cursor: pointer;
+    }
     .pagination{
     padding: 12px;
+    cursor: pointer;
     }
     .paginationActive{
     background-color: var(--secondary1);
@@ -4235,6 +4255,7 @@ flex: 1;
       .sub-img{
       width: 20%;
       height: 90px;
+      cursor: pointer;
       }
       .sub-img img{
         border-radius: 10px;
@@ -4886,6 +4907,16 @@ flex: 1;
     .formInputFlex .formInputItem{
     width: 50%;
     }
+    .textAreaInput{
+
+    }
+    .textAreaInput textarea{
+      border-radius: 7px;
+      border: 1px solid var(--border);
+      width: 100%;
+      padding: 10px;
+      background-color: white !important;
+    }
     .billing-details{
       text-transform: capitalize;
       width: 30%;
@@ -4960,6 +4991,43 @@ flex: 1;
       font-weight: bold;
       color: white;
       cursor: pointer;
+    }
+    .paymentBtn.inActive{
+      border-color: var(--inactive-btn) !important;
+      color: var(--other-color);
+    }
+    .payment-success{
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      justify-content: center;
+      gap: 20px;
+    }
+    .success-loading{
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid;
+    }
+     .success-loading .spinner{
+        width: 50px;
+        height: 50px;
+    }
+    .payment-success p{
+     font-size: 18px;
+    }
+    .payment-success .success-icon svg{
+      font-size: 60px;
+      color: green;
+    }
+    .success-btn{
+      background-color: var(--primary3) !important;
+      cursor: pointer;
+      text-align: center;
+      text-transform: capitalize;
+      padding: 10px 24px;
+      font-size: 14px;
     }
     @media(max-width : 620px){
       .payment-con{

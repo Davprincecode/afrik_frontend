@@ -8,6 +8,7 @@ import { IoMdCheckmark } from 'react-icons/io';
 import { FcGoogle } from 'react-icons/fc';
 import ButtonPreloader from './ButtonPreloader';
 import { address } from 'framer-motion/client';
+import GoogleLoginButton from './GoogleLoginButton';
 
 interface authComponentInterface {
     authAction : boolean,
@@ -28,6 +29,9 @@ const AuthComponent: React.FC<authComponentInterface> = ({authAction, setAuthAct
   const [address1, setAddress1] = useState<string>('');
   const [phoneNumber1, setPhoneNumber1] = useState<string>('');
   const[loginPassword, setLoginPassword] = useState<string>('');
+  const [auth, setAuth] = useState<string>('signin');
+
+  const {baseUrl, loginAuth, logInUser, token, adminLoading, setAdminLoading}  = userAuth(); 
 
    const [errors, setErrors] = useState<string[]>([]);
 
@@ -59,9 +63,7 @@ const AuthComponent: React.FC<authComponentInterface> = ({authAction, setAuthAct
   };
 
 
-  const [auth, setAuth] = useState<string>('signin');
-
-  const {baseUrl, loginAuth, logInUser} = userAuth();  
+   
 
    const { pathname } = useLocation();
   
@@ -83,6 +85,10 @@ const AuthComponent: React.FC<authComponentInterface> = ({authAction, setAuthAct
    setAuth(param);
   }
 
+   const handleGoogleLogin = async() => {
+        window.location.href = 'http://localhost:8000/api/v1/auth/google/redirect';
+        setAdminLoading(true);
+    };
 
   const handleSignUp = async () => {
     setLoading(true);
@@ -142,14 +148,14 @@ const AuthComponent: React.FC<authComponentInterface> = ({authAction, setAuthAct
       body: JSON.stringify(raw),
     };
     try {
-      const response = await fetch(`${baseUrl}/auth/login`, requestOptions);
+      const response = await fetch(`${baseUrl}/auth/login`, requestOptions); 
       setLoading(false); 
       if (!response.ok) {
         const errorResponse = await response.json();
         throw new Error(errorResponse.message);
       }
       const result = await response.json();
-       loginAuth(result.data.userId, result.data.name, result.data.email,  result.data.address1, result.data.address2, result.data.phoneNumber1, result.data.phoneNumber2, result.data.city, result.data.city, result.data.postalCode, result.data.profileImage, result.data.role,  result.token);
+       loginAuth(result.data.userId, result.data.name, result.data.email,  result.data.address1, result.data.address2, result.data.phoneNumber1, result.data.phoneNumber2, result.data.city, result.data.city, result.data.postalCode, result.data.profileImage, result.data.cart, result.data.notification, result.data.role,  result.token);
        setSubNav(false);
        toast.success("Logged in successfully!");
         if(result.data.role == "admin"){
@@ -270,7 +276,7 @@ const AuthComponent: React.FC<authComponentInterface> = ({authAction, setAuthAct
                                     <div className="or-dot-line"></div>
                                   </div>
 
-                                <div className="google-sign">
+                                <div className="google-sign"  onClick={handleGoogleLogin}>
                                   <div className="google-Icon">
                                     <FcGoogle />
                                   </div>
@@ -333,25 +339,20 @@ const AuthComponent: React.FC<authComponentInterface> = ({authAction, setAuthAct
                                     <div className="or-dot-line"></div>
                                   </div>
 
-                                <div className="google-sign">
+                                <div className="google-sign" onClick={handleGoogleLogin}>
                                   <div className="google-Icon">
                                     <FcGoogle />
                                   </div>
                                   <p>sign in with google</p>
                                 </div>
-
                                 <div className="logContent">
                                 <p>By signing up to create an account I accept Company’s</p>  
                                 <NavLink to="#">Terms of use & Privacy Policy.</NavLink>
                                 </div>
-
                             </div>
-                              
                     </div>
                   )
                }
-                
-
          </div>
          {/* ==================== */}
 

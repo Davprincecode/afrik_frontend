@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../component/Header'
 import Footer from '../component/Footer'
 import product1 from '../assets/images/product3.jpg'
@@ -10,8 +10,72 @@ import { FaMinus, FaPlus } from 'react-icons/fa'
 import { TiMinus, TiPlus } from 'react-icons/ti'
 import { GoPlus } from 'react-icons/go'
 import { PiMinusThin } from 'react-icons/pi'
+import { userAuth } from './context/AuthContext'
+import { useNavigate } from 'react-router-dom'
+
+
+interface cartInterface {
+   id :  number;
+   product_image  : string;
+   product_size : string;
+   product_color :  string;
+   product_id :  string;
+   product_name :  string;
+   product_price :  number;
+   quantity :  number;
+   total :  number;
+}
 
 function Cart() {
+
+    const {baseUrl, token} = userAuth();
+
+    const [cart, setCart] = useState<cartInterface[]>([]);
+    const [total, setTotal] =useState<number>(0);
+    const [loadingProductId, setLoadingProductId] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(false);
+    const navigate = useNavigate();
+
+     useEffect(() => {
+      
+      const fetchData = async () => {
+            setLoading(true);
+             const myHeaders = new Headers();
+             myHeaders.append("Content-Type", "application/json");
+             myHeaders.append("Authorization", token);
+             const requestOptions: RequestInit = {
+               method: 'GET',
+               headers: myHeaders,
+               redirect: 'follow'
+             };
+             try {
+               const response = await fetch(`${baseUrl}/get-cart`, requestOptions);  
+                     
+               if (!response.ok) {
+                 const errorResponse = await response.json();
+                 throw new Error(errorResponse.message);
+               }
+                 const result = await response.json();
+                 setCart(result.data);
+                 setTotal(result.total);
+                 setLoading(false);
+             } catch (error) {          
+               
+             }
+          
+         };
+
+      fetchData();
+
+       }, []);
+
+       const deleteCart = () =>{
+
+       }
+
+       const navigateToPayment = () => {
+         navigate('/payment');
+       }
   return (
     <div className='cart-con-wrapper pageNav'>
       <Header/>
@@ -37,26 +101,34 @@ function Cart() {
                               <th>QUANTITY</th>
                               <th>SUB TOTAL</th>
                            </tr>
-                           <tr>
-                              <td><RxCross2 className="cart-delete"/></td>
-                              <td><div className="cart-image"><img src={product1} /></div></td>
-                              <td><div className="cart-name">opulence diffuser black</div></td>
+                        {
+                           cart.map((item, index) => (
+
+                               <tr key={index}>
+                              <td><RxCross2 className="cart-delete" onClick={deleteCart}/></td>
+                              <td><div className="cart-image"><img src={item.product_image} /></div></td>
+                              <td><div className="cart-name">{item.product_name}</div></td>
                               <td>
                                  <div className="cart-size-con">
                                     <div className="cart-color" style={{ color:"black"}}></div>
-                                    <div className="cart-size">300ml</div>
+                                    <div className="cart-size">{item.product_size}</div>
                                  </div>
                               </td>
-                              <td><div className="cart-price">₦9090</div></td>
+                              <td><div className="cart-price">₦{item.product_price.toLocaleString()}</div></td>
                               <td>
                                  <div className="cart-qty flex-center">
                                     <div className="cart-minus"><PiMinusThin /></div>
-                                    <div className="cart-qt-num">10</div>
+                                    <div className="cart-qt-num">{item.quantity}</div>
                                     <div className="cart-plus"><FiPlus /></div>
                                  </div>
-                              <p className="cart-moq">MOQ : 20</p></td>
-                           <td><div className="cart-sub-total">₦3337</div></td>
+                              </td>
+                              {/* <p className="cart-moq">MOQ : 20</p></td> */}
+                           <td><div className="cart-sub-total">₦{item.total}</div></td>
                            </tr>
+                           )
+                        )}
+                          
+
                         </table>
              </div>
             
@@ -102,6 +174,9 @@ function Cart() {
                 </div>
                 
              </div>
+
+
+
          </div>
 
     <div className="cart-summary-wrapper flex justification-end">
@@ -110,15 +185,17 @@ function Cart() {
 
              <div className="sub-total flex-center justification-between">
                <h2>subtotal</h2>
-               <h1>₦5545.00</h1>
+               <h1>₦{total.toLocaleString()}</h1>
              </div>
 
              <div className="cart-total flex-center justification-between">
                <h2>cart total</h2>
-               <h1>₦5545.00</h1>
+               <h1>₦{total.toLocaleString()}</h1>
              </div>
 
-             <div className="proceed-btn">proceed to checkout</div>
+             <div className="proceed-btn" onClick={navigateToPayment}>
+               proceed to checkout
+            </div>
       </div>
     </div>
       

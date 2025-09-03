@@ -78,8 +78,8 @@ const [popAction, setPopAction] = useState<boolean>(false);
                 <div className="productHeaderTitle">
                     BestSellers
                 </div>
-                <div className="productShop" onClick={() => setPopAction(!popAction)}>
-                    <NavLink to="#" className="shopBtn">
+                <div className="productShop">
+                    <NavLink to="/product" className="shopBtn">
                         view shop
                     </NavLink>
                 </div>

@@ -21,8 +21,10 @@ const [navOpen, setNavOpen] = useState(false);
 const [subNav, setSubNav] = useState<boolean>(false);
 const [isScrolled, setIsScrolled] = useState(false);
 const [popAction, setPopAction] = useState<boolean>(false);
+
 const [authAction, setAuthAction] = useState<boolean>(false);
-const {signin, logout, adminLoading} = userAuth();
+
+const {signin, logout, cart, notification,  adminLoading} = userAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -68,7 +70,7 @@ const navSub = () =>{
                       <li> <NavLink to="/"> Home </NavLink> </li>
                       <li><NavLink to="/about-us">about us</NavLink></li>
                       <li><NavLink to="/our-services">services</NavLink></li>
-                      <li onClick={() => setPopAction(!popAction)}><NavLink to="#">shop</NavLink></li>
+                      <li onClick={() => setPopAction(!popAction)}><NavLink to="/product">shop</NavLink></li>
                       <li onClick={() => setPopAction(!popAction)}>
                         <NavLink to="#">consultation</NavLink> 
                         {/* <ul>
@@ -108,12 +110,16 @@ const navSub = () =>{
                         {
                           signin ? (
                               <div className="userDetails flex-center gap-20">
+
                                       <div className="cart">
+                                        <NavLink to='/cart'>
                                         <FiShoppingCart />
                                         <div className="cartCount">
-                                          20
+                                          { cart }
                                         </div>
+                                        </NavLink>
                                       </div>
+
                                       <div className="flex-center gap-5 userIcon" onClick={navSub}>
                                           <FaRegCircleUser />
                                           <IoIosArrowDown className='userArrow' />
@@ -127,18 +133,11 @@ const navSub = () =>{
                                   </NavLink>
                               </div>
                           )
-                        }
-
-                      
-
-
-                      
+                        }                    
           <div className="bar" onClick={navFunction}>
                   <FaBars />
               </div>
-
                   </div>
-
           </div>
 
       {

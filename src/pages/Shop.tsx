@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../component/Header'
 import shopImage from '../assets/images/shopImage.png'
 import shopImage1 from '../assets/images/shopImageMobile.png'
@@ -16,68 +16,125 @@ import { CiFilter } from 'react-icons/ci'
 import { FaPlus } from 'react-icons/fa'
 import { RxCross2 } from 'react-icons/rx'
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
+import { userAuth } from './context/AuthContext'
+import Pagination from '../component/Pagination'
+import ButtonPreloader from '../component/ButtonPreloader'
+import AuthComponent from '../component/AuthComponent'
+import { toast } from 'react-toastify'
+import { NavLink } from 'react-router-dom'
 
-const data = [
-        {
-            id: 1,
-            productName: 'Aroma diffuser',
-            productPrice : 25000,
-            productDetail : 'Original product comes in three styles of color, usb charger',
-            productImage : product1
-        },
-        {
-            id: 2,
-            productName: 'Aroma diffuser',
-            productPrice : 55000,
-            productDetail : 'Original product comes in three styles of color, usb charger',
-            productImage : product2
-        },
-        {
-            id: 3,
-            productName: 'Aroma diffuser',
-            productPrice : 65000,
-            productDetail : 'Original product comes in three styles of color, usb charger',
-            productImage : product3
-        },
-        {
-            id: 4,
-            productName: 'Aroma diffuser',
-            productPrice : 25000,
-            productDetail : 'Original product comes in three styles of color, usb charger',
-            productImage : product4
-        },
-        {
-            id: 5,
-            productName: 'Aroma diffuser',
-            productPrice : 55000,
-            productDetail : 'Original product comes in three styles of color, usb charger',
-            productImage : product5
-        },
-        {
-            id: 6,
-            productName: 'Aroma diffuser',
-            productPrice : 65000,
-            productDetail : 'Original product comes in three styles of color, usb charger',
-            productImage : product6
-        },
-        {
-            id: 7,
-            productName: 'Aroma diffuser',
-            productPrice : 300000,
-            productDetail : 'Original product comes in three styles of color, usb charger',
-            productImage : product7
-        },
-        {
-            id: 8,
-            productName: 'Aroma diffuser',
-            productPrice : 6000,
-            productDetail : 'Original product comes in three styles of color, usb charger',
-            productImage : product7
-        },
- ]
+
+ interface Category {
+  id: number;
+  name: string;
+}
+
+interface Product {
+    productId: string;
+    productName: string;
+    productColor: string;
+    productDescription: string;
+    productImage: string;
+    discountPrice: number;
+    productPrice: number;
+    productSize: string;
+    availableQty: string;
+    availableStockUnlimited: boolean
+    category: Category;
+}
+
+interface Meta {
+  current_page: number;
+  per_page: number;
+  total: number;
+  last_page: number;
+  next_page_url: string | null;
+  prev_page_url: string | null;
+}
+  
 function Shop() {
-    const [product, setProduct] = useState(data);
+    const [products, setProducts] = useState<Product[]>([]);
+     const [meta, setMeta] = useState<Meta | null>(null);
     const [filter, setFilter] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [authAction, setAuthAction] = useState<boolean>(false);
+    const [subNav, setSubNav] = useState<boolean>(false);
+    const [page, setPage] = useState(1);
+     const [loadingProductId, setLoadingProductId] = useState<string | null>(null);
+
+    const {baseUrl, signin,  token, cart, setCart, loggedIn} = userAuth();
+
+      const authFunction = () => {
+        setAuthAction(true);
+      }
+
+      const AddToCart = async (productId : string, productName : string, productColor : string, productPrice : number, quantity : number,  productImage : string, productSize : string) => {
+                      setLoadingProductId(productId);
+                    const myHeaders = new Headers();
+                    myHeaders.append("Authorization", token);
+                    myHeaders.append("Content-Type", "application/json");
+                    const raw = JSON.stringify({
+                        'product_id' : productId,
+                        'product_image' :  productImage,
+                        'product_size' : productSize,
+                        'product_name' : productName,
+                        'product_color' : productColor,
+                        'product_price' : productPrice,
+                        'quantity' : quantity
+                       
+                    });
+                    const requestOptions: RequestInit = {
+                        method: "POST",
+                        headers: myHeaders,
+                        body: raw,
+                        redirect: "follow"
+                    };
+                    try {
+                        const response = await fetch(`${baseUrl}/add-to-cart`, requestOptions); 
+                        if (!response.ok) {
+                        const errorResponse = await response.json();
+                        throw new Error(errorResponse.message);
+                        }
+                        const result = await response.json();    
+                        setCart(result);
+                        setLoading(false);    
+                        setLoadingProductId(null);
+                        toast.success("Product added Successfully");       
+                    } catch (error) {
+                        setLoading(false); 
+                    }
+      }
+
+
+
+      useEffect(() => {
+            getData(page);
+      }, [page]);
+
+     const getData = async (pageNumber : number) => {
+            setLoading(true);
+              const myHeaders = new Headers();
+              myHeaders.append("Content-Type", "application/json");
+              const requestOptions: RequestInit = {
+                  method: "GET",
+                  headers: myHeaders,
+                  redirect: "follow"
+              };
+              try {
+                  const response = await fetch(`${baseUrl}/active-product?page=${pageNumber}`, requestOptions);
+                  if (!response.ok) {
+                  const errorResponse = await response.json();
+                  throw new Error(errorResponse.message);
+                  }
+                  const result = await response.json();
+                   setProducts(result.data); // products come under "data"
+                   setMeta(result.meta);     // pagination meta
+                   setLoading(false);
+              } catch (error) {
+                  
+              }
+    }
+
   return (
     <div className="shop-con pageNav">
     <Header />
@@ -93,7 +150,7 @@ function Shop() {
               <div className="flex-center shop-cart-con">
                 <div className="shop-cart-icon"><FiShoppingCart /></div>
                <p className="shop-cart">cart</p>
-               <div className="cartNum">30</div>
+               <div className="cartNum">{ cart }</div>
               </div>
 
               <div className="flex-center gap-5 sort-by-con">
@@ -248,64 +305,88 @@ function Shop() {
             </div>
              
              <div className="flex-center product-con">
-                {product.map((item, index) => (
-                   <div className="shopProduct"  key={index}>
-                        <div className="shopProductImage">
-                        <img src={item.productImage} />
-                        </div>
-                        <div className="shopProductDetails">
-                        <div className="shopProductTitle">
-                            <h2>{item.productName}</h2>
-                            <div className="shopPrice">
-                                <span>₦</span> {item.productPrice.toLocaleString()}
+                
+             {
+                loading ? (
+                    <div className="productPreloader">
+                              <ButtonPreloader/>
+                    </div>
+                    
+                ) : (
+
+                    products.map((item, index) => (
+                        <div className="shopProduct"  key={index}>
+                            <div className="shopProductImage">
+                            <img src={item.productImage} />
+                            </div>
+                            <div className="shopProductDetails">
+                            <div className="shopProductTitle">
+                                <h2>{item.productName}</h2>
+                                <div className="shopPrice">
+                                    {/* .toLocaleString() */}
+                                    <span>₦</span> {item.discountPrice.toLocaleString()}
+                                </div>
+                            </div>
+                            <div className="shopProductDetail">
+                                  
+                                <NavLink to={`/product-details/${item.productId}`}>
+
+                                <div className="shopProductDescription">
+                                   {item.productDescription}
+                                </div>
+
+                                </NavLink>
+
+                                <div className="shopProductIconWrap">
+                               {
+                                signin ? (
+                                    loadingProductId === item.productId ? (
+                                       <ButtonPreloader/>
+                                    ) : (
+                                      <div className="shopProductIcon" onClick={() => AddToCart(item.productId, item.productName, item.productColor, item.discountPrice, 1, item.productImage, item.productSize)}>
+                                        <FiShoppingCart />
+                                        <div className="shopPlusIcon"><FaPlus /></div>
+                                    </div>   
+                                    )
+                                    
+                                ) : (
+                                  <div className="shopProductIcon" onClick={authFunction}>
+                                    <FiShoppingCart />
+                                    <div className="shopPlusIcon"><FaPlus /></div>
+                                </div>  
+                                )
+                               }
+                                
+
+                                </div>
+                            </div>
                             </div>
                         </div>
-                        <div className="shopProductDetail">
-                            <div className="shopProductDescription">
-                            {item.productDetail}
-                            </div>
-                            <div className="shopProductIconWrap">
-                            <div className="shopProductIcon">
-                                <FiShoppingCart />
-                                <div className="shopPlusIcon"><FaPlus /></div>
-                            </div>
-                            </div>
-                        </div>
-                        </div>
-                   </div>
-                ))
+                    ))
+
+                )
+             
+
+
                 }
              </div>
         </div>
     </div>
 
     <div className="shop-pagination">
-                <div className="paginationCon">
-                                      <div className="paginationFlex flex-center gap-10">
-                                          <div className="paginationArrow">
-                                              <IoIosArrowBack />
-                                          </div>
-                                          <div className="paginationNumber flex-center gap-10">
-                                              <div className="paginationActive pagination">
-                                                  1
-                                              </div>
-                                              <div className="paginationNext pagination">
-                                                  2
-                                              </div>
-                                              <div className="pagination">
-                                                  3
-                                              </div>
-                                              <div className="pagination">
-                                                  4
-                                              </div>
-                                          </div>
-                                          <div className="paginationArrow">
-                                              <IoIosArrowForward />
-                                          </div>
-                                      </div>
-                        </div>
-          </div>
 
+
+        {meta && <Pagination meta={meta} onPageChange={setPage} />}
+
+
+        </div>
+
+
+{
+            !signin && (
+                <AuthComponent authAction={authAction} setAuthAction={setAuthAction} setSubNav={setSubNav}/>
+            )
+          } 
           
     </div>
   )

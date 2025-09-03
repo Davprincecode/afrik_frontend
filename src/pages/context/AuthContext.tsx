@@ -32,6 +32,8 @@ import {useLocation, useNavigate } from 'react-router-dom';
       setCity : Function;
       setPostalCode : Function;
       setImage : Function;
+      setCart : Function;
+      setNotification : Function;
       setRole : Function;
       setSignin : Function;
       setAdminLoading : Function;
@@ -50,6 +52,8 @@ import {useLocation, useNavigate } from 'react-router-dom';
       city : string;
       postalCode : string;
       image : string;
+      cart : string;
+      notification : string;
       role : string;
       signin : boolean;
       adminLoading : boolean;
@@ -75,6 +79,8 @@ import {useLocation, useNavigate } from 'react-router-dom';
       setCity  : () => {},
       setPostalCode  : () => {},
       setImage  : () => {},
+      setCart : () => {},
+      setNotification : () => {},
       setRole  : () => {},
       setSignin : () => {},
       setAdminLoading  : () => {},
@@ -93,6 +99,8 @@ import {useLocation, useNavigate } from 'react-router-dom';
       city : '',
       postalCode : '',
       image : '',
+      cart : '',
+      notification : '',
       role : '',
       signin : false,
       adminLoading  : false,
@@ -122,6 +130,8 @@ import {useLocation, useNavigate } from 'react-router-dom';
     const [city, setCity] = useState<string>('');
     const [postalCode, setPostalCode] = useState<string>('');
     const [image, setImage] = useState<string>('');
+    const [cart, setCart] = useState<string>('');
+    const [notification, setNotification] = useState<string>('');
     const [role, setRole] = useState<string>('');
     const [signin, setSignin] = useState<boolean>(false);
 
@@ -145,7 +155,7 @@ import {useLocation, useNavigate } from 'react-router-dom';
       localStorage.setItem('myState', JSON.stringify(true));
     };
   
-    const loginAuth = (userId: string, name: string, email: string,  address1: string, address2 : string, phoneNumber1 : string, phoneNumber2 : string, state : string, city : string, postalCode: string, image: string, role: string, token?: string) => {
+    const loginAuth = (userId: string, name: string, email: string,  address1: string, address2 : string, phoneNumber1 : string, phoneNumber2 : string, state : string, city : string, postalCode: string, image: string, cart : string, notification : string, role: string, token?: string) => {
          setUserId(userId);
          setName(name);
          setEmail(email);
@@ -157,6 +167,8 @@ import {useLocation, useNavigate } from 'react-router-dom';
          setCity(city);
          setPostalCode(postalCode);
          setImage(image);
+         setCart(cart);         
+         setNotification(notification);
          setRole(role);
       if(token){
           localStorage.setItem('myToken', token);
@@ -226,7 +238,7 @@ import {useLocation, useNavigate } from 'react-router-dom';
       const isExempted = exemptedPaths.some((pattern) => pattern.test(location.pathname));
       if (loggedIn) {
         const storedToken: string | null = localStorage.getItem('myToken');
-        const tokens: string = storedToken || '';
+         const tokens: string = storedToken || '';
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         myHeaders.append("Authorization", tokens);
@@ -236,13 +248,15 @@ import {useLocation, useNavigate } from 'react-router-dom';
           redirect: 'follow'
         };
         try {
-          const response = await fetch(`${baseUrl}/auth/getuser`, requestOptions);        
+          const response = await fetch(`${baseUrl}/auth/getuser`, requestOptions);  
+                
           if (!response.ok) {
             const errorResponse = await response.json();
             throw new Error(errorResponse.message);
           }
             const result = await response.json();
-            loginAuth(result.data.userId, result.data.name, result.data.email,  result.data.address1, result.data.address2, result.data.phoneNumber1, result.data.phoneNumber2, result.data.city, result.data.city, result.data.postalCode, result.data.profileImage, result.data.role,  result.token);
+             
+            loginAuth(result.data.userId, result.data.name, result.data.email,  result.data.address1, result.data.address2, result.data.phoneNumber1, result.data.phoneNumber2, result.data.city, result.data.city, result.data.postalCode, result.data.profileImage, result.cart, result.notification, result.data.role,  result.token);
 
             if(result.data.role == "admin"){
              navigate("/admin/admin-dashboard");
@@ -253,12 +267,12 @@ import {useLocation, useNavigate } from 'react-router-dom';
              
         } catch (error) {          
           if (!isExempted) {
-            logout();
+            // logout();
           }
         }
       } else {       
         if (!isExempted) {
-            logout();
+            // logout();
           }
       }
     };
@@ -281,6 +295,8 @@ import {useLocation, useNavigate } from 'react-router-dom';
       setCity,
       setPostalCode,
       setImage,
+      setCart,
+      setNotification,
       setRole,
       setSignin,
       setAdminLoading,
@@ -296,6 +312,8 @@ import {useLocation, useNavigate } from 'react-router-dom';
       city,
       postalCode,
       image,
+      cart,
+      notification,
       role,
       signin,
       adminLoading,

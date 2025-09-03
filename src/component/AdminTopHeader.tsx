@@ -23,19 +23,20 @@ relationId : string
 }
 
 const AdminTopHeader = () => {
-  const {baseUrl, token, role, image} = userAuth(); 
+  const {baseUrl, token, notification, role, image} = userAuth(); 
   const [loading, setLoading] = useState<boolean>(false);
   
   const [notificationData, setNotificationData] = useState<dataIntern[]>([]);
-  const [notification, setNotification] = useState<boolean>(false);
+  const [notifications, setNotifications] = useState<boolean>(false);
   const [adminProfile, setAdminProfile] = useState<boolean>(false);
+
 
   const handleNotification = () => {
     setAdminProfile(false);
-     setNotification(!notification);
+     setNotifications(!notification);
   }
   const handleProfile = () => {
-    setNotification(false);
+    setNotifications(false);
     setAdminProfile(!adminProfile);
   }
 
@@ -105,7 +106,7 @@ const AdminTopHeader = () => {
                         // </div> 
                         // )
                          <div className="notifyDot">
-                          50
+                          { notification }
                         </div> 
                       } 
 

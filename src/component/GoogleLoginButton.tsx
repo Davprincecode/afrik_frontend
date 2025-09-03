@@ -5,8 +5,6 @@ function GoogleLoginButton() {
 
 
 const handleGoogleLogin = () => {
-        // This is the key: directly redirect to your Laravel backend's Socialite route.
-        // Laravel will handle the entire OAuth flow with Google.
         window.location.href = 'http://localhost:8000/api/v1/auth/google/redirect';
     };
 
@@ -46,12 +44,14 @@ const handleGoogleLogin = () => {
     />
 
 
+<div onClick={handleGoogleLogin}>
+      signin with google
+    </div>
 
-
-     <button onClick={handleGoogleLogin} style={{ /* ... your styles ... */ }}>
-            <img src="https://img.icons8.com/color/16/000000/google-logo.png" alt="Google logo" />
-            Sign in with Google
-        </button>
+     {/* <button onClick={handleGoogleLogin} > */}
+            {/* <img src="https://img.icons8.com/color/16/000000/google-logo.png" alt="Google logo" /> */}
+            {/* Sign in with Google */}
+        {/* </button> */}
     
     </>
     

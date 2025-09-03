@@ -37,7 +37,12 @@ import VerifyPayment from "./pages/payment/VerifyPayment";
 import Homepage from "./pages/admin/Homepage";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import Profile from "./pages/user/Profile";
-
+import AdminShop from "./pages/admin/AdminShop";
+import Vlog from "./pages/admin/Vlog";
+import AdminBlog from "./pages/admin/AdminBlog";
+import BlogEditor from "./pages/admin/BlogEditor";
+import Message from "./pages/admin/Message";
+import AdminConsultant from "./pages/admin/AdminConsultant";
 
 
 
@@ -69,6 +74,7 @@ const {baseUrl} = userAuth();
 
 
           <Route path="/" element={<LandingPage />} />
+          <Route path="/:token" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/notification" element={<Notification />} />
@@ -77,8 +83,6 @@ const {baseUrl} = userAuth();
           <Route path="/forgetpassword" element={<ForgetPassword/>} />
           <Route path="/changepassword/:token" element={<ChangePassword/>} />
           <Route path="/verifyotp" element={<VerifyOtp />} />
-
-
 
          
           <Route path="/payment/callback" element={<VerifyPayment />} />
@@ -94,8 +98,9 @@ const {baseUrl} = userAuth();
           <Route path="/our-services" element={<OurServices/>} />
           <Route path="/our-blog" element={<BlogList/>} />
           <Route path="/blog-details" element={<BlogDetails/>} />
-          <Route path="/shop" element={<Shop/>} />
+          <Route path="/product" element={<Shop/>} />
           <Route path="/product-details" element={<ProductDetails/>} />
+          <Route path="/product-details/:productId" element={<ProductDetails/>} />
           <Route path="/cart" element={<Cart/>} />
           <Route path="/payment" element={<Payment/>} />
 
@@ -112,9 +117,16 @@ const {baseUrl} = userAuth();
 
 
       {/* ====================== admin ================== */}
+      
       <Route path="/admin">
          <Route path="admin-dashboard" element={<AdminDashboard/>} />
          <Route path="home-page" element={<Homepage/>} />
+         <Route path="vlog-page" element={<Vlog/>} />
+         <Route path="admin-shop" element={<AdminShop />} />
+         <Route path="admin-blog" element={< BlogEditor />} />
+         <Route path="admin-blogs" element={< BlogEditor />} />
+         <Route path="admin-message" element={< Message />} />
+         <Route path="admin-consult" element={< AdminConsultant />} />
       </Route>
       {/* ===================== admin end =================== */}
 
