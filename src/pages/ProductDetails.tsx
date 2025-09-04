@@ -8,7 +8,7 @@ import { CiHeart } from 'react-icons/ci'
 import { FaFacebookF, FaLinkedinIn, FaPlus, FaTwitter } from 'react-icons/fa'
 import { AiFillInstagram } from 'react-icons/ai'
 import { FiShoppingCart } from 'react-icons/fi'
-import { NavLink, useLocation, useParams } from 'react-router-dom'
+import { NavLink, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { userAuth } from './context/AuthContext'
 import { toast } from 'react-toastify'
 import ButtonPreloader from '../component/ButtonPreloader'
@@ -52,6 +52,7 @@ function ProductDetails() {
 
     const { pathname } = useLocation();
     const {baseUrl, cart, setCart, token} = userAuth();
+    const navigate = useNavigate();
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -98,7 +99,7 @@ function ProductDetails() {
             }
 
         getData();
-    }, []);
+    }, [pathname]);
 
     const getProduct = (productId : string, productName : string, productColor : string, availableQty : number,
         availableStockUnlimited : boolean, productDescription : string, productSize : string,
@@ -179,6 +180,46 @@ function ProductDetails() {
                         }
           }
 
+
+    const BuyNow = async (productId : string, productName : string, productColor : string, productPrice : number, quantity : number,  productImage : string, productSize : string) => {
+                        setLoadingProductId(productId);
+                        setLoading(true);
+                        const myHeaders = new Headers();
+                        myHeaders.append("Authorization", token);
+                        myHeaders.append("Content-Type", "application/json");
+                        const raw = JSON.stringify({
+                            'product_id' : productId,
+                            'product_image' :  productImage,
+                            'product_size' : productSize,
+                            'product_name' : productName,
+                            'product_color' : productColor,
+                            'product_price' : productPrice,
+                            'quantity' : quantity,
+                           
+                        });
+                        const requestOptions: RequestInit = {
+                            method: "POST",
+                            headers: myHeaders,
+                            body: raw,
+                            redirect: "follow"
+                        };
+                        try {
+                            const response = await fetch(`${baseUrl}/add-to-cart`, requestOptions);
+                             
+                            if (!response.ok) {
+                            const errorResponse = await response.json();
+                            throw new Error(errorResponse.message);
+                            }
+                            const result = await response.json();    
+                            setCart(result);
+                            setLoading(false); 
+                            setLoadingProductId(null); 
+                            navigate('/payment');      
+                                 
+                        } catch (error) {
+                            setLoading(false); 
+                        }
+          }
   return (
     <div className="productDetails pageNav">
        <Header/>
@@ -276,7 +317,14 @@ function ProductDetails() {
                 </div>
 
                 <div className="flex-center gap-10 buy-con">
-                    <div className="buy-now">buy now</div>
+                    {
+                        loading ? (
+                            <div className="prealoader inActive">
+                                <ButtonPreloader/>
+                            </div>
+                        ) : (
+                    <div className="buy-now"  onClick={() => BuyNow(id, productName, productColor, discountPrice, quantity, productImage, productSize) }>buy now</div>
+                        )}
                     <div className="love-emoji"><CiHeart /></div>
                 </div>
 
@@ -427,9 +475,11 @@ function ProductDetails() {
                                             </div>
                                         </div>
                                         <div className="shopProductDetail">
+                                            <NavLink to={`/product-details/${item.productId}`}>
                                             <div className="shopProductDescription">
                                             {item.productDescription}
                                             </div>
+                                            </NavLink>
                                             <div className="shopProductIconWrap">
                                                  {
                                                         loadingProductId === item.productId ? (

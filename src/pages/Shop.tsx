@@ -105,8 +105,6 @@ function Shop() {
                     }
       }
 
-
-
       useEffect(() => {
             getData(page);
       }, [page]);
@@ -140,6 +138,15 @@ function Shop() {
     <Header />
 
     <div className="shop-container">
+
+                    {
+                    loading && (
+                        <div className="cart-prealoader">
+                            <ButtonPreloader/>
+                        </div>
+
+                    ) 
+                    }
 
         <div className="flex-center justification-between shop-header">
             <div className="page-title">
@@ -382,11 +389,11 @@ function Shop() {
         </div>
 
 
-{
-            !signin && (
-                <AuthComponent authAction={authAction} setAuthAction={setAuthAction} setSubNav={setSubNav}/>
-            )
-          } 
+    {
+    !signin && (
+        <AuthComponent authAction={authAction} setAuthAction={setAuthAction} setSubNav={setSubNav}/>
+    )
+    } 
           
     </div>
   )

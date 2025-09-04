@@ -99,7 +99,7 @@ const {baseUrl} = userAuth();
           <Route path="/our-blog" element={<BlogList/>} />
           <Route path="/blog-details" element={<BlogDetails/>} />
           <Route path="/product" element={<Shop/>} />
-          <Route path="/product-details" element={<ProductDetails/>} />
+          {/* <Route path="/product-details" element={<ProductDetails/>} /> */}
           <Route path="/product-details/:productId" element={<ProductDetails/>} />
           <Route path="/cart" element={<Cart/>} />
           <Route path="/payment" element={<Payment/>} />
