@@ -12,10 +12,11 @@ import { GoPlus } from 'react-icons/go'
 import { PiMinusThin } from 'react-icons/pi'
 import { userAuth } from './context/AuthContext'
 import { useNavigate } from 'react-router-dom'
+import ButtonPreloader from '../component/ButtonPreloader'
 
 
 interface cartInterface {
-   id :  number;
+   id :  string;
    product_image  : string;
    product_size : string;
    product_color :  string;
@@ -28,9 +29,9 @@ interface cartInterface {
 
 function Cart() {
 
-    const {baseUrl, token} = userAuth();
+    const {baseUrl, setCart, token} = userAuth();
 
-    const [cart, setCart] = useState<cartInterface[]>([]);
+    const [carts, setCarts] = useState<cartInterface[]>([]);
     const [total, setTotal] =useState<number>(0);
     const [loadingProductId, setLoadingProductId] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
@@ -56,7 +57,7 @@ function Cart() {
                  throw new Error(errorResponse.message);
                }
                  const result = await response.json();
-                 setCart(result.data);
+                 setCarts(result.data);
                  setTotal(result.total);
                  setLoading(false);
              } catch (error) {          
@@ -64,15 +65,93 @@ function Cart() {
              }
           
          };
-
       fetchData();
-
        }, []);
 
-       const deleteCart = () =>{
-
+       const deleteCart = async(cartId : string) =>{
+             setLoading(true);
+             const myHeaders = new Headers();
+             myHeaders.append("Content-Type", "application/json");
+             myHeaders.append("Authorization", token);
+             const requestOptions: RequestInit = {
+               method: 'DELETE',
+               headers: myHeaders,
+               redirect: 'follow'
+             };
+             try {
+               const response = await fetch(`${baseUrl}/remove-item/${cartId}`, requestOptions);  
+                     
+               if (!response.ok) {
+                 const errorResponse = await response.json();
+                 throw new Error(errorResponse.message);
+               }
+                 const result = await response.json();
+                 setCarts(result.data);
+                 setTotal(result.total);
+                 setCart(result.cartCount);
+                 setLoading(false);
+             } catch (error) {          
+               
+             }
+          
+         ;
        }
-
+       const increament = async (cartId : string) => {
+            setLoading(true);
+             const myHeaders = new Headers();
+             myHeaders.append("Content-Type", "application/json");
+             myHeaders.append("Authorization", token);
+             const requestOptions: RequestInit = {
+               method: 'GET',
+               headers: myHeaders,
+               redirect: 'follow'
+             };
+             try {
+               const response = await fetch(`${baseUrl}/increase-qty/${cartId}`, requestOptions);  
+                     
+               if (!response.ok) {
+                 const errorResponse = await response.json();
+                 throw new Error(errorResponse.message);
+               }
+                 const result = await response.json();
+                 setCarts(result.data);
+                 setTotal(result.total);
+                  setCart(result.cartCount);
+                 setLoading(false);
+             } catch (error) {          
+               
+             }
+          
+         ;
+       }
+       const decreament = async(cartId : string) => {
+             setLoading(true);
+             const myHeaders = new Headers();
+             myHeaders.append("Content-Type", "application/json");
+             myHeaders.append("Authorization", token);
+             const requestOptions: RequestInit = {
+               method: 'GET',
+               headers: myHeaders,
+               redirect: 'follow'
+             };
+             try {
+               const response = await fetch(`${baseUrl}/decrease-qty/${cartId}`, requestOptions);  
+                     
+               if (!response.ok) {
+                 const errorResponse = await response.json();
+                 throw new Error(errorResponse.message);
+               }
+                 const result = await response.json();
+                 setCarts(result.data);
+                 setTotal(result.total);
+                 setCart(result.cartCount);
+                 setLoading(false);
+             } catch (error) {          
+               
+             }
+          
+         ;
+       }
        const navigateToPayment = () => {
          navigate('/payment');
        }
@@ -82,12 +161,22 @@ function Cart() {
 
       <div className="cart-con">
 
+         {
+            loading && (
+               <div className="cart-prealoader">
+                  <ButtonPreloader/>
+               </div>
+         
+            ) 
+         }
+           
+
          <div className="page-title">
                <span> Cart </span> /
             </div>
 
          <div className="cart-body-con">
-             <div className="table-header">
+             <div className="tableCount-header">
                   <h1>cart (4 items)</h1>
              </div>
              <div className="flex-center cart-body-item cart-body-desk">
@@ -102,10 +191,10 @@ function Cart() {
                               <th>SUB TOTAL</th>
                            </tr>
                         {
-                           cart.map((item, index) => (
+                           carts.map((item, index) => (
 
                                <tr key={index}>
-                              <td><RxCross2 className="cart-delete" onClick={deleteCart}/></td>
+                              <td><RxCross2 className="cart-delete" onClick={()  => deleteCart(item.id)}/></td>
                               <td><div className="cart-image"><img src={item.product_image} /></div></td>
                               <td><div className="cart-name">{item.product_name}</div></td>
                               <td>
@@ -117,9 +206,9 @@ function Cart() {
                               <td><div className="cart-price">₦{item.product_price.toLocaleString()}</div></td>
                               <td>
                                  <div className="cart-qty flex-center">
-                                    <div className="cart-minus"><PiMinusThin /></div>
+                                    <div className="cart-minus" onClick={() => decreament(item.id)}><PiMinusThin /></div>
                                     <div className="cart-qt-num">{item.quantity}</div>
-                                    <div className="cart-plus"><FiPlus /></div>
+                                    <div className="cart-plus" onClick={() => increament(item.id)}><FiPlus /></div>
                                  </div>
                               </td>
                               {/* <p className="cart-moq">MOQ : 20</p></td> */}
@@ -132,48 +221,54 @@ function Cart() {
                         </table>
              </div>
             
-             <div className="cart-body-mobile">
-                <div className="delete-cart"><RxCross2 /></div>
 
-                <div className="flex-center gap-20">
-                    <div className="cart-image">
-                     <img src={product1}/>
-                    </div>
-                    <div className="cart-image-details">
-                        <h1 className='cart-title'>opelene nejeje nean</h1>
-                        <div className="flex-center gap-20 cart-size">
-                            <h2>size:</h2>
-                            <h1>100ml</h1>
-                        </div>
-                        <div className="flex-center gap-20 cart-moq">
-                            <h2>moq:</h2>
-                            <h1>10</h1>
-                        </div>
-                    </div>
-                </div>
+            {
+               carts.map((item, index) =>(
+            <div className="cart-body-mobile" key={index}>
+               <div className="delete-cart" onClick={() => deleteCart(item.id)}><RxCross2 /></div>
+
+               <div className="flex-center gap-20">
+                  <div className="cart-image">
+                  <img src={item.product_image}/>
+                  </div>
+                  <div className="cart-image-details">
+                     <h1 className='cart-title'>{item.product_name}</h1>
+                     <div className="flex-center gap-20 cart-size">
+                           <h2>size:</h2>
+                           <h1>{item.product_size}</h1>
+                     </div>
+                     {/* <div className="flex-center gap-20 cart-moq">
+                           <h2>moq:</h2>
+                           <h1>10</h1>
+                     </div> */}
+                  </div>
+               </div>
 
 
-                <div className="cart-description">
-                    <div className="flex-center justification-between unit-price">
-                       <h2>unit price</h2> 
-                       <h1>₦59</h1>
-                       
-                    </div>
-                    <div className="flex-center justification-between cart-mobile-qty">
-                       <h2>quantity</h2> 
-                       <div className="flex-center justification-between cart-mobile-qty-item">
-                         <div className="qty-minus"><PiMinusThin /></div>
-                        <div className="qty-number">20</div>
-                        <div className="qty-plus"><GoPlus /></div>
-                       </div>
-                    </div>
-                    <div className="flex-center justification-between cart-mobile-total">
-                       <h2>sub total</h2> 
-                       <h1>₦59</h1>
-                    </div>
-                </div>
-                
-             </div>
+               <div className="cart-description">
+                  <div className="flex-center justification-between unit-price">
+                     <h2>unit price</h2> 
+                     <h1>₦{item.product_price.toLocaleString()}</h1>
+                     
+                  </div>
+                  <div className="flex-center justification-between cart-mobile-qty">
+                     <h2>quantity</h2> 
+                     <div className="flex-center justification-between cart-mobile-qty-item">
+                        <div className="qty-minus" onClick={() => decreament(item.id)}><PiMinusThin /></div>
+                        <div className="qty-number">{item.quantity}</div>
+                        <div className="qty-plus" onClick={()=> increament(item.id)}><GoPlus /></div>
+                     </div>
+                  </div>
+                  <div className="flex-center justification-between cart-mobile-total">
+                     <h2>sub total</h2> 
+                     <h1>₦{item.total.toLocaleString()}</h1>
+                  </div>
+               </div>
+               
+            </div>
+               ))
+            }
+           
 
 
 

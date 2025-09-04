@@ -4590,6 +4590,20 @@ flex: 1;
     .cart-con .page-title{
       margin-bottom: 10px;
     }
+    .cart-prealoader{
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .cart-prealoader .spinner{
+      width: 35px;
+      height: 35px;
+    }
     .cart-body-con .table-header{
       border-top-left-radius: 10px;
       border-top-right-radius: 10px;
