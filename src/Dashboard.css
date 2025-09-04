@@ -228,17 +228,12 @@ font-weight: 600;
     text-transform: capitalize;
     text-decoration: underline;
 }
-
 .admin-hero-wrap{
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    justify-content: space-between;
     gap: 40px;
     margin-top: 40px;
 }
 .admin-hero-con{
-width: 250px;
+width: 100%;
 }
 .admin-hero-img{
     display: flex;
@@ -332,6 +327,19 @@ padding: 10px;
 }
 .admin-input textarea{
     background-color: white !important;
+}
+.input-header{
+  text-transform: capitalize;
+  text-align: right;
+  color: rgba(0, 0, 0, 0.35);
+  font-weight: 400;
+  margin-bottom: 5px;
+  font-size: 14px;
+
+}
+.edit{
+  cursor: pointer;
+  color: var(--gray-text-color);
 }
 .admin-input button{
 background-color: none;

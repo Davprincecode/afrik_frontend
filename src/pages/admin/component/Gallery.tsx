@@ -123,10 +123,6 @@ const Gallery = () => {
   };
 
   const handleDeleteConfirm = async(id: number | string) => {
-    console.log("Deleting item with ID:", id);
-    // Call your delete API or logic here
-
-
 
      setLoading(true);
             const myHeaders = new Headers();

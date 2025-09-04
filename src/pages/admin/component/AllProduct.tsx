@@ -28,8 +28,6 @@ function AllProduct() {
                             {label}
                             </div>
                         ))}
-
-                       
                 </div>
 
                 <div className="admin-header-form  flex-center gap-10 justification-between">

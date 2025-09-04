@@ -5,6 +5,9 @@ import { RiDeleteBin6Line } from 'react-icons/ri'
 import { FaFileArrowUp } from 'react-icons/fa6';
 import { toast } from 'react-toastify';
 import { userAuth } from '../../context/AuthContext';
+import CreateHero from './CreateHero';
+import AllHero from './AllHero';
+import EditHero from './EditHero';
 
 
 
@@ -15,8 +18,12 @@ image :  string,
 status :  string,
 }
 
+
+const headers = ['all', 'create banner'];
+
 function Hero() {
 
+  const [activeTab, setActiveTab] = useState('all');
   const [isActive, setIsActive] = useState(false);
 
   const handleToggle = () => {
@@ -26,16 +33,21 @@ function Hero() {
   
 
 
-  const {baseUrl, token} = userAuth();
-      const[galleryImg, setGalleryImg] = useState<galleryInterface[]>([]);
-      const [loading, setLoading] = useState<boolean>(false);
-      const [image, setImage] = useState<File | null>(null);
-      const [showPopup, setShowPopup] = useState(false);
-      const [selectedId, setSelectedId] = useState<number | null>(null);
-      const [currentIndex, setCurrentIndex] = useState<number | null>(null);
-  
+    const {baseUrl, token} = userAuth();
+    const[galleryImg, setGalleryImg] = useState<galleryInterface[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [image, setImage] = useState<File | null>(null);
+    const [showPopup, setShowPopup] = useState(false);
+    const [selectedId, setSelectedId] = useState<number | null>(null);
+    const [currentIndex, setCurrentIndex] = useState<number | null>(null);
+
+    const [editHero, setEditHero] = useState<boolean>(false);
+    const [editId, setEditId] = useState<string>('');
       
-  
+      const heroFunction = () => {
+        setEditHero(!editHero);
+      }
+
      useEffect(() => {
        getImage()
      }, [])
@@ -177,200 +189,40 @@ function Hero() {
       
         <h2>website hero slidder images,captions & call to actions</h2>
 
-    <div className="admin-hero-wrap">
-
-            <div className="admin-hero-con">
-                <div className="admin-hero-header flex-center justification-between">
-                    <div className="radio-group">
-                        <label className="toggle-switch">
-                            <input type="checkbox" checked={isActive} onChange={handleToggle} />
-                            <span className="slider"></span>
-                        </label>
-                    </div>
-                    <div className="hero-edit-del flex-center gap-10">
-                        <FiEdit3 className='edit'/>
-                        <RiDeleteBin6Line className='delete'/>
-                    </div>
-                </div>
-                <div className="admin-hero-img">
-                    <label htmlFor="file-input"><FaFileArrowUp /></label>
-                    <input id="file-input" type="file" onChange={handleFileChange} />
-                    <p>Drop your image here,</p> 
-                    <p>or browse</p>
-                    <p className='size'>1440 x 802 px</p>  
-                </div>
-
-                <div className="admin-hero-form">
-                   <div className="admin-input">
-                    <input type="text" placeholder="Headline Text" />
-                   </div>
-                   <div className="admin-input">
-                    <input type="text" placeholder="Sub Headline" />
-                   </div>
-                   <div className="admin-input">
-                    <input type="text" placeholder="Button Text" />
-                   </div>
-                   <div className="admin-input">
-                    <button>save</button>
-                   </div>
-                </div>
-
-            </div>
-
-            <div className="admin-hero-con">
-                <div className="admin-hero-header flex-center justification-between">
-                    <div className="radio-group">
-                        <label className="toggle-switch">
-                            <input type="checkbox" checked={isActive} onChange={handleToggle} />
-                            <span className="slider"></span>
-                        </label>
-                    </div>
-                    <div className="hero-edit-del flex-center gap-10">
-                        <FiEdit3 className='edit'/>
-                        <RiDeleteBin6Line className='delete'/>
-                    </div>
-                </div>
-                <div className="admin-hero-img">
-                    <label htmlFor="file-input"><FaFileArrowUp /></label>
-                    <input id="file-input" type="file" onChange={handleFileChange} />
-                    <p>Drop your image here,</p> 
-                    <p>or browse</p>
-                    <p className='size'>1440 x 802 px</p>  
-                </div>
-
-                <div className="admin-hero-form">
-                   <div className="admin-input">
-                    <input type="text" placeholder="Headline Text" />
-                   </div>
-                   <div className="admin-input">
-                    <input type="text" placeholder="Sub Headline" />
-                   </div>
-                   <div className="admin-input">
-                    <input type="text" placeholder="Button Text" />
-                   </div>
-                   <div className="admin-input">
-                    <button>save</button>
-                   </div>
-                </div>
-
-            </div>
-
-            <div className="admin-hero-con">
-                <div className="admin-hero-header flex-center justification-between">
-                    <div className="radio-group">
-                        <label className="toggle-switch">
-                            <input type="checkbox" checked={isActive} onChange={handleToggle} />
-                            <span className="slider"></span>
-                        </label>
-                    </div>
-                    <div className="hero-edit-del flex-center gap-10">
-                        <FiEdit3 className='edit'/>
-                        <RiDeleteBin6Line className='delete'/>
-                    </div>
-                </div>
-                <div className="admin-hero-img">
-                    <label htmlFor="file-input"><FaFileArrowUp /></label>
-                    <input id="file-input" type="file" onChange={handleFileChange} />
-                    <p>Drop your image here,</p> 
-                    <p>or browse</p>
-                    <p className='size'>1440 x 802 px</p>  
-                </div>
-
-                <div className="admin-hero-form">
-                   <div className="admin-input">
-                    <input type="text" placeholder="Headline Text" />
-                   </div>
-                   <div className="admin-input">
-                    <input type="text" placeholder="Sub Headline" />
-                   </div>
-                   <div className="admin-input">
-                    <input type="text" placeholder="Button Text" />
-                   </div>
-                   <div className="admin-input">
-                    <button>save</button>
-                   </div>
-                </div>
-
-            </div>
-
-            <div className="admin-hero-con">
-                <div className="admin-hero-header flex-center justification-between">
-                    <div className="radio-group">
-                        <label className="toggle-switch">
-                            <input type="checkbox" checked={isActive} onChange={handleToggle} />
-                            <span className="slider"></span>
-                        </label>
-                    </div>
-                    <div className="hero-edit-del flex-center gap-10">
-                        <FiEdit3 className='edit'/>
-                        <RiDeleteBin6Line className='delete'/>
-                    </div>
-                </div>
-                <div className="admin-hero-img">
-                    <label htmlFor="file-input"><FaFileArrowUp /></label>
-                    <input id="file-input" type="file" onChange={handleFileChange} />
-                    <p>Drop your image here,</p> 
-                    <p>or browse</p>
-                    <p className='size'>1440 x 802 px</p>  
-                </div>
-
-                <div className="admin-hero-form">
-                   <div className="admin-input">
-                    <input type="text" placeholder="Headline Text" />
-                   </div>
-                   <div className="admin-input">
-                    <input type="text" placeholder="Sub Headline" />
-                   </div>
-                   <div className="admin-input">
-                    <input type="text" placeholder="Button Text" />
-                   </div>
-                   <div className="admin-input">
-                    <button>save</button>
-                   </div>
-                </div>
-
-            </div>
-
-            <div className="admin-hero-con">
-                <div className="admin-hero-header flex-center justification-between">
-                    <div className="radio-group">
-                        <label className="toggle-switch">
-                            <input type="checkbox" checked={isActive} onChange={handleToggle} />
-                            <span className="slider"></span>
-                        </label>
-                    </div>
-                    <div className="hero-edit-del flex-center gap-10">
-                        <FiEdit3 className='edit'/>
-                        <RiDeleteBin6Line className='delete'/>
-                    </div>
-                </div>
-                <div className="admin-hero-img">
-                    <label htmlFor="file-input"><FaFileArrowUp /></label>
-                    <input id="file-input" type="file" onChange={handleFileChange} />
-                    <p>Drop your image here,</p> 
-                    <p>or browse</p>
-                    <p className='size'>1440 x 802 px</p>  
-                </div>
-
-                <div className="admin-hero-form">
-                   <div className="admin-input">
-                    <input type="text" placeholder="Headline Text" />
-                   </div>
-                   <div className="admin-input">
-                    <input type="text" placeholder="Sub Headline" />
-                   </div>
-                   <div className="admin-input">
-                    <input type="text" placeholder="Button Text" />
-                   </div>
-                   <div className="admin-input">
-                    <button>save</button>
-                   </div>
-                </div>
-
-            </div>
+        <div className="admin-shop-header">
+                        <div className="admin-header-list flex-center gap-10">
+                            {headers.map((label) => (
+                                    <div
+                                    key={label}
+                                    className={`header-list ${activeTab === label ? 'header-list-active' : ''}`}
+                                    onClick={() => setActiveTab(label)}
+                                    >
+                                    {label}
+                                    </div>
+                                ))}
+                        </div>
+        </div>
 
 
+
+    <div className="hero-container">
+
+      {
+        activeTab == 'all' ? (
+          editHero ? (
+              <EditHero heroFunction={heroFunction} editId={editId} setEditId={setEditId}/>
+          ) : (
+             <AllHero heroFunction={heroFunction} setEditId={setEditId}/>
+          )
+          
+        ) : (
+          <CreateHero/>
+        )
+      }
+       
     </div>
+
+
 
     </div>
   )
