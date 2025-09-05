@@ -386,7 +386,7 @@ function Shop() {
         {meta && <Pagination meta={meta} onPageChange={setPage} />}
 
 
-        </div>
+    </div>
 
 
     {

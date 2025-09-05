@@ -98,8 +98,7 @@ const handleDeleteClick = (id: string) => {
     setSelectedId(id);
     setShowPopup(true);
   };
-
-    const handleDeleteConfirm = async (id: string | number) => {
+const handleDeleteConfirm = async (id: string | number) => {
                 setLoading(true);
                 const myHeaders = new Headers();
                 myHeaders.append("Content-Type", "application/json");
@@ -138,14 +137,14 @@ const handleDeleteClick = (id: string) => {
             </div>
 
              <div className="admin-shop-container">
-                 {
-                            loading && (
-                               <div className="cart-prealoader">
-                                  <ButtonPreloader/>
-                               </div>
-                         
-                            ) 
-                         }
+                    {
+                    loading && (
+                        <div className="cart-prealoader">
+                            <ButtonPreloader/>
+                        </div>
+
+                    ) 
+                    }
                          
                     <table>
 

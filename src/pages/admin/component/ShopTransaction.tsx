@@ -1,9 +1,13 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { IoIosArrowBack, IoIosArrowDown, IoIosArrowForward } from 'react-icons/io';
 import invImg from '../../../assets/images/inventoryImg.png'
 import { CiSearch } from 'react-icons/ci';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { NavLink } from 'react-router-dom';
+import { userAuth } from '../../context/AuthContext';
+import { MdOutlineArrowDropDownCircle } from 'react-icons/md';
+import ButtonPreloader from '../../../component/ButtonPreloader';
+import AdminPagination from './AdminPagination';
 
 
 
@@ -12,10 +16,65 @@ interface PaymentInterface {
   paymentFunction: () => void; 
 }
 
+interface orderInterface {
+    id : string;
+    customerAddress:  string;
+    customerId:  string;
+    customerName:  string;
+    orderDate:  string;
+    orderId:  string;
+    orderStatus:  string;
+    total:  string;
+}
+
+interface Meta {
+  current_page: number;
+  per_page: number;
+  total: number;
+  last_page: number;
+  next_page_url: string | null;
+  prev_page_url: string | null;
+}
 
 const ShopTransaction: React.FC<PaymentInterface> = ({ paymentFunction }) =>{
+const [meta, setMeta] = useState<Meta | null>(null);
+const [page, setPage] = useState(1);
   const [isActive, setIsActive] = useState(false);
-  
+   const [loading, setLoading] = useState<boolean>(false);
+      const [order, setOrder] = useState<orderInterface[]>([]);
+      const{baseUrl, token} = userAuth();
+      
+      
+              useEffect(() => {
+              getData(page)
+              }, []);
+      
+              const getData = async (pageNumber : number) => {
+                  setLoading(true);
+                      const myHeaders = new Headers();
+                      myHeaders.append("Content-Type", "application/json");
+                      myHeaders.append("Authorization", token);
+                      const requestOptions: RequestInit = {
+                          method: "GET",
+                          headers: myHeaders,
+                          redirect: "follow"
+                      };
+                      try {
+                          const response = await fetch(`${baseUrl}/get-order?page=${pageNumber}`, requestOptions);
+                          
+                          
+                          if (!response.ok) {
+                          const errorResponse = await response.json();
+                          throw new Error(errorResponse.message);
+                          }
+                          const result = await response.json();  
+                          setOrder(result.data);
+                          setMeta(result.meta);
+                          setLoading(false);
+                      } catch (error) {
+                           setLoading(false);
+                      }
+              }
     return (
       <div>
          
@@ -42,6 +101,17 @@ const ShopTransaction: React.FC<PaymentInterface> = ({ paymentFunction }) =>{
             
                         </div>
             <div className="admin-shop-container">
+
+
+                                    {
+                                    loading && (
+                                        <div className="cart-prealoader">
+                                            <ButtonPreloader/>
+                                        </div>
+                
+                                    ) 
+                                    }
+                                    
                     <table>
 
                         <tr>
@@ -50,13 +120,30 @@ const ShopTransaction: React.FC<PaymentInterface> = ({ paymentFunction }) =>{
                         <th>date</th>
                         <th>Customer</th>
                         <th>total</th>
-                        <th>method</th>
+                        <th>payment</th>
                         <th>status</th>
                         <th>action</th>
                         <th></th>
+                         </tr>
 
-                        </tr>
 
+{
+                        order.map((item, index)=>(
+                            <tr key={index}>
+                             <td>{index + 1}</td>
+                             <td>{item.orderId}</td>
+                             <td>{item.orderDate}</td>
+                             <td>{item.customerName}</td>
+                             <td>{item.total}</td>
+                             <td><div className="paid">paid</div></td>
+                             <td><div className="orderpending flex-center gap-10">{item.orderStatus} <IoIosArrowDown /></div></td>
+                              <td className='action-arrow'><MdOutlineArrowDropDownCircle /></td>
+                            </tr>
+                        ))
+                        
+                      }
+
+                       
                         <tr>
                         <td>1</td>
                         <td>#564563</td>
@@ -75,23 +162,8 @@ const ShopTransaction: React.FC<PaymentInterface> = ({ paymentFunction }) =>{
                     </table>
             </div>
 
-            <div className="admin-shop-footer flex-center justification-between">
-                 
-                 <div className="page-con flex-center gap-10">
-                       <p>showing</p>
-                       <select >
-                        <option value="10">10</option>
-                       </select>
-                       <p>of 50</p>
-                 </div>
-
-               <div className="pagination-number flex-center">
-                <div className="pagination-num-arrow"><IoIosArrowBack /></div>
-                <div className="pagination-num pagination-active">1</div>
-                <div className="pagination-num">2</div>
-                <div className="pagination-num-arrow"><IoIosArrowForward /></div>
-               </div>
-
+            <div className="adminPagination">
+               {meta && <AdminPagination meta={meta} onPageChange={setPage} />}
             </div>
 
          </div>

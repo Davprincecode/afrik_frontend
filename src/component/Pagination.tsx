@@ -17,8 +17,6 @@ type PaginationProps = {
 const Pagination: React.FC<PaginationProps> = ({ meta, onPageChange }) => {
   const pages = Array.from({ length: meta.last_page }, (_, i) => i + 1);
 
-  
-
   return (
     <div className="paginationCon">
       <div className="paginationFlex flex-center gap-10">

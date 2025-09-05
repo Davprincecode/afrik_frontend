@@ -178,6 +178,14 @@ const AddPayment: React.FC<PaymentInterface> = ({ paymentFunction }) => {
       <h2>Payment Gateway Details</h2>
 
       <div className="admin-shop-transactions">
+                            {
+                            loading && (
+                                <div className="cart-prealoader">
+                                    <ButtonPreloader/>
+                                </div>
+        
+                            ) 
+                            }
         <div className="admin-form">
           <div className="admin-input">
             <label>Secret Key</label>

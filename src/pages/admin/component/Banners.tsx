@@ -4,12 +4,13 @@ import { RiDeleteBin6Line } from 'react-icons/ri'
 import { IoIosArrowDown } from 'react-icons/io';
 import invImg from '../../../assets/images/inventoryImg.png'
 import { NavLink } from 'react-router-dom';
+import ButtonPreloader from '../../../component/ButtonPreloader';
 
 function Banners() {
   const handleFileChange = (event: { target: { files: any } }) => {
      console.log(event.target.files);
    };
- 
+ const [loading, setLoading] = useState<boolean>(false);
  
    return (
    <div>
@@ -32,6 +33,16 @@ function Banners() {
  
  
                        <div className="mainGallery  flex-center">
+
+                                            {
+                                            loading && (
+                                                <div className="cart-prealoader">
+                                                    <ButtonPreloader/>
+                                                </div>
+                        
+                                            ) 
+                                            }
+                                            
                          <div className="flex-center gap-10">
                              <IoEyeOutline className='eye'/>
                              <p>image1212....</p>
