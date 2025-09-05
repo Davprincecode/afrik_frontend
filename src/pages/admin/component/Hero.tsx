@@ -30,9 +30,6 @@ function Hero() {
     setIsActive(!isActive);
   };
 
-  
-
-
     const {baseUrl, token} = userAuth();
     const[galleryImg, setGalleryImg] = useState<galleryInterface[]>([]);
     const [loading, setLoading] = useState<boolean>(false);

@@ -637,6 +637,7 @@ position: relative;
 }
 .inActive, .btn.inActive, .admin-input.inActive{
       background-color: var(--inactive-btn) !important;
+      border-radius: 7px;
     }
 
     .back-con{
@@ -766,7 +767,35 @@ position: relative;
   display: flex;
   justify-content: space-between;
 }
-
+.course-type-options  input{
+  display: inline !important;
+}
+.course-type-options  label{
+  display: flex !important;
+  gap: 10px;
+      width: min-content;
+}
+.course-container .admin-prd-form {
+  width: 100% !important;
+}
+.course-container .admin-prd-form{
+  margin: 20px 0px;
+}
+.course-container .product-form-top{
+  padding-top: 0px;
+}
+.pin{
+  font-size: 26px;
+  width: fit-content;
+  cursor: pointer;
+  /* text-align: center */
+}
+.pinned{
+  color: var(--secondary1);
+}
+.notPinned{
+  color: var(--border);
+}
 /* ===================== delete pop up end ============ */
 .positionCenter{
     display: flex;

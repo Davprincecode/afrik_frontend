@@ -1,8 +1,13 @@
-import React from 'react'
+import React, { useState, useEffect} from 'react'
 import AdminTopHeader from '../../component/AdminTopHeader'
 import SideNavAdmin from '../../component/SideNavAdmin'
+import Courses from './component/Courses';
+import Schedule from './component/Schedule';
 
+
+const headers = ['schedules', 'courses'];
 function AdminConsultant() {
+    const [activeTab, setActiveTab] = useState('schedules'); 
   return (
      <div className='admin-dashboard'>
         <AdminTopHeader />
@@ -11,7 +16,32 @@ function AdminConsultant() {
            <SideNavAdmin/> 
 
            <div className="mainBody">
-              <div>Consultant</div>
+               <div className="mainHeader flex-center justification-center">
+                    <div className="mainHeaderRouteCon flex-center justification-between">
+                        {headers.map((label) => (
+                            <div
+                            key={label}
+                            className={`mainHeaderRoute ${activeTab === label ? 'mainHeaderActive' : ''}`}
+                            onClick={() => setActiveTab(label)}
+                            >
+                            {label}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                  <div className="mainBodyDetails">
+                    {
+                        activeTab == 'courses' ? (
+                              <Courses />
+                        ) : (
+                            <Schedule />
+                        )
+                    }
+                   
+                </div>
+
+
            </div>
            </div>
            
