@@ -1,6 +1,28 @@
 import React from 'react'
 import AdminTopHeader from '../../component/AdminTopHeader'
 import SideNavAdmin from '../../component/SideNavAdmin'
+import prdImg from '../../assets/images/popular1.png'
+import prdImg1 from '../../assets/images/popular2.png'
+import { NavLink } from 'react-router-dom'
+
+import { Line } from 'react-chartjs-2';
+import { Chart as ChartJS, LineElement, CategoryScale, LinearScale, PointElement } from 'chart.js';
+
+ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement);
+
+const data = {
+  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+  datasets: [
+    {
+      label: 'Bookings',
+      data: [12, 19, 3, 5, 9],
+      borderColor: 'rgba(75,192,192,1)',
+      fill: false,
+      tension: 0.4,
+    },
+  ],
+};
+
 
 function AdminDashboard() {
   return (
@@ -11,7 +33,214 @@ function AdminDashboard() {
            <SideNavAdmin/> 
 
            <div className="mainBody">
-            Lorem, ipsum Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laborum neque, voluptatum qui blanditiis molestias odio dicta quibusdam rerum incidunt eaque iste animi ut necessitatibus aut corrupti quam ipsum similique? Expedita asperiores ex dolores porro voluptatem. Harum labore cum obcaecati, enim ullam, facere, magnam nam saepe recusandae minima doloribus distinctio aspernatur. Cupiditate magni dignissimos perspiciatis in ipsam at rerum non repudiandae cumque odit. Omnis voluptas porro mollitia possimus ducimus cupiditate aspernatur eius blanditiis distinctio dolorem est, ullam ipsum, asperiores animi hic illum, rerum perferendis nisi illo pariatur aliquid corporis quas? Natus, fuga omnis blanditiis optio nesciunt officia laboriosam quaerat placeat qui! Quam voluptatibus sunt a, provident itaque soluta dolore alias debitis, ipsa dolor earum dicta accusantium! Neque dolorum voluptatibus veritatis nemo expedita corporis sunt, optio debitis hic, aliquam deleniti quaerat praesentium, tempore autem delectus aspernatur ducimus fugiat pariatur officiis commodi vitae a est repellendus. Totam ipsam earum aperiam minima similique doloremque tempore quas cumque nemo facilis sunt in expedita repellat perferendis consectetur, consequatur nostrum. Rem quia, ad totam facere ducimus repellat debitis laudantium repellendus nam. Repellendus doloribus, alias, exercitationem hic inventore nisi quas dolore molestiae facere maxime accusantium esse. Ea at quisquam nesciunt illo fuga corporis nulla, ex minus doloribus dolorem minima nobis, impedit mollitia dolorum? Voluptatibus sint repellendus labore aliquam doloremque laudantium alias minima accusamus cupiditate nihil, soluta natus sequi quaerat obcaecati veritatis, mollitia iusto hic quas illo. Non est quaerat veritatis dolores asperiores vitae harum minus incidunt distinctio nam ipsa, corrupti quasi blanditiis doloremque, odio iure ipsum id alias tempore ad autem, fugiat tempora dolore exercitationem! Dolorum reiciendis consequuntur sit officia eum eaque aliquam necessitatibus hic animi veritatis. Assumenda exercitationem, dolor cupiditate voluptas quod at vitae illum! Ad sunt corrupti obcaecati non adipisci, nostrum eaque vero debitis pariatur, ut possimus, inventore consectetur unde necessitatibus. Voluptatum maxime voluptate dignissimos rem impedit fugit culpa dolorem quae dolore voluptates placeat distinctio sunt quisquam, nostrum repellat magnam assumenda earum aliquid non perferendis eum quos. Labore, repellat non dolorem delectus aspernatur sint fuga accusantium quasi. Quos at dicta consectetur. Possimus soluta, odit voluptates voluptatibus molestiae facilis incidunt, beatae, architecto ex dolorum non? Quisquam tenetur suscipit praesentium quae fugiat. Assumenda eligendi ex excepturi voluptatum voluptas, aperiam numquam impedit enim nesciunt eius. Dolore dolores perferendis adipisci, velit deleniti blanditiis cumque cum, vero hic laudantium ut assumenda eligendi quasi eum saepe nesciunt! Nihil, fuga? Eligendi iusto pariatur id libero repellat laudantium, nemo, error eaque ut similique deserunt aspernatur ex facilis! Voluptatum quis accusantium dolor minima placeat ex cupiditate repudiandae. Praesentium ea quia aliquam ipsa odio! Architecto ullam quasi earum quia, ex quas aut ratione eaque esse at rerum, placeat sequi provident. Magnam totam laborum delectus animi praesentium ratione magni recusandae nemo, quasi incidunt nostrum explicabo tempora, repellendus reprehenderit asperiores vitae quibusdam non sint! Debitis corrupti libero aspernatur nobis dolore, autem blanditiis quisquam odio in at laborum unde delectus doloribus quo ad ratione tempore accusamus, beatae, dolor fugiat corporis? Rerum corrupti consequuntur delectus similique aliquid aut, facere impedit adipisci numquam modi animi. Magni fuga cumque, minima quia fugit neque ea incidunt eum ut itaque excepturi enim dicta temporibus, eos repudiandae facilis in ipsum dolorem sed maxime? Iste totam odio illum et explicabo, modi fugiat commodi molestiae eveniet sed, ipsum asperiores ducimus laboriosam vel minima laudantium soluta accusamus veniam deserunt voluptatem necessitatibus dolore, facilis sapiente quos. Labore cupiditate aliquid id blanditiis doloremque, doloribus quibusdam, earum dolor repellendus ad fugiat corporis totam aliquam tempore voluptatum assumenda provident. Doloribus a expedita dicta, deserunt illo nobis non accusamus beatae commodi nam ipsum vel. Perspiciatis iure libero alias officiis accusantium sequi eos veritatis beatae iste esse, optio tempore necessitatibus unde nemo asperiores ratione, nulla tenetur blanditiis autem inventore voluptatum in soluta illum? Quod harum voluptate accusantium porro quos alias ipsa iusto numquam inventore aliquam officiis, distinctio veniam, sed quisquam iure nulla necessitatibus voluptatem asperiores ipsum cupiditate officia. Itaque nostrum rem reiciendis sint doloribus, accusantium blanditiis assumenda ratione totam. Et assumenda perferendis incidunt? Molestiae eum odit quam? Libero provident quos ducimus dicta laborum sit magnam odio mollitia consequatur! Distinctio, a veritatis! Exercitationem dolorem possimus voluptatibus molestiae explicabo praesentium perferendis cupiditate nam excepturi, eligendi id quod pariatur reprehenderit aspernatur sunt dolorum placeat omnis beatae quibusdam vel suscipit fugiat et. Repellendus, sit exercitationem minima asperiores explicabo amet vero eligendi. Veniam saepe error odio quam obcaecati accusantium quis iste. Debitis, inventore reiciendis rem corrupti dolores delectus, ad error fugit enim quidem asperiores accusantium mollitia eveniet qui iure eum ab dignissimos tempore repellendus saepe ullam autem odit veniam! Fugiat commodi molestias adipisci alias, minima laboriosam odit, sequi animi nulla vitae sapiente reprehenderit, quasi repellendus. Aliquid cupiditate dignissimos laudantium, ad deserunt perspiciatis similique, ipsum quo consequuntur consequatur, non mollitia enim eius. Quos enim corporis impedit? Repudiandae corrupti doloribus accusamus dolorem labore quae? Praesentium harum eum quae temporibus ipsum adipisci. Nam atque tempora natus ut, porro dolor deleniti, molestiae explicabo, necessitatibus tenetur nisi a animi temporibus non dolorem labore autem voluptate sint cupiditate voluptatibus nihil soluta. Ullam, explicabo blanditiis nostrum magnam itaque recusandae sequi distinctio porro maxime molestias. Temporibus sed quod labore delectus magni explicabo veniam fugit? Possimus optio dolorum veniam animi atque sapiente eaque libero esse omnis, dolorem, vel sunt, veritatis aperiam id enim distinctio similique maiores! Nihil esse veniam harum consequuntur unde ab nam culpa mollitia dolores perferendis doloremque neque odio eos fugiat impedit officiis atque ullam explicabo, voluptate vero porro aut? Veniam ea maiores asperiores natus, quos assumenda nemo error minus pariatur animi reiciendis consequuntur labore illo tenetur delectus, quasi facere, ipsum unde deserunt! Velit quae sequi iusto, illo reprehenderit aspernatur totam itaque tempora nostrum delectus enim atque vel laborum sapiente quis, recusandae ex unde, iure nisi aliquid natus similique! Tempora rerum tenetur deleniti asperiores corrupti voluptatum suscipit, mollitia animi dolore reiciendis veniam beatae doloribus quidem quae itaque tempore quisquam nostrum excepturi saepe magnam eius. Ratione dicta atque laudantium eum corrupti, optio quibusdam quaerat, enim adipisci sunt amet, non nam eligendi repellendus autem culpa deserunt debitis? Id placeat sed magni ad illo voluptates doloribus neque odio consequuntur minima obcaecati molestias rerum iusto dicta quod quos ullam, numquam facere accusamus distinctio? Nulla assumenda, doloremque cum et, alias odit aliquid ducimus tenetur earum laboriosam perferendis consequuntur aut beatae molestias natus? Voluptatum dicta maiores rem libero similique minus sit quisquam. Iure pariatur hic sed architecto velit ut! Rerum exercitationem eos aliquid delectus provident, harum ipsam, suscipit perferendis tempora magnam laboriosam culpa unde nam blanditiis? Non corrupti praesentium, quibusdam fugiat excepturi harum. Ipsa facere soluta aliquam deleniti quo totam repellat, voluptatum perferendis ab ad perspiciatis in inventore illum itaque eos. Repellat molestiae placeat qui nisi. Illum explicabo, optio nemo placeat nam cumque accusamus dolorem earum voluptas magnam, repellat itaque. Atque, nemo non! Molestias quisquam, explicabo quaerat consequuntur obcaecati eos doloremque voluptas sunt perspiciatis nostrum esse aperiam nam nesciunt in soluta aliquid minima dolore corporis vel. Velit maxime, recusandae blanditiis eos maiores veniam mollitia, harum officiis impedit fuga nesciunt quibusdam rem aut fugit? Soluta esse aliquid repellat libero quod unde et vel maxime harum molestiae assumenda velit eum consequuntur deserunt nisi, amet inventore delectus neque repudiandae nobis voluptas? Nihil soluta ex aliquam repudiandae iure temporibus, quisquam nesciunt rem ut perspiciatis. Sed quia, facere est corrupti quasi deserunt enim. Mollitia itaque laboriosam inventore deleniti consequatur debitis amet, ut aut alias quis officia, qui vero animi aliquam quisquam excepturi eius, facere est incidunt dolor quasi sit distinctio aspernatur necessitatibus. Voluptatum optio, nam non natus exercitationem distinctio veniam beatae voluptas a eos ducimus quis, odio amet harum illum. Hic praesentium, provident eligendi laudantium cupiditate, optio eos ea vitae nobis quibusdam ex nemo dolor ut rerum. Enim dignissimos aut quaerat ea corporis at nam reiciendis, minus, quia soluta quae fuga illum deleniti possimus ut labore dolorum harum nemo hic placeat quidem vitae reprehenderit. A tenetur consequuntur alias hic modi vero et consectetur. Ea tempora beatae libero tenetur repudiandae similique excepturi rerum autem, nesciunt commodi pariatur dolor perspiciatis culpa blanditiis natus laboriosam nostrum, ratione quam accusantium possimus? Possimus esse praesentium explicabo nisi id exercitationem numquam laudantium aliquam eum rem perferendis tenetur quo, eos harum cum deserunt vitae blanditiis et. Corporis, magni libero dignissimos unde ullam, vero vel ea sit corrupti, non blanditiis cupiditate vitae. Consequuntur dolor magnam voluptas ab cum sunt pariatur, accusantium, minus magni sit quaerat, vero totam quasi laboriosam rerum ullam molestias repellat a vel! Saepe asperiores maiores neque, sed ipsa possimus repudiandae omnis tempore illo provident, ad consequuntur. Voluptatum qui totam veritatis hic cupiditate voluptatem minima dolores fugit? Rerum nulla ullam nisi ducimus repudiandae eveniet, soluta illo amet possimus. Magni nihil itaque eaque ullam id quibusdam facilis quidem error cupiditate quos, at doloremque, aliquam obcaecati animi perferendis deleniti veritatis rerum eos fugit unde et, esse alias dolore sequi! Doloribus nisi quae, dolorem fugit, consequuntur aspernatur placeat optio corporis nostrum minus nobis natus soluta. Vero quis modi necessitatibus iure nemo sint nihil optio vitae quas beatae, debitis quibusdam dolorem, fugiat blanditiis voluptatem quasi eveniet? Unde minima explicabo rem officiis, architecto illo, dolorem repellendus quas enim obcaecati a recusandae dolore amet minus, laborum cumque natus quia optio! Odit obcaecati rem officia reprehenderit autem, officiis optio nulla! At, harum est totam corrupti quasi ullam eveniet accusamus ut sequi maxime ab aut temporibus sunt molestias cumque neque facilis architecto ex debitis delectus enim? Quasi, alias voluptate. Odio quisquam ea soluta dolore error aperiam tempora aut hic debitis amet iste eos reiciendis optio eaque omnis ratione earum necessitatibus aspernatur, maxime minus voluptas sapiente mollitia! Nemo, accusantium explicabo. Molestiae similique nam unde facilis earum repudiandae, totam cumque eveniet, nemo placeat quaerat nostrum voluptatem error exercitationem aliquam. Aperiam quisquam rerum sint totam omnis doloremque nam quaerat, eveniet officia consequuntur natus dignissimos pariatur ea cumque? Accusamus doloribus facere nobis distinctio ad doloremque iste consequatur voluptatem animi officiis sequi dolorum reiciendis, placeat adipisci repellat dignissimos veniam ipsum cupiditate nisi delectus? Doloribus, quod earum. Inventore reprehenderit illo rem officia. Maiores ipsam, necessitatibus quas quidem nostrum, odit reprehenderit saepe ab et iure quae? Veritatis eius voluptate reiciendis ea sapiente modi maiores fugiat, expedita accusantium unde provident eos ullam doloremque dignissimos tempora, illum distinctio sunt molestias perferendis dolorum amet laboriosam quas esse. Eos, dignissimos ipsum inventore officiis accusamus laboriosam velit tenetur molestiae quam, ex at? Hic porro minima pariatur ex ad similique quasi inventore rerum aperiam ea nobis quis possimus quos dolores incidunt consequatur accusamus blanditiis repellat, saepe dicta temporibus recusandae? Facilis soluta quam animi neque doloremque deleniti nihil quidem laudantium vel alias? Cumque, voluptate iste. Aperiam accusamus nam ex? Sunt, pariatur accusantium obcaecati aliquid eos voluptatum nam amet numquam asperiores! Nam delectus nihil iusto sunt necessitatibus recusandae repudiandae quis cumque perspiciatis nulla ut commodi voluptatem maiores pariatur dignissimos, ipsa incidunt, ab odit reiciendis doloremque unde sint! Explicabo ab a ex debitis repellendus voluptate velit. Mollitia velit ipsum excepturi quam tempore minima beatae voluptatum ipsa ducimus cupiditate soluta a vitae, suscipit sed et ex commodi aliquam accusamus maiores totam deleniti pariatur cumque. Voluptatibus error maxime culpa sed praesentium a, molestias incidunt numquam dolores veritatis non ut ex quasi cumque sapiente vel in possimus veniam quaerat et voluptatum tempore delectus consequatur nulla. Iure enim in perspiciatis nobis nesciunt aliquid odio error, autem voluptas aspernatur, eveniet dolor non eius illo amet fugit? Quod expedita placeat facere maiores? Saepe et, dolorum, natus optio nostrum quisquam dolor repudiandae rerum veritatis deserunt nulla sint recusandae aliquam labore placeat officiis voluptatem. Praesentium molestiae, odit explicabo facilis minus architecto dolor labore ipsa inventore culpa fugiat sequi autem error deserunt eligendi, alias molestias id adipisci maiores similique obcaecati voluptatem veritatis est debitis. Quo quos cupiditate sunt, quisquam numquam facere sequi eaque similique illo nostrum amet, reiciendis harum. Assumenda blanditiis reiciendis, totam atque eos dolore nam soluta fugit accusamus, architecto vitae impedit? Aperiam fuga nemo reiciendis non animi. Non, ipsum enim eius dignissimos culpa doloribus, explicabo ipsa alias eos est sequi, totam accusantium ipsam asperiores molestiae facere reprehenderit repudiandae vel? Soluta, ea doloremque? Dolore error cumque laudantium dolorum minus eveniet dolores est suscipit similique accusamus obcaecati itaque labore maiores ex veritatis vero magnam modi, beatae nam. Pariatur, modi nisi! Praesentium similique veritatis porro minus? Tempora laboriosam molestias ab mollitia placeat veritatis quasi illum exercitationem quis. dolor sit amet consectetur adipisicing elit. Quo fugiat blanditiis minus quibusdam aperiam quasi sed sapiente ducimus necessitatibus enim libero facilis expedita, ad dolore totam officiis nobis voluptas! Nobis a odio esse laudantium ea blanditiis, reprehenderit non quisquam placeat dolorem, laborum rem, est ipsam quaerat. Natus error atque cupiditate consequuntur laborum placeat cumque illo illum quas repellat aliquam quaerat impedit asperiores nulla unde, quasi magni adipisci eaque sunt repudiandae assumenda provident recusandae quod. Quod nisi delectus laborum nihil, ullam facilis temporibus quam nostrum officia eos voluptatum, deserunt mollitia architecto iure veniam maiores voluptate optio rerum consectetur enim repellendus assumenda. Eligendi fugit corporis ex dignissimos tempora quia architecto. Sit ipsa nemo, harum odio, laboriosam reiciendis vel ut explicabo officiis assumenda reprehenderit? Eos officiis officia deserunt dolores vel sunt voluptates voluptate quod suscipit enim maiores reprehenderit totam, recusandae eligendi libero! Aspernatur non labore quo, culpa velit consequuntur est commodi quisquam officia nostrum distinctio quibusdam nesciunt fuga eos voluptatibus ipsa adipisci perspiciatis. Aut repudiandae fuga eos consequuntur quidem? Nam, numquam nisi quidem magnam impedit debitis modi eveniet similique, vel molestias earum recusandae beatae sunt soluta, atque id placeat. Cum inventore cupiditate culpa ea aspernatur vero, eos voluptatum maxime possimus rem repellendus! Placeat.
+
+                <div className="adminTitle">
+                  <h2>Dashboard</h2>
+                </div>
+
+                <div className="flex  mainBodyContainer">
+
+                   <div className="mainOverview">
+
+                          <div className="overview">
+
+                            <div className="popularBookingHeader">
+                              <div className="popularBookTitle">Overview</div>
+                              <div className="popularSelect">
+                                <select><option >all time</option></select>
+                              </div>
+                            </div>
+
+                            <div className="overviewBody flex justification-between">
+
+                              <div className="overviewMain1">
+                                 <div className="overviewHeader flex-center justsification-between">
+                                    <p>today order</p>
+                                    <p>...</p>
+                                 </div>
+
+                                 <div className="overviewPrice flex-center justsification-between">
+                                          <div className="overviewPriceHeader">
+                                            <div className="popularBookTitle">16.5k</div>
+                                            <p>orders over time</p>
+                                          </div>
+                                          <div className="overviewLast flex-center gap-10">
+                                            <div className="overArrow">i</div>
+                                            <div className="overPercentage">6%</div>
+                                            <div className="overVs">vs</div>
+                                            <div className="overToday">last day</div>
+
+                                          </div>
+                                 </div>
+
+                                <Line data={data} />
+                              </div>
+
+                              <div className="overviewMain2">
+
+                                    <div className="customer">
+                                      <div className="customerHeader">
+                                        <p>customers</p>
+                                        <p className='customerNumber'>10,243</p>
+                                      </div>
+                                      <div className="percentage perCircle">
+                                         8%
+                                      </div>
+                                    </div>
+
+                                    <div className="income">
+                                      <div className="customerHeader">
+                                        <p>income</p>
+                                        <p className='customerNumber'>10,243</p>
+                                      </div>
+                                      <div className="percentage">
+                                         8%
+                                      </div>
+                                    </div>
+
+                                       
+
+                              </div>
+                              
+                            </div>
+
+
+
+                          </div>
+
+                          
+                          <div className="mainRecentTransaction recentTransaction">
+                              <div className="mainRecentHeader">
+                                <div className="mainTitle">recent orders</div>
+                                <NavLink to="/view">view all</NavLink>
+                              </div>
+                              <div className="mainRecent">
+                                <table>
+                                            <tr>
+                                                <th>id</th>
+                                                <th>customer</th>
+                                                <th>status</th>
+                                                <th>total</th>
+                                            </tr>
+
+                                            <tr>
+                                              <td>#722627332</td>
+                                              <td>joseph welder</td>
+                                              <td><div className="pending">pending</div></td>
+                                              <td>₦3200</td>
+                                            </tr>
+                                            <tr>
+                                              <td>#722627332</td>
+                                              <td>joseph welder</td>
+                                              <td><div className="completed">completed</div></td>
+                                              <td>₦3200</td>
+                                            </tr>
+                                            <tr>
+                                              <td>#722627332</td>
+                                              <td>joseph welder</td>
+                                              <td><div className="cancelled">cancelled</div></td>
+                                              <td>₦3200</td>
+                                            </tr>
+                                 </table>
+                              </div>
+                          </div>
+
+
+                          <div className="mainRecentTransaction">
+                              <div className="mainRecentHeader">
+                                <div className="mainTitle">recent transactions</div>
+                                <NavLink to="/view">view all</NavLink>
+                              </div>
+                              <div className="mainRecent">
+                                <table>
+                                            <tr>
+                                                <th>id</th>
+                                                <th>customer</th>
+                                                <th>status</th>
+                                                <th>total</th>
+                                            </tr>
+
+                                            <tr>
+                                              <td>#722627332</td>
+                                              <td>joseph welder</td>
+                                              <td><div className="pending">pending</div></td>
+                                              <td>₦3200</td>
+                                            </tr>
+                                            <tr>
+                                              <td>#722627332</td>
+                                              <td>joseph welder</td>
+                                              <td><div className="completed">completed</div></td>
+                                              <td>₦3200</td>
+                                            </tr>
+                                            <tr>
+                                              <td>#722627332</td>
+                                              <td>joseph welder</td>
+                                              <td><div className="cancelled">cancelled</div></td>
+                                              <td>₦3200</td>
+                                            </tr>
+                                 </table>
+                              </div>
+                          </div>
+
+                   </div>
+
+
+                   <div className="mainProduct">
+
+                     <div className="popularProduct">
+                        <div className="popularTitle">popular products</div>
+
+                        <div className="popularForm">
+                          <div className="popularHeader flex-center gap-10 justification-between">
+                            <p>product</p>
+                            <p>earnings</p>
+                          </div>
+                          <div className="popularItem flex-center gap-10 justification-between">
+                            <div className="popularCon flex ">
+                              <div className="popularImage">
+                                <img src={prdImg} alt="" />
+                              </div>
+                              <div className="popularName">
+                                <p className="pName">Product A</p>
+                                <p>ui kit</p>
+                              </div>
+                            </div>
+                            <div className="popularPrice">₦3200</div>
+                          </div>
+                        </div>
+                        
+                        <div className="flex-product-link">
+                          <NavLink to="view" className="view">all products</NavLink>
+                        </div>
+                        
+                     </div>
+
+                     <div className="popularBooking">
+                        <div className="popularBookingHeader">
+                          <div className="popularBookTitle">bookings</div>
+                          <div className="popularSelect">
+                            <select><option >recent</option></select>
+                          </div>
+                        </div>
+                        <div className="popularDate">
+                          <div className="popularTodayCon">
+                            <div className="popularToday">today</div>
+                            <div className="popularDay">7</div>
+                          </div>
+                          <div className="popularTodayCon">
+                            <div className="popularToday">this month</div>
+                            <div className="popularDay">47</div>
+                          </div>
+                        </div>
+
+                        <NavLink to="view" className="view">view all</NavLink>
+                     </div>
+
+                   </div>
+
+                </div>
+
+
            </div>
          </div>
         
