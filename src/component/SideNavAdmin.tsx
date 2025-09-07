@@ -61,7 +61,7 @@ interface SideNavProps {
   
   const SideNavAdmin = () => {
 
-    const {role} = userAuth(); 
+    const {role, logout} = userAuth(); 
     
     const [activeMenu, setActiveMenu] = useState<string | null>(null);
 
@@ -93,7 +93,10 @@ interface SideNavProps {
 {/* ------------------------------------- */}
       
    </ul>
- 
+
+<div className="logout-con" onClick={logout()}> 
+  log out
+  </div> 
 
 </div> 
 {/* sidebar__inner end */}

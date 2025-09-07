@@ -7,6 +7,8 @@ import { NavLink } from 'react-router-dom'
 
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, LineElement, CategoryScale, LinearScale, PointElement } from 'chart.js';
+import { BsThreeDotsVertical } from 'react-icons/bs'
+import { IoMdArrowRoundUp } from 'react-icons/io'
 
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement);
 
@@ -54,18 +56,18 @@ function AdminDashboard() {
                             <div className="overviewBody flex justification-between">
 
                               <div className="overviewMain1">
-                                 <div className="overviewHeader flex-center justsification-between">
+                                 <div className="overviewHeader flex-center justification-between">
                                     <p>today order</p>
-                                    <p>...</p>
+                                    <p><BsThreeDotsVertical /></p>
                                  </div>
 
-                                 <div className="overviewPrice flex-center justsification-between">
+                                 <div className="overviewPrice flex-center justification-between">
                                           <div className="overviewPriceHeader">
                                             <div className="popularBookTitle">16.5k</div>
                                             <p>orders over time</p>
                                           </div>
-                                          <div className="overviewLast flex-center gap-10">
-                                            <div className="overArrow">i</div>
+                                          <div className="overviewLast flex-center">
+                                            <div className="overArrow"><IoMdArrowRoundUp /></div>
                                             <div className="overPercentage">6%</div>
                                             <div className="overVs">vs</div>
                                             <div className="overToday">last day</div>
@@ -97,15 +99,8 @@ function AdminDashboard() {
                                          8%
                                       </div>
                                     </div>
-
-                                       
-
                               </div>
-                              
                             </div>
-
-
-
                           </div>
 
                           
@@ -194,6 +189,18 @@ function AdminDashboard() {
                           <div className="popularHeader flex-center gap-10 justification-between">
                             <p>product</p>
                             <p>earnings</p>
+                          </div>
+                          <div className="popularItem flex-center gap-10 justification-between">
+                            <div className="popularCon flex ">
+                              <div className="popularImage">
+                                <img src={prdImg} alt="" />
+                              </div>
+                              <div className="popularName">
+                                <p className="pName">Product A</p>
+                                <p>ui kit</p>
+                              </div>
+                            </div>
+                            <div className="popularPrice">₦3200</div>
                           </div>
                           <div className="popularItem flex-center gap-10 justification-between">
                             <div className="popularCon flex ">

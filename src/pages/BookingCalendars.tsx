@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 
 type Availability = {
@@ -10,7 +11,7 @@ const BookingCalendars: React.FC = () => {
   const today = new Date();
   const [currentMonth, setCurrentMonth] = useState(today.getMonth());
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
-  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [selectedDate, setSelectedDate] = useState<string | null>('2025-09-20');
 
   // Sample availability data (replace with API in future)
   const availability: Availability[] = [
@@ -65,16 +66,31 @@ const BookingCalendars: React.FC = () => {
   };
 
   return (
+  <div className="calendar-flex-con">
+
     <div className="calendar-container">
+
       <div className="calendar-header">
-        <button onClick={() => changeYear(-1)}>« Prev Year</button>
-        <button onClick={() => changeMonth(-1)}>‹ Prev Month</button>
-        <span>
+        {/* <button onClick={() => changeYear(-1)}>« Prev Year</button> */}
+
+        <button onClick={() => changeMonth(-1)} className="prevMonth"><IoIosArrowBack /></button>
+        <span className="date-title">
           {new Date(currentYear, currentMonth).toLocaleString("default", { month: "long" })} {currentYear}
         </span>
-        <button onClick={() => changeMonth(1)}>Next Month ›</button>
-        <button onClick={() => changeYear(1)}>Next Year »</button>
+        <button onClick={() => changeMonth(1)} className="nextMonth"><IoIosArrowForward /></button>
+
+        {/* <button onClick={() => changeYear(1)}>Next Year »</button> */}
       </div>
+
+      
+  <div className="calendar-weekdays">
+    {['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'].map((day) => (
+      <div key={day} className="weekday">
+        {day}
+      </div>
+    ))}
+  </div>
+
 
       <div className="calendar-grid">
         {[...Array(daysInMonth)].map((_, i) => {
@@ -83,11 +99,13 @@ const BookingCalendars: React.FC = () => {
           const status = getStatusForDate(dateStr);
           const dateObj = new Date(dateStr);
           const isPast = dateObj < new Date(today.getFullYear(), today.getMonth(), today.getDate());
+          // const isToday = today.getDate();
+          // ${isToday ? "today" : ""}
 
           return (
             <div
               key={day}
-              className={`calendar-day ${status || ""} ${isPast ? "past" : ""}`}
+              className={`calendar-day ${status || ""} ${isPast ? "past" : ""} `}
               onClick={() => handleDateClick(dateStr)}
             >
               {day}
@@ -95,18 +113,30 @@ const BookingCalendars: React.FC = () => {
           );
         })}
       </div>
+    </div>
 
+    <div className="calendar-time-container">
       {selectedDate && (
+
         <div className="times-section">
-          <h3>Times for {selectedDate}</h3>
+
+          {/* <h3>Times for {selectedDate}</h3> */}
+          <h3>Available</h3>
+
           {availability.find(av => av.date === selectedDate)?.times.map((t, idx) => (
             <div key={idx} className={`time-slot ${t.status}`}>
               {t.time}
+              <p>{t.status}</p>
             </div>
-          )) || <p>No times available</p>}
+          )) || <p className="notAvailable">Not available</p>}
+
         </div>
+
+
       )}
     </div>
+  
+  </div>
   );
 };
 

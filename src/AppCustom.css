@@ -12,6 +12,8 @@
         --other-color : #3A3845;
         --border : #807F86;
         --gray : #667085;
+        --dashboard-bck : #F5F5F5;
+         --dashboard-text : #131523;
         --inactive-btn : rgb(174 141 31 / 49%);
         --header1 : 'Lora', serif;
         --header2 : "Lato", sans-serif;
@@ -5244,10 +5246,63 @@ flex: 1;
 
 
 
-    /* ---------------------------------------- */
+    /* -------------------calendar and consultant--------------------- */
+     .consultant-con{
+      padding-top: 110px;
+      padding-left: 40px;
+      padding-right: 40px;
+      padding-bottom: 50px;
+      background-color: var(--dashboard-bck);
+     }
+    .consultant{
+      display: flex;
+       padding: 30px 20px;
+      background: white;
+      border-radius: 10px;
+      justify-content: space-between;
+    }
+    .consultant-detail{
+        width: 25%;
+    }
+    .consultant-icon{
+      
+    }
+    .consultant-icon svg{
+      font-size: 50px;
+      color: rgba(0, 0, 0, 1);
+    }
+    .schedule-name{
+      color :  rgba(76, 76, 76, 1);
+      font-size: 30px;
+      font-weight: 700;
+    }
+    .consultant-name{
+      color : rgba(26, 26, 26, 1);
+      font-size: 30px;
+      font-weight: 700;
+    }
+    .clock{
+      margin-top: 40px;
+      margin-bottom: 5px;
+      gap: 5px;
+    }
+    .consultant-bod{
+     text-align: left;
+    }
 
+
+    .consultant-calendar{
+      width: 70%;
+      
+    }
+
+    .calendar-flex-con{
+       display: flex;
+       width: 100%;
+       gap: 20px;
+    }
     .calendar-container {
-      width: 320px;
+      width: 80%;
       margin: auto;
       font-family: Arial, sans-serif;
     }
@@ -5258,48 +5313,90 @@ flex: 1;
       align-items: center;
       margin-bottom: 10px;
     }
-
-    .calendar-grid {
+    .date-title{
+      font-size: 18px;
+      font-weight: 400;
+    }
+   .prevMonth{
+    background: none;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #e0e0e0;
+    cursor: pointer;
+   }
+   .nextMonth{
+    background: none;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #e0e0e0;
+    cursor: pointer;
+    margin-right: 45px;
+   }
+   .prevMonth svg, .nextMonth svg{
+    font-size: 24px;
+   }
+    .calendar-grid, .calendar-weekdays {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
+      text-align: center;
       gap: 4px;
     }
-
-    .day-name {
-      font-weight: bold;
+    .calendar-weekdays .weekday{
       text-align: center;
+      width: 50px;
+      font-size: 15px;
+      font-weight: 400;
+      text-transform: uppercase;
+      color:  rgba(26, 26, 26, 1);
+      margin: 10px 0px;
+    }
+    .calendar-day{
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    cursor: pointer;
+    }
+   
+  
+    .calendar-day.available {
+     border-radius: 50%;
+      background-color: var(--secondary3);
     }
 
-    .day {
-      padding: 8px;
-      text-align: center;
-      cursor: pointer;
-      border-radius: 4px;
-    }
-
-    .day.available {
-      background-color: lightgray;
-    }
-
-    .day.full {
+    .calendar-day.full {
       background-color: red;
+      border-radius: 50%;
       color: white;
     }
-
-    .day.past {
+     .calendar-day.today{
+      background-color: green;
+     }
+    .calendar-day.past {
       background-color: #e0e0e0;
       color: #999;
-      cursor: not-allowed;
+      cursor: not-allowed !important;
     }
 
-    .empty {
-      height: 30px;
+    .calendar-time-container{
+      width: 20%;
     }
-
+    .times-section{
+      width: 100%;
+      text-align: center;
+    }
+    .times-section .notAvailable{
+          text-transform: capitalize;
+    font-weight: 500;
+    height: 50vh;
+    line-height: 50vh;
+    }
     .time-slots {
       margin-top: 15px;
     }
-
     .time-slot {
       padding: 6px;
       margin: 4px 0;
@@ -5315,3 +5412,7 @@ flex: 1;
       background-color: red;
       color: white;
     }
+    .time-slot.booked{
+    background: green;
+   }
+/* ================================== calendar end ============================== */

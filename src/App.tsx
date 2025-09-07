@@ -43,6 +43,7 @@ import AdminBlog from "./pages/admin/AdminBlog";
 import BlogEditor from "./pages/admin/BlogEditor";
 import Message from "./pages/admin/Message";
 import AdminConsultant from "./pages/admin/AdminConsultant";
+import BookingCalendars from "./pages/BookingCalendars";
 
 
 
@@ -104,13 +105,14 @@ const {baseUrl} = userAuth();
           <Route path="/cart" element={<Cart/>} />
           <Route path="/payment" element={<Payment/>} />
 
-          <Route path="/consultant" element={<Consultant/>} />
-          <Route path="/consultant-details" element={<ConsultantDetails/>} />
-
           <Route path="/booking" element={<Booking/>} />
 
 
-          <Route path="/booking-calendar" element={<BookingCalendarrs/>} />
+           <Route path="/consultant" element={<Consultant/>} />
+          <Route path="/consultant-details" element={<ConsultantDetails/>} />
+
+
+          <Route path="/booking-calendar" element={<BookingCalendars/>} />
 
 
        {/* =============================================== */}

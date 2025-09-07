@@ -862,7 +862,7 @@ width: 75%;
 }
 .mainRecent th{
   background-color: var(--dashboard-bck);
-  border-bottom: 1px solid var(--gray-text-color);
+  border-bottom: 1.79px solid rgba(0, 0, 0, 0.2);
 }
 .mainRecent tr{
   border: none ;
@@ -912,6 +912,7 @@ width: 75%;
   font-size: 18px;
   font-weight: 600;
   text-transform: capitalize;
+  margin-bottom: 40px;
 }
 .popularHeader{
     padding: 10px 0px;
@@ -936,16 +937,17 @@ font-weight: 700;
 }
 .popularItem{
   padding: 10px 0px;
-  border-bottom: 1px solid var(--gray-text-color);
+  border-bottom: 1.79px solid rgba(0, 0, 0, 0.2);
 }
 .flex-product-link{
   display: flex;
   align-items: center;
   justify-content: center;
   margin-top: 20px;
+  
 }
 .popularProduct a{
-  border: 1px solid var(--border);
+  border: 1.79px solid rgba(0, 0, 0, 0.2);;
   text-decoration: none !important;
   color: black;
   padding: 10px 24px;
@@ -1011,8 +1013,41 @@ padding-bottom: 5px;
   margin-top: 20px;
 }
 .overviewMain1{
-border: 1px solid;
 width: 50%;
+}
+.overviewHeader{
+  text-transform: capitalize;
+  margin-bottom: 10px;
+}
+.overviewHeader > p{
+  font-weight: 700;
+}
+.overviewPrice{
+  margin-bottom: 10px;
+}
+.overviewPrice p{
+  color: var(--gray-text-color);
+  text-transform: capitalize;
+}
+.overPercentage{
+color: rgba(11, 125, 22, 1);
+font-weight: 400;
+}
+.overviewLast{
+  gap: 5px;
+}
+.overArrow{
+  color: rgba(11, 125, 22, 1);
+  font-weight: 400;
+}
+.overVs{
+color: var(--gray-text-color);
+}
+.overToday{
+color: var(--gray-text-color);
+}
+.popularBookTitle{
+  font-size: 26px;
 }
 .overviewMain2{
 width: 50%;
@@ -1030,7 +1065,7 @@ border-radius: 10px;
   text-transform: capitalize;
 }
 .customerHeader{
-
+margin-bottom: 2px;
 }
 .customerHeader > p{
 
@@ -1039,6 +1074,7 @@ border-radius: 10px;
 font-weight: 700;
 font-size: 16px;
 }
+
 .income{
    display: flex;
   justify-content: space-between;
