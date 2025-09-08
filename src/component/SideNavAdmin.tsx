@@ -1,11 +1,14 @@
 import React, { useState } from 'react'
-import { MdHome} from 'react-icons/md';
+import { MdHome, MdLogout} from 'react-icons/md';
 import { NavLink } from 'react-router-dom'
 import { userAuth } from '../pages/context/AuthContext';
-import { LuChartNoAxesCombined } from 'react-icons/lu';
-import { BsShop } from 'react-icons/bs';
+import { LuChartNoAxesCombined, LuUsers } from 'react-icons/lu';
+import { BsQuestionCircle, BsShop } from 'react-icons/bs';
 import { GoDeviceCameraVideo } from 'react-icons/go';
 import { RxEnvelopeClosed } from 'react-icons/rx';
+import { BiHome } from 'react-icons/bi';
+import { PiNewspaperClippingLight } from 'react-icons/pi';
+import ButtonPreloader from './ButtonPreloader';
 
 
 interface MenuItem {
@@ -23,7 +26,7 @@ interface MenuItem {
     {
       title: 'homepage',
       link: '/admin/home-page',
-      icon : <MdHome />
+      icon : <BiHome />
     },
     {
       title: 'shop',
@@ -33,12 +36,12 @@ interface MenuItem {
     {
       title: 'consultation',
       link: '/admin/admin-consult',
-      icon : <MdHome />
+      icon : <LuUsers />
     },
     {
       title: 'blog',
       link: '/admin/admin-blog',
-      icon : <MdHome />
+      icon : <PiNewspaperClippingLight />
     },
     {
       title: 'vlog',
@@ -61,7 +64,7 @@ interface SideNavProps {
   
   const SideNavAdmin = () => {
 
-    const {role, logout} = userAuth(); 
+    const {role, adminLoading, logout} = userAuth(); 
     
     const [activeMenu, setActiveMenu] = useState<string | null>(null);
 
@@ -80,7 +83,9 @@ interface SideNavProps {
 {menuItems.map((menuItem, index) => (
         <li key={index} className='sidebar-menu-item'>
       
-            <NavLink to={menuItem.link!} className="flex-center gap-20 nav-link sidebar-parent">
+            <NavLink to={menuItem.link!} className={({ isActive }) =>
+    `flex-center gap-20 nav-link sidebar-parent ${isActive ? 'active-nav' : ''}`
+  }>
               <div className="menuIcon">
                 {menuItem.icon}
               </div> 
@@ -94,9 +99,37 @@ interface SideNavProps {
       
    </ul>
 
-<div className="logout-con" > 
-  log out
-  </div> 
+<div className="nav-bottom">
+
+<div className="help">
+  <NavLink to="#" className={({ isActive }) =>
+    `${isActive ? 'active-nav' : ''}`
+  }>
+    <div className="help-flex flex-center">
+  <BsQuestionCircle />
+  <p>help</p> 
+    </div>
+
+  <p className='circle-num'>8</p>
+  </NavLink>
+</div>
+{
+  adminLoading ? (
+    <div className="logout-con" onClick={() => logout()}> 
+          <ButtonPreloader />
+    </div> 
+  ) : (
+    <div className="logout-con" onClick={() => logout()}> 
+          <NavLink to="#" className="delete">
+          <MdLogout />
+        <p>log out</p> 
+        </NavLink>
+    </div> 
+  )
+}
+
+
+</div>
 
 </div> 
 {/* sidebar__inner end */}

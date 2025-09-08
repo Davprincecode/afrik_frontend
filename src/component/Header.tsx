@@ -92,7 +92,7 @@ const navSub = () =>{
                               <ButtonPreloader />
                               </li> 
                           ) : (
-                             <li className='auth-mobile-con-sign-out flex-center justification-center gap-10'   onClick={() => logout()}><GoSignIn />sign out</li> 
+                             <li className='auth-mobile-con-sign-out flex-center justification-center gap-10' onClick={() => logout()}><GoSignIn />sign out</li> 
                           )
                       
                        ) : (

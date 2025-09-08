@@ -258,21 +258,21 @@ import {useLocation, useNavigate } from 'react-router-dom';
              
             loginAuth(result.data.userId, result.data.name, result.data.email,  result.data.address1, result.data.address2, result.data.phoneNumber1, result.data.phoneNumber2, result.data.city, result.data.city, result.data.postalCode, result.data.profileImage, result.cart, result.notification, result.data.role,  result.token);
 
-            if(result.data.role == "admin"){
-             navigate("/admin/admin-dashboard");
-              logInUser();
-            }
+            // if(result.data.role == "admin"){
+            //  navigate("/admin/admin-dashboard");
+            //   logInUser();
+            // }
 
             logInUser();
              
         } catch (error) {          
           if (!isExempted) {
-            // logout();
+            logout();
           }
         }
       } else {       
         if (!isExempted) {
-            // logout();
+            logout();
           }
       }
     };
