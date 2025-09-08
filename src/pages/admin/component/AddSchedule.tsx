@@ -44,12 +44,16 @@ const handleProduct =  async() => {
           };
           try {
               const response = await fetch(`${baseUrl}/booking`, requestOptions);
-             
+             const results = await response.text();  
+              console.log(results);
+              
               if (!response.ok) {
               const errorResponse = await response.json();
               throw new Error(errorResponse.message);
               }
               const result = await response.json();  
+              
+              
               
              setTitle('');
              setStartDate('');

@@ -5293,7 +5293,6 @@ flex: 1;
 
     .consultant-calendar{
       width: 70%;
-      
     }
 
     .calendar-flex-con{
@@ -5415,4 +5414,245 @@ flex: 1;
     .time-slot.booked{
     background: green;
    }
+   .nextBtn{
+  display: flex;
+  justify-content: end;
+  padding: 10px;
+   }
+   .nextBtn a{
+    text-transform: capitalize;
+    background-color: var(--primary3);
+    color: white;
+    padding: 10px  30px;
+    border-radius: 50px;
+   }
+
+   @media(max-width : 790px){
+    .consultant-con{
+      padding-top: 70px;
+      padding-left: 0px;
+      padding-right: 0px;
+      padding-bottom: 0px;
+    }
+    .consultant{
+      flex-direction: column;
+      gap : 40px
+    }
+ .consultant-detail{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .consultant-bod {
+    text-align: center;
+}
+.nextMonth{
+  margin-right: 0px;
+}
+    .consultant-calendar{
+      width: 100%;
+    }
+    .calendar-flex-con
+    {
+      flex-direction: column;
+      gap : 40px
+    }
+    .calendar-container{
+      width: 100%;
+    }
+    .calendar-time-container{
+      width: 100%;
+    }
+    .nextBtn{
+      margin-top: 40px;
+      margin-bottom: 20px;
+      justify-content: center;
+    }
+    .nextBtn a{
+      width: 100%;
+      text-align: center;
+    }
+   }
+   @media(max-width : 400px){
+      .calendar-grid, .calendar-weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      text-align: center;
+      gap: 2px;
+      }
+
+      .weekday{
+        width: 30px !important;
+      }
+.consultant {
+    padding: 30px 10px;
+  }
+  .times-section .notAvailable {
+    text-transform: capitalize;
+    font-weight: 500;
+    height: 20vh;
+    line-height: 20vh;
+}
+      .calendar-day{
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+      }
+   }
 /* ================================== calendar end ============================== */
+
+
+/* ============ consultant details ================= */
+.consultant-form{
+  width : 70%;
+}
+.consultant-back{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  text-transform: capitalize;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+.consultant-header{
+  text-transform: capitalize;
+  font-weight: 500;
+  font-size: 25px;
+  margin-bottom: 10px;
+}
+.consultant-details{
+  background: var(--Colors-Theme-background-time-zone, rgba(0, 96, 230, 0.08));
+  border: 1.31px solid var(--Colors-Theme-stroke-time-zone, rgba(0, 96, 230, 0.2));
+  border-radius: 10px;
+  padding: 30px 20px;
+  text-transform: capitalize;
+}
+.time{
+  margin-left: 24px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.form-cons label{
+text-transform: capitalize;
+}
+@media(max-width : 790px){
+.consultant-form{
+  width : 100%;
+}
+.consultant-back{
+  display: none;
+}
+.consultant-header{
+  /* text-align: center; */
+  padding-bottom: 5px;
+  font-weight: 700;
+  border-bottom: 2px solid rgba(229, 229, 229, 1);
+}
+.consultant-details{
+  margin: 20px 0px;
+}
+.mobile-back{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  text-transform: capitalize;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+.consultant-con .admin-input button{
+margin-top: 20px;
+}
+}
+/* ===================== consultant details end ================= */
+
+
+/* ============================== schedule start====================== */
+.scheduleHeader{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 20px;
+  border: 0.67px solid rgba(200, 200, 200, 1);
+  margin-bottom: 20px;
+}
+.created-con{
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+.create-schedule{
+  border: 0.43px solid rgba(200, 200, 200, 1);
+  box-shadow: 1.7px 1.7px 1.7px 0px rgba(0, 0, 0, 0.5);
+  border-radius: 13px;
+  text-transform: capitalize;
+  padding: 15px;
+  gap: 10px;
+  cursor: pointer;
+  font-weight: 500;
+}
+.schedule-title{
+ 
+  text-transform: capitalize;
+  gap: 10px;
+}
+.schedule-title svg{
+  cursor: pointer;
+  font-size: 24px;
+}
+.schedule-date{
+   font-weight: 700 !important; 
+   font-size: 16px;
+
+}
+.schedule-switch{
+
+}
+.schedule-switch select{
+  border: 1px solid rgba(194, 194, 194, 1);
+  text-transform: capitalize;
+  padding: 7px;
+  border-radius: 5px;
+}
+.course-container .add-product-title{
+  margin-bottom: 10px !important;
+}
+.time-flex{
+  gap: 5px;
+  text-transform: uppercase;
+}
+.scheduled-booked-con{
+  margin-bottom: 10px;
+}
+.scheduled-booked-details-wrap{
+  align-items: flex-end;
+}
+.scheduled-booked-details{
+  background: rgba(27, 58, 216, 0.15);
+  border: 1px solid var(--Color-Blue-B500, rgba(27, 58, 216, 1));
+  padding: 20px 10px;
+   width: 100%;
+   
+}
+.scheduled-booked-details-wrap > p{
+  text-transform: uppercase;
+}
+
+.schedule-border{
+   width: 95%;
+   padding-left: 20px;
+  border-bottom: 1px solid gray;
+}
+.schedule-border.empty{
+  padding: 20px;
+}
+
+.scheduled-booked-details-color{
+  background: rgba(126, 13, 239, 0.1);
+  border: 1px solid var(--Color-Purple-P500, rgba(126, 13, 239, 1));
+  padding: 20px 10px;
+  width: 100%;
+}
+
+/* ============================== schedule end ===================== */

@@ -94,7 +94,7 @@ interface SideNavProps {
       
    </ul>
 
-<div className="logout-con" onClick={logout()}> 
+<div className="logout-con" > 
   log out
   </div> 
 

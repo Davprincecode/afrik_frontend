@@ -6,6 +6,7 @@ import { FaCalendarAlt } from 'react-icons/fa'
 import { CiClock1 } from 'react-icons/ci'
 import BookingCalendars from './BookingCalendars'
 import Footer from '../component/Footer'
+import { NavLink } from 'react-router-dom'
 
 function Consultant() {
   return (
@@ -36,6 +37,11 @@ function Consultant() {
 
                         <div className="consultant-calendar">
                           <BookingCalendars/>
+                          <div className="nextBtn">
+                            <NavLink to="#">
+                              next
+                            </NavLink>
+                          </div>
                         </div>
 
 
