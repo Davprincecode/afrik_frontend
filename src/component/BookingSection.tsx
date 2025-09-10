@@ -8,12 +8,12 @@ function BookingSection() {
      const [popAction, setPopAction] = useState<boolean>(false);
   return (
     <div className='bookingSection'>
-       <ComingSoon popAction={popAction} setPopAction={setPopAction} />
+       
         <div className="leftBooking" style={{backgroundImage :  `url(${bookingText})`}}>
             <div className="bookingHeader">
                 <h1> <span className='bookSpace'>Book a</span>  <br /> Consultation</h1>
-                <div className="schedule" onClick={() => setPopAction(!popAction)}>
-                  <NavLink to="#">schedule now</NavLink>  
+                <div className="schedule">
+                  <NavLink to="/consultant">schedule now</NavLink>  
                 </div>
             </div>
             <div className="bookingBody">

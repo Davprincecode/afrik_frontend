@@ -8,7 +8,7 @@ import { IoMdCheckmark } from 'react-icons/io';
 import { FcGoogle } from 'react-icons/fc';
 import ButtonPreloader from './ButtonPreloader';
 import { address } from 'framer-motion/client';
-import GoogleLoginButton from './GoogleLoginButton';
+
 
 interface authComponentInterface {
     authAction : boolean,
@@ -33,6 +33,7 @@ const AuthComponent: React.FC<authComponentInterface> = ({authAction, setAuthAct
 
   const {baseUrl, loginAuth, logInUser, token, adminLoading, setAdminLoading}  = userAuth(); 
 
+  
    const [errors, setErrors] = useState<string[]>([]);
 
   const validatePassword = (pwd: string) => {
@@ -86,7 +87,7 @@ const AuthComponent: React.FC<authComponentInterface> = ({authAction, setAuthAct
   }
 
    const handleGoogleLogin = async() => {
-        window.location.href = 'http://localhost:8000/api/v1/auth/google/redirect';
+        window.location.href = `${baseUrl}/auth/google/redirect`;
         setAdminLoading(true);
     };
 
@@ -148,7 +149,7 @@ const AuthComponent: React.FC<authComponentInterface> = ({authAction, setAuthAct
       body: JSON.stringify(raw),
     };
     try {
-      const response = await fetch(`${baseUrl}/auth/login`, requestOptions); 
+      const response = await fetch(`${baseUrl}/auth/login`, requestOptions);  
       setLoading(false); 
       if (!response.ok) {
         const errorResponse = await response.json();

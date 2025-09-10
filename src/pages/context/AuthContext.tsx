@@ -15,10 +15,12 @@ import {useLocation, useNavigate } from 'react-router-dom';
 
   interface AuthContextType {
       loggedIn: boolean;
+      googleIn: boolean;
       loginAuth: Function;
       logInUser: Function;
       logout: Function;
       setLoggedIn: Function;
+      setGoogleIn: Function;
       setUserId : Function;
       setName : Function;
       setEmail : Function;
@@ -62,10 +64,12 @@ import {useLocation, useNavigate } from 'react-router-dom';
   
   const AuthContext = createContext<AuthContextType>({
       loggedIn: false,
+      googleIn: false,
       loginAuth: () => {},
       logInUser: () => {},
       logout: () => {},
       setLoggedIn : () => {},
+      setGoogleIn : () => {},
       setUserId  : () => {},
       setName  : () => {},
       setEmail  : () => {},
@@ -112,9 +116,9 @@ import {useLocation, useNavigate } from 'react-router-dom';
     const navigate = useNavigate();
     const location = useLocation();
    
-    const [baseUrl] = useState<string>('http://127.0.0.1:8000/api/v1');
+    // const [baseUrl] = useState<string>('http://127.0.0.1:8000/api/v1');
     
-    // const [baseUrl] = useState<string>('https://api.omakvtu.com/api/v1');
+    const [baseUrl] = useState<string>('https://api.loveafrikgroup.com/api/v1');
 
   // ==========================================
     const [userId, setUserId] = useState<string>('');
@@ -134,6 +138,7 @@ import {useLocation, useNavigate } from 'react-router-dom';
     const [notification, setNotification] = useState<string>('');
     const [role, setRole] = useState<string>('');
     const [signin, setSignin] = useState<boolean>(false);
+    const [googleIn, setGoogleIn] = useState<boolean>(false);
 
     const [adminLoading, setAdminLoading] = useState<boolean>(false);
   
@@ -248,8 +253,7 @@ import {useLocation, useNavigate } from 'react-router-dom';
           redirect: 'follow'
         };
         try {
-          const response = await fetch(`${baseUrl}/auth/getuser`, requestOptions);  
-                
+          const response = await fetch(`${baseUrl}/auth/getuser`, requestOptions);    
           if (!response.ok) {
             const errorResponse = await response.json();
             throw new Error(errorResponse.message);
@@ -281,7 +285,7 @@ import {useLocation, useNavigate } from 'react-router-dom';
 
     return (
       <AuthContext.Provider value={{
-        loggedIn, loginAuth, logInUser, logout, setLoggedIn, 
+        loggedIn, googleIn, loginAuth, logInUser, logout, setLoggedIn, setGoogleIn, 
       setUserId,
       setName,
       setEmail,

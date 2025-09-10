@@ -11,15 +11,15 @@ import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
 import ConfirmEmail from "./pages/ConfirmEmail";
 import RedirectForm from "./pages/Auth/RedirectForm";
-import ForgetPassword from "./pages/Auth/ForgetPassword";
-import ChangePassword from "./pages/Auth/ChangePassword";
-import VerifyOtp from "./pages/Auth/VerifyOtp";
+// import ForgetPassword from "./pages/Auth/ForgetPassword";
+// import ChangePassword from "./pages/Auth/ChangePassword";
+// import VerifyOtp from "./pages/Auth/VerifyOtp";
 import LandingPage from "./pages/LandingPage";
 import ContactUs from "./pages/ContactUs";
 import AboutUs from "./pages/AboutUs";
 import OurServices from "./pages/OurServices";
 import Notification from "./component/Notification";
-import LoginBtn from "./pages/LoginBtn";
+
 import BlogList from "./pages/BlogList";
 import BlogDetails from "./pages/BlogDetails";
 import AnimatedShuffleList from "./pages/AnimatedShuffleList";
@@ -71,7 +71,7 @@ const {baseUrl} = userAuth();
       />
       <Routes>
         
-          <Route path="/test-google" element={<LoginBtn />} />
+          {/* <Route path="/test-google" element={<LoginBtn />} /> */}
 
 
           <Route path="/" element={<LandingPage />} />
@@ -81,9 +81,9 @@ const {baseUrl} = userAuth();
           <Route path="/notification" element={<Notification />} />
           <Route path="/redirectform" element={<RedirectForm />} />
           <Route path="/emailconfirm/:token" element={<ConfirmEmail/>} />
-          <Route path="/forgetpassword" element={<ForgetPassword/>} />
-          <Route path="/changepassword/:token" element={<ChangePassword/>} />
-          <Route path="/verifyotp" element={<VerifyOtp />} />
+          {/* <Route path="/forgetpassword" element={<ForgetPassword/>} />
+          <Route path="/changepassword/:token" element={<ChangePassword/>} /> */}
+          {/* <Route path="/verifyotp" element={<VerifyOtp />} /> */}
 
          
           <Route path="/payment/callback" element={<VerifyPayment />} />

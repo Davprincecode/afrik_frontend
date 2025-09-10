@@ -23,6 +23,7 @@ const [isScrolled, setIsScrolled] = useState(false);
 const [popAction, setPopAction] = useState<boolean>(false);
 
 const [authAction, setAuthAction] = useState<boolean>(false);
+const [childNav, setChildNav] = useState<boolean>(false);
 
 const {signin, logout, cart, notification,  adminLoading} = userAuth();
 
@@ -45,6 +46,9 @@ const navSub = () =>{
     setSubNav(!subNav)
 }
 
+ const childNavFunction = () => {
+  setChildNav(!childNav);
+ }
 // onClick={() => setPopAction(!popAction)}
 
   return (
@@ -67,19 +71,49 @@ const navSub = () =>{
               <div className="itemscontainer flex-center">
                   <ul className={navOpen ? "openNavBar" : "closeNavBar"}>
                        { signin && (<li className='auth-profile'> <NavLink to="/"> Profile </NavLink> </li>)}
-                      <li> <NavLink to="/"> Home </NavLink> </li>
-                      <li><NavLink to="/about-us">about us</NavLink></li>
-                      <li><NavLink to="/our-services">services</NavLink></li>
-                      <li onClick={() => setPopAction(!popAction)}><NavLink to="/product">shop</NavLink></li>
-                      <li onClick={() => setPopAction(!popAction)}>
-                        <NavLink to="#">consultation</NavLink> 
-                        {/* <ul>
-                          <li><NavLink to="#">book consultation</NavLink></li>
-                          <li><NavLink to="#">courses/masterclasses</NavLink></li>
-                        </ul>   */}
+                      <li> <NavLink to="/" className={({ isActive }) =>
+    `${isActive ? 'active-top-nav' : ''}`
+  }> Home </NavLink> </li>
+                      <li><NavLink to="/about-us" className={({ isActive }) =>
+    `${isActive ? 'active-top-nav' : ''}`
+  }>about us</NavLink></li>
+                      <li><NavLink to="/our-services" className={({ isActive }) =>
+    `${isActive ? 'active-top-nav' : ''}`
+  }>services</NavLink></li>
+                      <li ><NavLink to="/product" className={({ isActive }) =>
+    `${isActive ? 'active-top-nav' : ''}`
+  }>shop</NavLink></li>
+                      <li className='parent-nav' onClick={childNavFunction}>
+
+       {/* className={`${childNav ? 'active-top-nav' : ''}`}                  */}
+
+      <div >consultation <span><IoIosArrowDown className='userArrow' /></span></div> 
+                          {
+                            childNav && (
+                              <ul className={`child-nav ${isScrolled ? 'scrolled' : ''}`}>
+                                          <li><NavLink to="/consultant">book consultation</NavLink></li>
+                                          <li><NavLink to="#">courses/masterclasses</NavLink></li>
+                              </ul> 
+                            )
+                          }
+                       
+
                       </li>
-                      <li onClick={() => setPopAction(!popAction)}><NavLink to="#">blog</NavLink> </li>
-                      <li><NavLink to="/contact-us">contact us</NavLink> </li>
+                      <li >
+                        <NavLink to="/our-blog" className={({ isActive }) =>
+                      `${isActive ? 'active-top-nav' : ''}`
+                      }>blog</NavLink>
+                      </li>
+                      <li>
+                          <NavLink to="/contact-us" className={({ isActive }) =>
+                          `${isActive ? 'active-top-nav' : ''}`
+                          }>contact us</NavLink> 
+                      </li>
+
+
+
+
+
 
                       { signin && ( <li className='auth-notification flex-center justification-center gap-10'><NavLink to="/contact-us">notification</NavLink> <IoMdNotificationsOutline /></li>)}
 
