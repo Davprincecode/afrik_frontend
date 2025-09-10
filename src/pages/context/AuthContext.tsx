@@ -235,6 +235,7 @@ import {useLocation, useNavigate } from 'react-router-dom';
   /^\/forgetpassword$/,              // /forgetpassword
   /^\/changepassword\/[^\/]+$/,     // /changepassword/:token
   /^\/emailconfirm\/[^\/]+$/,       // /emailconfirm/:token
+  /^\/[^\/]+$/,       // /:token
   /^\/redirectform$/,                // /redirectform
   /^\/verifyotp$/,                   // /verifyotp
   /^\/login$/                        // /login
