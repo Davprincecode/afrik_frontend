@@ -226,8 +226,8 @@
       position: relative;
       text-transform: uppercase;
       padding: 10px;
-    border-radius: 10px;
-    cursor: pointer;
+      border-radius: 10px;
+      cursor: pointer;
     }
     .child-nav{
       position: absolute ;
@@ -297,7 +297,6 @@
     .bar{
       display: none;
     }
-
     /* ----------- page nav ----------- */
     .pageNav .navcontainer {
         background-color: var(--primary1);
@@ -480,6 +479,9 @@
     @media(max-width : 500px){
     .logocontainer{
       width: 150px;
+    }
+    .active-top-nav{
+      border-bottom: none;
     }
     }
     /* ==================nav bar end=========== */
@@ -2444,6 +2446,17 @@ flex: 1;
     .courseSection{
 
     }
+
+    .courseSection .react-multiple-carousel__arrow{
+
+    }
+    .courseSection .react-multiple-carousel__arrow--left {
+    left: calc(52% + 1px);
+    }
+     .courseSection .react-multiple-carousel__arrow--right {
+    right: calc(2% + 1px);
+      }
+
     .courseHeader{
       text-transform: uppercase;
       padding: 20px 0px;
@@ -2454,8 +2467,7 @@ flex: 1;
       text-transform: uppercase;
     }
     .courseSection .bookingSection{
-      height: unset;
-   
+      height: 600px;
     }
     .allCourses{
 margin-top: 60px;
@@ -2521,7 +2533,10 @@ margin-top: 60px;
     .bookingSection{
       display: block;
       height: unset;
-    }   
+    }  
+     .courseSection .bookingSection{
+      height: unset;
+     } 
     .leftBooking{
     width : 100%;
     padding: 60px 20px;
@@ -2531,6 +2546,12 @@ margin-top: 60px;
       /* height: 550px; */
       margin-top: 2px;
     }
+    .courseSection .react-multiple-carousel__arrow--left {
+    left: calc(4% + 1px);
+    }
+     .courseSection .react-multiple-carousel__arrow--right {
+    right: calc(4% + 1px);
+      }
     .bookingHeader{
       display: flex;
       align-items: center;
@@ -2977,10 +2998,9 @@ margin-top: 60px;
         border-bottom: 2px solid; 
     }
     .aboutvmc{
-
     justify-content: center;
     padding: 60px 20px;
-    margin: 40px 0px;
+    margin: 40px 0px 0px 0px;
     }
     .abt{
       margin: 20px 0px;
@@ -2991,12 +3011,27 @@ margin-top: 60px;
     gap: 50px;
     padding: 10px;
     }
+
     .aboutUsFounderFlex{
-    display: flex;
-    gap: 45px;
-    padding: 10px;
-    margin-top: 20px;
+     padding: 40px 60px 60px 60px;
     }
+    .aboutUsFooterImg{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .aboutFooterImage{
+       width: 250px;
+       height: 350px;
+    }
+    .aboutFooterImage img{
+
+    }
+
+
+
     .aboutUsImgFounderCon{
     width: 40%;
     }
@@ -3031,8 +3066,12 @@ margin-top: 60px;
     .loveIntro{
       margin-bottom: 10px;
     }
+    .loveIntro h4{
+      margin-bottom: 30px;
+      font-size: 18px;
+    }
     .dataList li, .loveIntro p, .abt p, .abt2 p{
-      font-size: 14px;
+      font-size: 16px;
     }
     .loveFounderIntro{
       margin-bottom: 10px;
@@ -3040,6 +3079,10 @@ margin-top: 60px;
     }
     .dataList{
       margin-left: 20px;
+    }
+    .dataList span{
+      font-weight: bold;
+    font-size: 1em;
     }
     .visionCon{
     width: 350px;
@@ -3093,11 +3136,16 @@ margin-top: 60px;
 
     }
     .coreCon{
-      text-align: center;
+      /* text-align: center; */
     }
     .core{
       margin-bottom: 20px;
       text-align: center;
+    }
+    .core span{
+      font-weight: bold;
+      margin-right: 5px;
+      display: block;
     }
     .aboutFounder{
       background-color: #FFF6E8;
@@ -3108,6 +3156,17 @@ margin-top: 60px;
     }
     .aboutHeaderDesk{
       margin-bottom: 20px;
+    }
+    .about-promise{
+      padding: 0px 120px 40px 120px;
+    }
+    .about-promise h2{
+       text-align: center;
+       margin-bottom: 10px;
+    }
+    .about-promise p{
+      margin-bottom: 10px;
+      text-align: center;
     }
     .aboutFounderHeader{
     width: 250px;
@@ -3250,12 +3309,7 @@ margin-top: 60px;
       flex-direction: column;
       gap: 0px;
       }
-    .aboutUsFounderFlex{
-      display: flex;
-      flex-wrap: wrap;
-      flex-direction: column;
-      gap: 30px;
-      }
+    
       .aboutUsImgCon{
       width: 100%;
       }
@@ -3300,6 +3354,24 @@ margin-top: 60px;
     } */
 
     }
+    @media(max-width : 550px){
+    .aboutvmc {
+    padding: 60px 20px;
+     }
+       .about-promise{
+      padding: 0px 20px 50px 20px;
+    }
+    .about-promise h2{
+       text-align: center;
+       margin-bottom: 10px;
+       font-size: 20px;
+       padding: 0px 40px;
+    }
+    .about-promise p{
+      margin-bottom: 10px;
+      text-align: justify;
+    }
+    }
     @media(max-width : 400px){
       .founderImage img {
         object-fit: cover;
@@ -3314,10 +3386,15 @@ margin-top: 60px;
       display: block;
     object-fit: contain;
     }
-    /* .founderMobile{
-      display: block;
-      object-fit: contain;
-    } */
+     .aboutUsFounderFlex{
+     padding: 40px 40px 60px 40px;
+    }
+    .aboutFooterImage{
+       width: 100%;
+       height: auto;
+    }
+
+
     }
 
     /* ================== about us end =========== */
@@ -3325,7 +3402,7 @@ margin-top: 60px;
 
     /* ===================== our services =============== */
     .ourServicesCon{
-    margin-top: 70px;
+       margin-top: 70px;
     }
     .ourServicesHeader{
       background-color: rgba(0, 0, 0, 1);
@@ -3765,6 +3842,16 @@ margin-top: 60px;
     /* ======================  blog details ==================== */
     .blog-details-wrapper{
       margin-top: 20px;
+    }
+    .back-header{
+      padding-left: 20px;
+    }
+    .back-header a{
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      text-transform: capitalize;
+      font-size: 16px;
     }
     .blog-details-header1{
       color: white;
@@ -5718,3 +5805,178 @@ margin-top: 20px;
 }
 
 /* ============================== schedule end ===================== */
+
+
+/* =============================== master course and master details ==================== */
+.master-container{
+  margin-top: 90px;
+  margin-bottom: 90px;
+}
+.master-header{
+    /* background: rgba(0, 0, 0, 1);
+    background-blend-mode: luminosity;
+    background-size: cover; */
+    height: 300px !important;
+}
+.master-header .dotLineServices {
+    margin: 0px auto;
+    width: 60%;
+    border-bottom: 1px solid #F78430;
+}
+.master-body{
+
+}
+.master1{
+
+}
+.master2{
+background: rgba(211, 175, 55, 0.08);
+}
+.master-body-flex{
+justify-content: space-between;
+padding: 40px 40px;
+}
+.master-body-image{
+width: 38%;
+height: 300px;
+overflow: hidden;
+}
+.master-body-image img{
+    width: 100%;
+    height: unset;
+    object-fit: cover;
+}
+.master-body-text{
+width: 58%;
+}
+.master-body-text .master-body-title{
+  font-weight: 700;
+  font-style: Bold;
+  font-size: 30px;
+  color: rgba(47, 46, 46, 1);
+}
+.master-body-detail{
+ margin: 10px 0px;
+}
+.master-body-detail p{
+font-weight: 400;
+font-size: 16px;
+}
+.master-body-detail a{
+text-decoration: underline;
+color: blue;
+}
+.master-body-footer{
+
+}
+.master-body-date{
+margin-bottom: 10px;
+gap: 10px;
+}
+.master-date{
+   font-weight: 700;
+  font-style: Bold;
+  font-size: 18px;
+  color: rgba(47, 46, 46, 1);
+  text-transform: capitalize;
+}
+
+.master-date-title{
+text-transform: capitalize;
+}
+.master-btn{
+    display: block;
+    text-transform: uppercase;
+    background-color: var(--secondary1);
+    padding: 10px 20px;
+    border-radius: 50px;
+    width: fit-content;
+    cursor: pointer;
+    border-bottom: 2px solid rgba(0, 8, 98, 1);
+    margin-top: 20px;
+    color: rgba(0, 0, 0, 1);
+}
+.master-container-details{
+  margin-top: 100px;
+}
+.master-details{
+  padding: 10px 40px;
+}
+.master-details-title{
+  font-weight: 600;
+  font-style: Bold;
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: 40px;
+  color: rgba(47, 46, 46, 1);
+}
+.master-image-flex{
+display: flex;
+align-items: center;
+justify-content: center;
+}
+.master-details-image{
+  width: 600px;
+  height: 400px;
+}
+.master-details-image img{
+  object-position: top;
+}
+.master-details-body{
+  padding: 30px 0px;
+}
+@media(max-width : 750px){
+  .master-body-flex{
+    flex-direction: column;
+    gap: 20px;
+  }
+  .master2{
+    flex-direction: column-reverse !important;
+  }
+  .master-body-image{
+    width: 100%;
+  }
+  .master-body-text {
+      width: 100%;
+  }
+
+  .master-body-flex {
+      justify-content: unset !important;
+      padding: 40px 20px;
+  }
+
+  .master-body-image {
+      width: 100%;
+      height: 250px;
+      overflow: hidden;
+  }
+  .master-body-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+  }
+
+  .master-body-text .master-body-title {
+      font-weight: 700;
+      font-style: Bold;
+      font-size: 18px;
+  }
+  .master-btn{
+    font-size: 12px;
+  }
+
+  .master-details{
+    padding: 10px 30px;
+  }
+  .master-details-title{
+  font-size: 18px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  }
+  .master-details-image{
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+  }
+}
+/* ================================ master course and master details end ================ */

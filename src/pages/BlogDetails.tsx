@@ -24,9 +24,10 @@ function BlogDetails() {
       <Header/> 
       <div className="blog-details-con">
 
-        <div className="blog-details-header">
+        <div className="back-header">
           <NavLink to="#">
-            <FaArrowLeft /> Back
+            <FaArrowLeft /> 
+            <div className="back-title">back</div>
           </NavLink>
         </div>
          

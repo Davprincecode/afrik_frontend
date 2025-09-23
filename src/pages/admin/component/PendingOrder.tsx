@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { IoIosArrowBack, IoIosArrowDown, IoIosArrowForward } from 'react-icons/io';
 import invImg from '../../../assets/images/inventoryImg.png'
 import { CiSearch } from 'react-icons/ci';
-import { RiDeleteBinLine } from 'react-icons/ri';
+import { RiDeleteBinLine, RiFolderDownloadLine } from 'react-icons/ri';
 import { MdDelete, MdOutlineArrowDropDownCircle, MdOutlineDelete } from 'react-icons/md';
 import { userAuth } from '../../context/AuthContext';
 import { tr } from 'framer-motion/client';
 import ButtonPreloader from '../../../component/ButtonPreloader';
 import AdminPagination from './AdminPagination';
+import { AiOutlineEye } from 'react-icons/ai';
 
 interface orderInterface {
     id : string;
@@ -29,55 +30,109 @@ interface Meta {
 }
 
 function PendingOrder() {
+
     const [meta, setMeta] = useState<Meta | null>(null);
     const [activeOrderId, setActiveOrderId] = useState<string | null>(null);
     const handleToggleDropdown = (id: string) => {
     setActiveOrderId(prev => (prev === id ? null : id));
     };
+    const [activeViewId, setActiveViewId] = useState<string | null>(null);
+    const handleToggleView = (id: string) => {
+    setActiveViewId(prev => (prev === id ? null : id));
+    };
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState<boolean>(false);
     const [order, setOrder] = useState<orderInterface[]>([]);
-
     const{baseUrl, token} = userAuth();
 
-useEffect(() => {
-  getData(page)
-  }, []);
+    useEffect(() => {
+      getData(page)
+      }, []);
 
-  const getData = async (pageNumber : number) => {
+    const getData = async (pageNumber : number) => {
+        setLoading(true);
+            const myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            myHeaders.append("Authorization", token);
+            const requestOptions: RequestInit = {
+                method: "GET",
+                headers: myHeaders,
+                redirect: "follow"
+            };
+            try {
+                const response = await fetch(`${baseUrl}/get-order/pending?page=${pageNumber}`, requestOptions);
+                if (!response.ok) {
+                const errorResponse = await response.json();
+                throw new Error(errorResponse.message);
+                }
+                const result = await response.json();   
+                setOrder(result.data);
+                setMeta(result.meta);
+                setLoading(false);
+            } catch (error) {
+                
+            }
+    }
+
+    const confirmOrder = async (id: string) => {
       setLoading(true);
-          const myHeaders = new Headers();
-          myHeaders.append("Content-Type", "application/json");
-          myHeaders.append("Authorization", token);
-          const requestOptions: RequestInit = {
-              method: "GET",
-              headers: myHeaders,
-              redirect: "follow"
-          };
-          try {
-              const response = await fetch(`${baseUrl}/get-order/pending?page=${pageNumber}`, requestOptions);
-              if (!response.ok) {
-              const errorResponse = await response.json();
-              throw new Error(errorResponse.message);
+              const myHeaders = new Headers();
+              myHeaders.append("Content-Type", "application/json");
+              myHeaders.append("Authorization", token);
+              const requestOptions: RequestInit = {
+                  method: "GET",
+                  headers: myHeaders,
+                  redirect: "follow"
+              };
+              try {
+                  const response = await fetch(`${baseUrl}/get-order/confirmed/${id}/pending`, requestOptions);
+                  if (!response.ok) {
+                  const errorResponse = await response.json();
+                  throw new Error(errorResponse.message);
+                  }
+                  const result = await response.json();   
+                  setOrder(result.data);
+                  setMeta(result.meta);
+                  setLoading(false);
+              } catch (error) {
+                  
               }
-              const result = await response.json();  
-              setOrder(result.data);
-              setMeta(result.meta);
-              setLoading(false);
-          } catch (error) {
-              
-          }
-  }
+      setActiveOrderId(null); // Close dropdown
+    };
 
-const confirmOrder = async (id: string) => {
-  await fetch(`/api/orders/${id}/confirm`, { method: 'POST' });
-  setActiveOrderId(null); // Close dropdown
-};
+    const cancelOrder = async (id: string) => {
+       setLoading(true);
+              const myHeaders = new Headers();
+              myHeaders.append("Content-Type", "application/json");
+              myHeaders.append("Authorization", token);
+              const requestOptions: RequestInit = {
+                  method: "GET",
+                  headers: myHeaders,
+                  redirect: "follow"
+              };
+              try {
+                  const response = await fetch(`${baseUrl}/get-order/cancelled/${id}/pending`, requestOptions);
+                  if (!response.ok) {
+                  const errorResponse = await response.json();
+                  throw new Error(errorResponse.message);
+                  }
+                  const result = await response.json();   
+                  setOrder(result.data);
+                  setMeta(result.meta);
+                  setLoading(false);
+              } catch (error) {
+                  
+              }
+      setActiveOrderId(null); // Close dropdown
+    };
 
-const cancelOrder = async (id: string) => {
-  await fetch(`/api/orders/${id}/cancel`, { method: 'POST' });
-  setActiveOrderId(null); // Close dropdown
-};
+    const downLoadOrder = (id : string) => {
+
+}
+const viewOrder = (id : string) => {
+
+}
+
   return (
     <div>
           <div className="admin-header-form  flex-center gap-10 justification-between">
@@ -121,44 +176,60 @@ loading && (
                         
                         </tr>
 
-                      {
-                        order.map((item, index)=>(
-                            <tr key={index}>
-                             <td>{index + 1}</td>
-                             <td>{item.orderId}</td>
-                             <td>{item.orderDate}</td>
-                             <td>{item.customerName}</td>
-                             <td>{item.total}</td>
-                             <td><div className="paid">paid</div></td>
-                             <td><div className="orderpending flex-center gap-10" onClick={() => handleToggleDropdown(item.id)}>{item.orderStatus} <IoIosArrowDown /></div></td>
-                              <td className='action-arrow'><MdOutlineArrowDropDownCircle /></td>
+                            {order.map((item, index) => (
+                            <React.Fragment key={item.id}>
+                            <tr>
+                            <td>{index + 1}</td>
+                            <td>{item.orderId}</td>
+                            <td>{item.orderDate}</td>
+                            <td>{item.customerName}</td>
+                            <td>{item.total}</td>
+                            <td><div className="paid">paid</div></td>
+                            <td  style={{position : 'relative'}} >
+                            <div className="orderpending flex-center gap-10" 
+
+                            onClick={() => handleToggleDropdown(item.id)}
+                            >
+                            {item.orderStatus} <IoIosArrowDown />
+                            </div>
+
+                            {activeOrderId === item.id && (
+                            <div className="confirmPop">
+                            <div className='performAction'>
+                              <div className="confirmAction  statusAction"  onClick={() => confirmOrder(item.orderId)}>Confirm Order</div>
+                              <div className="cancelAction statusAction"  onClick={() => cancelOrder(item.orderId)}>Cancel Order</div>
+                            </div>
+                            </div>
+                            )}
+
+                            </td>
+
+
+                            <td className='action-arrow'   style={{position : 'relative'}}  onClick={() => handleToggleView(item.id)}>
+                            <MdOutlineArrowDropDownCircle />
+
+                            {activeViewId === item.id && (
+                            <div className="viewPop">
+                            <div className='viewAction'>
+                              <div className="confirmView  statusAction"  onClick={() => confirmOrder(item.id)}>
+                                <AiOutlineEye /> View Order Details
+                              </div>
+                              <div className="cancelView statusAction"  onClick={() => cancelOrder(item.id)}>
+                                <RiFolderDownloadLine /> Download Order Details
+                              </div>
+                            </div>
+                            </div>
+                            )}
+
+                            </td>
+
                             </tr>
-                        ))
-                        
-                      }
+
+                            </React.Fragment>
+                            ))}
+
                        
 
-{/* {activeOrderId === order.id && (
-      <tr>
-        <td colSpan={5} style={{ position: 'relative' }}>
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: '100%',
-                      left: 0,
-                      background: '#f9f9f9',
-                      padding: '10px',
-                      border: '1px solid #ccc',
-                      boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                      zIndex: 1000,
-                    }}
-                  >
-            <button onClick={() => confirmOrder(order.id)}>✅ Confirm Order</button>
-            <button onClick={() => cancelOrder(order.id)}>❌ Cancel Order</button>
-          </div>
-        </td>
-      </tr>
- )} */}
 
                     </table>
             </div>

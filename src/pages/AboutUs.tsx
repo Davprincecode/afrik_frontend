@@ -12,7 +12,9 @@ import aboutHeader from '../assets/images/aboutus.png'
 import abtHeader from '../assets/images/foundersign.png'
 import founder from '../assets/images/founder.jpg'
 import founderDesk from '../assets/images/founderNamedesk.png'
-import founderMobile from '../assets/images/founderNameMobile.png'
+import aboutfooter2 from '../assets/images/aboutfooter2.jpg'
+import aboutfooter3 from '../assets/images/aboutfooter3.jpg'
+import aboutfooter4 from '../assets/images/aboutfooter4.jpg'
 import { useLocation } from 'react-router-dom'
 
 
@@ -50,36 +52,36 @@ function AboutUs() {
                     </div>
                     <p>
                         <div className="loveIntro">
+                            <h4>Loveafrik</h4>
                             <p>
-                                Loveafrik is a style-forward fashion, lifestyle, and image consulting company dedicated to helping individuals and brands express their most authentic and elevated selves. Rooted in a deep understanding of personality, preferences, and perception, we guide our clients in curating a powerful and polished image that aligns with how they wish to be seen. 
+                               Loveafrik is not just a fashion, lifestyle and image consulting company, it’s a movement of elegance, confidence, and cultural pride.
                             </p>   
                         </div>
                         
                          <div className="loveIntro">
                             <p>
-                                We specialize in uncovering and refining each client’s unique style identity, whether the goal is confident, elegant, playful, luxurious, or effortlessly classy, while staying true to their originality. 
-                                Our signature services include:
+                               We believe style is more than appearance. It’s a statement of identity, influence, and impact. Rooted in African creativity yet globally attuned, we craft powerful style stories that merge authenticity with aspiration.
                             </p>  
                          </div>
                         
-                         <ul className='dataList'>
-                            <li>• Colour and style consultation</li>
-                            <li>• Personal styling (for both men and women)</li>
-                            <li>• Fashion styling for photoshoots, magazines, film and TV advertising</li>
-                            <li>• Costume design for film and media</li>
-                            <li>• Wardrobe management</li>
-                            <li>• Image and perception consulting.</li>
-                         </ul>
+                        <div className="loveIntro">
+                            <p>Our expertise spans:</p>
+                            <ul className='dataList'>
+                                <li> <span> • Colour & Style Consultation</span> – bringing out your signature look.</li>
+                                <li><span>• Personal Styling (Men & Women)</span> – tailored to lifestyle, profession, and vision.</li>
+                                <li><span>• Fashion Styling</span> – for photoshoots, magazines, film, and TV.</li>
+                                <li><span>• Costume Design</span> – for film and media.</li>
+                                <li><span>• Wardrobe Management</span> – curation for everyday excellence.</li>
+                                <li><span>• Image & Perception Consulting</span> – aligning how you are seen with who you are.</li>
+                            </ul>
+                         </div>
+
                         <div className="abt">
                             <p>
-                               We also offer dynamic trainings and workshops tailored for individuals, aspiring stylists, creative professionals, corporate executives, leaders, and organizations, equipping them with the tools to project influence, presence, and purpose through style.
+                              Through trainings, workshops, and executive consultations, we also empower professionals, leaders, and aspiring stylists to project influence and presence through style.
                             </p>  
                          </div> 
-                       <div className="abt2">
-                        <p>
-                            At Loveafrik, style is more than appearance, it’s a statement of identity, intention, and impact.
-                        </p>
-                       </div>
+                     
                     </p>
                 </div>
 
@@ -95,7 +97,7 @@ function AboutUs() {
                      
                      <h2>our vision</h2>
                      <p>
-                        Our vision is to build a globally recognized African brand at the forefront of image consulting and affordable luxury, shaping how the world sees style, confidence, and cultural elegance, one client and community at a time.
+                        To build a globally recognized African brand at the forefront of image consulting and affordable luxury, reshaping how the world sees style, confidence, and cultural elegance.
                      </p>
                 </div>
 
@@ -107,7 +109,7 @@ function AboutUs() {
                      
                      <h2>our mission</h2>
                      <p>
-                        Our mission is to redefine the narrative of luxury fashion and personal image, one client at a time, by delivering value-driven creativity, tailored styling, and innovative apparel that merge quality, individuality, and accessibility.
+                        To redefine luxury fashion and personal image one client at a time through value-driven creativity, tailored styling, and innovative apparel that merge quality, individuality, and accessibility.
                      </p>
                 </div>
 
@@ -119,17 +121,39 @@ function AboutUs() {
                      
                      <h2>our core value</h2>
                      <p className='core'>
-                       ►Excellence
+                      <span>Excellence  –</span> 
+                       in every detail.
                      </p>
                      <p className='core'>
-                       ►Innovation
+                     <span>Innovation –</span> 
+                      driven by creativity and strategy.
                      </p>
                      <p className='core'>
-                        ►Value driven
+                      <span>Value –</span>  
+                      meaningful, lasting impact.
                      </p>
                      <p className='core'>
-                       ►Team work
+                     <span>Team work –</span>  
+                       collaboration that inspires.
                      </p>
+                </div>
+{/* ► */}
+              </div>
+
+              <div className="about-promise">
+                
+                <h2>THE LOVEAFRIK PROMISE</h2>
+
+                <div>
+                <p>
+                    With Temitope’s visionary leadership and global expertise, Loveafrik is more than a style house, it’s a partner in helping you step into every room with power, elegance, and authenticity.
+                </p>
+                </div>
+
+                <div>
+                <p>
+                    Because when you look like your best self, you lead, inspire, and influence like your best self.
+                </p>
                 </div>
 
               </div>
@@ -161,81 +185,62 @@ function AboutUs() {
                   
                        
                        <div>
-                       Temitope Adesola Owoeye is more than a stylist and image consultant, she’s a storyteller, a transformation guide, and a passionate believer in the power of presence. Through fashion, style, and strategic image-building, she helps individuals and brands show up as their most confident, compelling, and authentic selves.
+                       At the heart of Loveafrik is Temitope Adesola Owoeye, one of Nigeria’s few globally certified image consultants and a visionary in the world of fashion, style, and transformation.
                        </div>
 
                        <div>
-                        For nearly a decade, Temi as she’s fondly called has worked behind the scenes and in the spotlight, shaping perceptions and refining identities across industries. From one client to another, she brings a rare blend of creative flair and strategic insight that turns “just clothes” into powerful tools for influence and expression.
+                        More than a stylist, Temi is a storyteller, transformation guide, and architect of presence. For nearly a decade, she has helped leaders, creatives, and global brands unlock the power of authentic image, showing up with confidence, credibility, and cultural elegance.
                        </div>
 
                        <div>
-                        Her portfolio speaks volumes. She’s styled and consulted for respected figures such as Fela Durotoye (former Nigerian presidential candidate), Tara Fela-Durotoye (founder, House of Tara), Tobi Bakre (Big Brother Naija), international basketball star Evelyn Akhator, and tech entrepreneur Nnamdi Ezeigbo (Slot Ltd) for the Tecno Phantom Xtraordinaire Show to mention a few.
-                       </div>
-                       <div>
-                        Temi’s work with multinationals like Diageo, Pernod Ricard, Nestlé, Unilever, MTN, Coca-Cola and numerous Nigerian brands has played a critical role in crafting compelling brand narratives for television commercials, editorial campaigns, and more. Her keen eye and creative direction ensure that every visual tells the right story boldly and beautifully.
+                        Her work transcends “just clothes.” With a rare blend of creative brilliance and strategic insight, Temi shapes identities, redefines perceptions, and turns style into a tool for influence, leadership, and impact.
                        </div>
 
+                       <div>
+                        Temi has worked with multinational giants including Diageo, Pernod Ricard, Nestlé, Unilever, MTN, Coca-Cola, and a host of respected Nigerian brands.
+                       </div>
+                         <div>
+                            Her portfolio includes styling and consulting for visionaries and change-makers:
+                            <ul className='dataList'>
+                                <li>• Fela Durotoye (Presidential candidate, leadership coach)</li>
+                                <li>• Tara Fela-Durotoye (Founder, House of Tara)</li>
+                                <li>• Tobi Bakre (Big Brother Naija star)</li>
+                                <li>• Evelyn Akhator (International basketball athlete)</li>
+                                <li>• Nnamdi Ezeigbo (Tech entrepreneur, Slot Ltd)</li>
+                            </ul>
+                         </div>
+                       <div>
+                           Her creative direction has graced television commercials, editorial campaigns, and international showcases, ensuring that every visual tells a bold, compelling story.
+                       </div>                       
                 </div>
             </div>
              </div>
 
 
 
-        <div className="aboutUsFounderFlex">
+            <div className="aboutUsFounderFlex">
 
-        <div className="aboutUsImgCon">
-            <div className="aboutImage">
-                <img src={ceomixpic} />
-            </div>
-        </div>
-
-        <div className="aboutUsFounderBody">
-            <p>
-                <div className="loveFounderIntro">
-                    <div className="introFounder1">
-                        <p>
-                          In the world of fashion and film, she’s no stranger. Temi has contributed to the success of standout fashion brands and worked alongside styling teams on high-profile Nollywood sets, including Kemi Adetiba’s King of Boys and To Kill a Monkey (Netflix). From wardrobe design to full styling direction, her influence is visible in the aesthetics and impact of countless visual projects. 
-                        </p>
-                    </div>
-                    <div className="introFounder2">
-                        <p>
-                            But beyond the accolades and the brands, what truly defines Temi is her heart. She loves God, thrives in meaningful conversations, and draws inspiration from travel, literature, creativity, and human connection. Every client she works with isn’t just a project, they’re a purpose.
-                        </p>
-                    </div>
-                    <div className="introFounder3">
-                        <p>
-                            Temi is certified by the South African Image Academy and mentored by Aletté Winckler, Africa’s highest-certified image consultant. These foundations have shaped her unique philosophy: that personal image isn’t just about looking good, it’s about becoming whole. It’s about stepping into the version of yourself that aligns with your purpose, communicates your value, and leaves a lasting impression.
-                            
-                        </p>
-                    </div>
-                    <div className="introFounder4">
-                        <p>
-                            Today, Temi is on a mission to help more people, from emerging leaders to established voices uncover their personal style, refine their public image, and tell stories that move hearts and open doors.
-                        </p>
-                    </div>
-                    <div className="introFounder5">
-                        <p>
-                            If you’re ready to move beyond surface-level style and unlock the power of intentional image-building, Temi is the partner you’ve been looking for.
-                        </p>
-                    </div>
-                    <div className="introFounder6">
-                        <p>
-                           She won’t just show you how to look confident, influential, and put-together, she’ll help you become it.
-                        </p>
-                    </div>
-                    <div className="introFounder7">
-                        <p>
-                            Your transformation begins with one intentional step.
-                            Let’s take it together.
-                            Book your session today. I can’t wait to walk this journey with you.
-                        </p>
-                    </div>
-
+            <div className="aboutUsFooterImg">
+                <div className="aboutFooterImage">
+                    <img src={ceomixpic} />
                 </div>
-                
-            </p>
-        </div>
-        </div>
+                <div className="aboutFooterImage">
+                    <img src={aboutfooter2} />
+                </div>
+                <div className="aboutFooterImage">
+                    <img src={aboutfooter3} />
+                </div>
+                <div className="aboutFooterImage">
+                    <img src={aboutfooter4} />
+                </div>
+            </div>
+
+        
+
+
+
+
+            </div>
 
 
          </div>

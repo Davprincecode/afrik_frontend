@@ -12,42 +12,39 @@ function Consultant() {
   return (
     <div className='consultant-con-wrapper pageNav'>
       <Header/>
+      <div className="consultant-con">
 
+          <div className="consultant">
 
-      
-              <div className="consultant-con">
+              <div className="consultant-detail">
+                  <div className="consultant-icon"><FaCalendarAlt /></div>
 
-                  <div className="consultant">
+                  <p className='schedule-name'>Schedule a</p>
 
-                      <div className="consultant-detail">
-                          <div className="consultant-icon"><FaCalendarAlt /></div>
+                  <h2 className='consultant-name'>Consultation</h2>
 
-                          <p className='schedule-name'>Schedule a</p>
-
-                          <h2 className='consultant-name'>Consultation</h2>
-
-                          <div className="clock flex-center"><CiClock1 /> <h2>30 min</h2></div>
-                          
-                          <div className="consultant-bod">Lorem ipsum dolor sit amet,
-                               consectetur adipisicing elit. 
-                              Distinctio maxime consequuntur
-                               culpa possimus inventore itaque incidunt doloremque aliquid sequi id!
-                               </div>
-                      </div>
-
-                        <div className="consultant-calendar">
-                          <BookingCalendars/>
-                          <div className="nextBtn">
-                            <NavLink to="#">
-                              next
-                            </NavLink>
-                          </div>
+                  <div className="clock flex-center"><CiClock1 /> <h2>30 min</h2></div>
+                  
+                  <div className="consultant-bod">Lorem ipsum dolor sit amet,
+                        consectetur adipisicing elit. 
+                      Distinctio maxime consequuntur
+                        culpa possimus inventore itaque incidunt doloremque aliquid sequi id!
                         </div>
-
-
-                    </div>
               </div>
-<Footer />
+
+                <div className="consultant-calendar">
+                  <BookingCalendars/>
+                  <div className="nextBtn">
+                    <NavLink to="#">
+                      next
+                    </NavLink>
+                  </div>
+                </div>
+
+
+            </div>
+      </div>
+      <Footer />
     </div>
   )
 }

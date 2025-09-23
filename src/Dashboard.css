@@ -478,15 +478,70 @@ cursor: pointer;
     text-transform: capitalize;
     border-radius: 5px;
 }
+.confirmPop{
+    position: absolute;
+    bottom: -80px;
+    background: rgba(255, 255, 255, 1);
+    opacity: 1;
+    border-radius: 10px;
+    padding: 10px 10px 20px 10px;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.15);
+    z-index: 1;
+    width: 150px;
+}
+.viewPop{
+    position: absolute;
+    top: 41px;
+    left: -550%;
+    background: rgba(255, 255, 255, 1);
+    opacity: 1;
+    border-radius: 10px;
+    padding: 10px 20px 40px 20px;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.15);
+    z-index: 1;
+    width: 244px;
+    color: rgba(0, 0, 0, 1);
+}
+.confirmView{
+margin-bottom: 20px;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+.cancelView{
+display: flex;
+align-items: center;
+gap: 10px;
+}
+.confirmView svg, .cancelView svg{
+  font-size: 20px;
+}
+.performAction{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+}
+.confirmAction{
+color: rgba(15, 96, 255, 1);
+}
+.cancelAction{
+  color: red;
+}
+.performAction .statusAction {
+  cursor: pointer;
+}
 .order-pending{
     color: #FFC600;
     text-transform: capitalize;
 }
 .orderconfirm{
     background: #0F60FF80;
+    color: black;
     cursor: pointer;
  padding: 2px;
- color: white;
+
     padding: 5px;
     text-transform: capitalize;
     border-radius: 5px;
@@ -511,18 +566,18 @@ cursor: pointer;
 .ordershipped{
 background: #0F60FF;
 cursor: pointer;
- padding: 2px;
+ padding: 4px;
  color: white;
-    padding: 5px;
-    text-transform: capitalize;
-    border-radius: 5px;
+text-transform: capitalize;
+border-radius: 5px;
+text-align: center;
 }
 .orderdelivered{
     background: #28C76F;
     cursor: pointer;
- padding: 2px;
- color: white;
-    padding: 5px;
+    padding: 4px;
+    color: white;
+    text-align: center;
     text-transform: capitalize;
     border-radius: 5px;
 }

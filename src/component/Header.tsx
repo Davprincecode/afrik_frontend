@@ -92,7 +92,7 @@ const navSub = () =>{
                             childNav && (
                               <ul className={`child-nav ${isScrolled ? 'scrolled' : ''}`}>
                                           <li><NavLink to="/consultant">book consultation</NavLink></li>
-                                          <li><NavLink to="#">courses/masterclasses</NavLink></li>
+                                          <li><NavLink to="/master-course">courses/masterclasses</NavLink></li>
                               </ul> 
                             )
                           }

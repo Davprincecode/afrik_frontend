@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { IoIosArrowBack, IoIosArrowDown, IoIosArrowForward } from 'react-icons/io';
 import invImg from '../../../assets/images/inventoryImg.png'
 import { CiSearch } from 'react-icons/ci';
-import { RiDeleteBinLine } from 'react-icons/ri';
+import { RiDeleteBinLine, RiFolderDownloadLine } from 'react-icons/ri';
 import { MdDelete, MdOutlineArrowDropDownCircle, MdOutlineDelete } from 'react-icons/md';
 import { userAuth } from '../../context/AuthContext';
 import ButtonPreloader from '../../../component/ButtonPreloader';
 import AdminPagination from './AdminPagination';
+import { AiOutlineEye } from 'react-icons/ai';
 
 
 interface orderInterface {
@@ -30,23 +31,26 @@ interface Meta {
 }
 
 function ConfirmOrder() {
-   const [meta, setMeta] = useState<Meta | null>(null);
-     const [activeOrderId, setActiveOrderId] = useState<string | null>(null);
-        const handleToggleDropdown = (id: string) => {
-        setActiveOrderId(prev => (prev === id ? null : id));
-        };
-        const [loading, setLoading] = useState<boolean>(false);
-        const [order, setOrder] = useState<orderInterface[]>([]);
-        const[page, setPage] = useState<number>(1);
+    const [meta, setMeta] = useState<Meta | null>(null);
+    const [activeOrderId, setActiveOrderId] = useState<string | null>(null);
+    const handleToggleDropdown = (id: string) => {
+    setActiveOrderId(prev => (prev === id ? null : id));
+    };
+    const [activeViewId, setActiveViewId] = useState<string | null>(null);
+    const handleToggleView = (id: string) => {
+    setActiveViewId(prev => (prev === id ? null : id));
+    };
+    const [loading, setLoading] = useState<boolean>(false);
+    const [order, setOrder] = useState<orderInterface[]>([]);
+    const[page, setPage] = useState<number>(1);
+    const{baseUrl, token} = userAuth();
     
-        const{baseUrl, token} = userAuth();
     
-    
- useEffect(() => {
-         getData(page)
-         }, []);
+    useEffect(() => {
+            getData(page)
+            }, []);
  
-         const getData = async (pageNumber : number) => {
+    const getData = async (pageNumber : number) => {
              setLoading(true);
                  const myHeaders = new Headers();
                  myHeaders.append("Content-Type", "application/json");
@@ -57,7 +61,7 @@ function ConfirmOrder() {
                      redirect: "follow"
                  };
                  try {
-                     const response = await fetch(`${baseUrl}/get-order/pending?page=${pageNumber}`, requestOptions);
+                     const response = await fetch(`${baseUrl}/get-order/confirmed?page=${pageNumber}`, requestOptions);
                      if (!response.ok) {
                      const errorResponse = await response.json();
                      throw new Error(errorResponse.message);
@@ -70,7 +74,40 @@ function ConfirmOrder() {
                      
                  }
          }
-            
+         
+const confirmOrder = async (id: string) => {
+               setLoading(true);
+          const myHeaders = new Headers();
+          myHeaders.append("Content-Type", "application/json");
+          myHeaders.append("Authorization", token);
+          const requestOptions: RequestInit = {
+              method: "GET",
+              headers: myHeaders,
+              redirect: "follow"
+          };
+          try {
+              const response = await fetch(`${baseUrl}/get-order/shipped/${id}/confirmed`, requestOptions);
+              if (!response.ok) {
+              const errorResponse = await response.json();
+              throw new Error(errorResponse.message);
+              }
+              const result = await response.json();   
+              setOrder(result.data);
+              setMeta(result.meta);
+              setLoading(false);
+          } catch (error) {
+              
+          }
+  setActiveOrderId(null); // Close dropdown
+};
+
+const downLoadOrder = (id : string) => {
+
+}
+const viewOrder = (id : string) => {
+
+}
+
   return (
     <div>
           <div className="admin-header-form  flex-center gap-10 justification-between">
@@ -112,20 +149,57 @@ function ConfirmOrder() {
                         
                         </tr>
 
-                        <tr>
-                        <td>1</td>
-                        <td>#564563</td>
-                        <td>21/08/2025</td>
-                        <td>joseph welder</td>
-                        <td>₦23242</td>
-                        <td>
-                            <div className="paid">paid</div> 
-                        </td>
-                        <td>
-                            <div className="orderpending flex-center gap-10">pending <IoIosArrowDown /></div>
-                        </td>
-                        <td className='action-arrow'><MdOutlineArrowDropDownCircle /></td>
-                        </tr>
+                                                  {order.map((item, index) => (
+                                                  <React.Fragment key={item.id}>
+                                                  <tr>
+                                                  <td>{index + 1}</td>
+                                                  <td>{item.orderId}</td>
+                                                  <td>{item.orderDate}</td>
+                                                  <td>{item.customerName}</td>
+                                                  <td>{item.total}</td>
+                                                  <td><div className="paid">paid</div></td>
+                                                  <td  style={{position : 'relative'}} >
+                                                  <div className="orderconfirm flex-center gap-10" 
+                      
+                                                  onClick={() => handleToggleDropdown(item.id)}
+                                                  >
+                                                  {item.orderStatus} <IoIosArrowDown />
+                                                  </div>
+                      
+                                                  {activeOrderId === item.id && (
+                                                  <div className="confirmPop">
+                                                  <div className='performAction'>
+                                                    <div className="  statusAction"  onClick={() => confirmOrder(item.orderId)}>Set to shipped</div>
+                                                   
+                                                  </div>
+                                                  </div>
+                                                  )}
+                      
+                                                  </td>
+                      
+                      
+                                                  <td className='action-arrow'   style={{position : 'relative'}}  onClick={() => handleToggleView(item.id)}>
+                                                  <MdOutlineArrowDropDownCircle />
+                      
+                                                  {activeViewId === item.id && (
+                                                  <div className="viewPop">
+                                                  <div className='viewAction'>
+                                                    <div className="confirmView  statusAction"  onClick={() => viewOrder(item.id)}>
+                                                      <AiOutlineEye /> View Order Details
+                                                    </div>
+                                                    <div className="cancelView statusAction"  onClick={() => downLoadOrder(item.id)}>
+                                                      <RiFolderDownloadLine /> Download Order Details
+                                                    </div>
+                                                  </div>
+                                                  </div>
+                                                  )}
+                      
+                                                  </td>
+                      
+                                                  </tr>
+                      
+                                                  </React.Fragment>
+                                                  ))}
 
                        
                     </table>
