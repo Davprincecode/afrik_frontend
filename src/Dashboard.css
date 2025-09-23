@@ -192,6 +192,8 @@ font-size: 25px;
 cursor: pointer;
 text-transform: capitalize;
 font-size: 16px;
+ padding: 0px 40px;
+border-right: 1px solid #3C3C432E;
 font-weight: 600;
 }
 .mainHeaderActive{
@@ -628,7 +630,8 @@ font-size: 15px;
 }
 
 .inv-con{
-
+align-items: center;
+text-transform: capitalize;
 }
 .inv{
 width: 100px;

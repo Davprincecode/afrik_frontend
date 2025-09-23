@@ -5854,6 +5854,7 @@ width: 58%;
   font-style: Bold;
   font-size: 30px;
   color: rgba(47, 46, 46, 1);
+  text-transform: uppercase;
 }
 .master-body-detail{
  margin: 10px 0px;
@@ -5861,6 +5862,9 @@ width: 58%;
 .master-body-detail p{
 font-weight: 400;
 font-size: 16px;
+}
+.master-body-detail p::first-letter {
+  text-transform: uppercase;
 }
 .master-body-detail a{
 text-decoration: underline;
@@ -5909,6 +5913,7 @@ text-transform: capitalize;
   text-align: center;
   margin-bottom: 40px;
   color: rgba(47, 46, 46, 1);
+  text-transform: capitalize;
 }
 .master-image-flex{
 display: flex;

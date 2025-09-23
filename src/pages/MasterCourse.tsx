@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../component/Header'
 import img1 from '../assets/images/masterclass1.jpg'
 import img2 from '../assets/images/masterclass2.jpg'
@@ -6,8 +6,77 @@ import { NavLink } from 'react-router-dom'
 import Footer from '../component/Footer'
 import service from '../assets/images/coursebck.png'
 import { FaArrowLeft } from 'react-icons/fa'
+import { userAuth } from './context/AuthContext'
+import Pagination from '../component/Pagination'
+import ButtonPreloader from '../component/ButtonPreloader'
+
+
+interface Meta {
+  current_page: number;
+  per_page: number;
+  total: number;
+  last_page: number;
+  next_page_url: string | null;
+  prev_page_url: string | null;
+}
+
+interface CourseIntern {
+      courseDescription: string;
+      courseId: string;
+      courseImage: string;
+      coursePrice: number;
+      courseTitle: string;
+      courseType: string;
+      discountPrice: string;
+      earlyBirdEndDate: string;
+      earlyBirdPrice: string;
+      earlyBirdStartDate: string;
+      endDate: string;
+      startDate: string;
+      pin : boolean;
+      status: string;
+}
 
 function MasterCourse() {
+
+        const [courses, setCourses] = useState<CourseIntern[]>([]);
+        const [page, setPage] = useState<number>(1);
+        const [meta, setMeta] = useState<Meta | null>(null);
+        const {baseUrl, token} = userAuth();
+        const[loading, setLoading] = useState<boolean>(false);
+
+
+        // course
+        useEffect(() => {
+            getData(page)
+            }, []);
+    
+      const getData = async (pageNumber : number) => {
+          setLoading(true);
+              const myHeaders = new Headers();
+              myHeaders.append("Content-Type", "application/json");
+              myHeaders.append("Authorization", token);
+              const requestOptions: RequestInit = {
+                  method: "GET",
+                  headers: myHeaders,
+                  redirect: "follow"
+              };
+              try {
+                  const response = await fetch(`${baseUrl}/active-course?page=${pageNumber}`, requestOptions);
+                  if (!response.ok) {
+                  const errorResponse = await response.json();
+                  throw new Error(errorResponse.message);
+                  }
+                  const result = await response.json();  
+                 
+                 setCourses(result.data);
+                  setMeta(result.meta);
+                  setLoading(false);
+              } catch (error) {
+                  
+              }
+      }
+
   return (
     <div className='master-con-wrapper pageNav'>
           <Header/>
@@ -42,121 +111,146 @@ function MasterCourse() {
 
              <div className="master-body">
 
-                   <div className="master-body-flex master1 flex">
-
-                        <div className="master-body-image">
-                              <img src={img2} />
+                 {
+                    loading && (
+                        <div className="cart-prealoader">
+                            <ButtonPreloader/>
                         </div>
 
-                        <div className="master-body-text">
-                            <div className="master-body-title">
-                                ABC OF IMAGE CONSULTING
-                            </div>
-                            <div className="master-body-detail">
-                                <p>
-                                    Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur,
-                                     adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore
-                                      et dolore magnam aliquam quaerat voluptatem. Neque porro quisquam est,
-                                       qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit,
-                                        sed quia non numquam eius modi tempo <a href="">Read more..</a> 
-                                </p>
-                            </div>
-                            <div className="master-body-footer">
+                    ) 
+                    }
+                    
+                     {
+                        courses.map((item, index)=> (
+                           (index + 1) % 2 === 0 ? (
+                                <div className="master-body-flex master2 flex">
 
-                                <div className="master-body-date flex-center">
-                                    <div className="master-date">date:</div>
-
-                                    <div className="master-date-title flex-center">
-                                        <p>17th aug 2025</p>
-                                        <span>-</span>
-                                        <p>1st sep 2025</p>
+                                <div className="master-body-text">
+                                    <div className="master-body-title">
+                                        {item.courseTitle}
                                     </div>
-                                    
-                                </div>
+                                    <div className="master-body-detail">
+                                        <p>
+                                            {item.courseDescription.split(' ').length > 50
+                                            ? item.courseDescription.split(' ').slice(0, 49).join(' ') + '...' + ' '
+                                            : item.courseDescription + '...' + ' '}
 
-                                <div className="master-body-date flex-center">
-                                    <div className="master-date">venue:</div>
-                                    <div className="master-date-title flex-center">
-                                        <p>online</p>
+                                            <NavLink to={`/master-course-details/${item.courseId}`}> 
+                                               Read more..
+                                            </NavLink>
+                                        </p>
                                     </div>
-                                </div>
+                                    <div className="master-body-footer">
 
-                                <div className="master-body-date flex-center">
-                                    <div className="master-date">price:</div>
-                                    <div className="master-date-title flex-center">
-                                        <p><span>₦</span>300,000</p>
-                                    </div>
-                                    
-                                </div>
+                                        <div className="master-body-date flex-center">
+                                            <div className="master-date">date:</div>
 
-                                <div className="master-btn">
-                                    enrol now
-                                </div>
+                                            <div className="master-date-title flex-center">
+                                                <p>{item.startDate}</p>
+                                                <span>-</span>
+                                                <p>{item.endDate}</p>
+                                            </div>
+                                            
+                                        </div>
+
+                                        <div className="master-body-date flex-center">
+                                            <div className="master-date">venue:</div>
+                                            <div className="master-date-title flex-center">
+                                                <p>{item.courseType}</p>
+                                            </div>
+                                        </div>
+
+                                        <div className="master-body-date flex-center">
+                                            <div className="master-date">price:</div>
+                                            <div className="master-date-title flex-center">
+                                                <p><span>₦</span>{item.coursePrice.toLocaleString()}</p>
+                                            </div>
+                                            
+                                        </div>
+
+                                        <NavLink to={`/master-course-payment/${item.courseId}`} className="master-btn">
+                                            enrol now
+                                        </NavLink>
 
 
-                            </div>
-                        </div>
-
-                   </div>
-
-{/* ================================================================================== */}
-                   <div className="master-body-flex master2 flex">
-
-                        <div className="master-body-text">
-                            <div className="master-body-title">
-                                ABC OF IMAGE CONSULTING
-                            </div>
-                            <div className="master-body-detail">
-                                <p>
-                                    Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur,
-                                     adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore
-                                      et dolore magnam aliquam quaerat voluptatem. Neque porro quisquam est,
-                                       qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit,
-                                        sed quia non numquam eius modi tempo <a href="">Read more..</a> 
-                                </p>
-                            </div>
-                            <div className="master-body-footer">
-
-                                <div className="master-body-date flex-center">
-                                    <div className="master-date">date:</div>
-
-                                    <div className="master-date-title flex-center">
-                                        <p>17th aug 2025</p>
-                                        <span>-</span>
-                                        <p>1st sep 2025</p>
-                                    </div>
-                                    
-                                </div>
-
-                                <div className="master-body-date flex-center">
-                                    <div className="master-date">venue:</div>
-                                    <div className="master-date-title flex-center">
-                                        <p>online</p>
                                     </div>
                                 </div>
 
-                                <div className="master-body-date flex-center">
-                                    <div className="master-date">price:</div>
-                                    <div className="master-date-title flex-center">
-                                        <p><span>₦</span>300,000</p>
-                                    </div>
-                                    
+                                    <div className="master-body-image">
+                                        <img src={item.courseImage} />
                                 </div>
 
-                                <NavLink to="#" className="master-btn">
-                                    enrol now
-                                </NavLink>
+                                </div>
+                           )   : (
+                                <div className="master-body-flex master1 flex">
+
+                                <div className="master-body-image">
+                                        <img src={item.courseImage} />
+                                </div>
+
+                                <div className="master-body-text">
+                                    <div className="master-body-title">
+                                        {item.courseTitle}
+                                    </div>
+                                    <div className="master-body-detail">
+                                        <p>
+                                            {item.courseDescription.split(' ').length > 50
+                                            ? item.courseDescription.split(' ').slice(0, 49).join(' ') + '...' + ' '
+                                            : item.courseDescription + '...' + ' '}
+
+                                            <NavLink to={`/master-course-details/${item.courseId}`}> 
+                                               Read more..
+                                            </NavLink>
+                                        </p>
+                                    </div>
+                                    <div className="master-body-footer">
+
+                                        <div className="master-body-date flex-center">
+                                            <div className="master-date">date:</div>
+
+                                            <div className="master-date-title flex-center">
+                                                <p>{item.startDate}</p>
+                                                <span>-</span>
+                                                <p>{item.endDate}</p>
+                                            </div>
+                                            
+                                        </div>
+
+                                        <div className="master-body-date flex-center">
+                                            <div className="master-date">venue:</div>
+                                            <div className="master-date-title flex-center">
+                                                <p>{item.courseType}</p>
+                                            </div>
+                                        </div>
+
+                                        <div className="master-body-date flex-center">
+                                            <div className="master-date">price:</div>
+                                            <div className="master-date-title flex-center">
+                                                <p><span>₦</span>{item.coursePrice.toLocaleString()}</p>
+                                            </div>
+                                            
+                                        </div>
+
+                                        <NavLink to={`/master-course-payment/${item.courseId}`} className="master-btn">
+                                            enrol now
+                                        </NavLink>
 
 
-                            </div>
-                        </div>
+                                    </div>
+                                </div>
 
-                         <div className="master-body-image">
-                              <img src={img1} />
-                        </div>
+                                </div>
+                           )
+                        )) 
+                     }
+                 
 
-                   </div>
-{/* ================================================== */}
+
+
+            <div className="shop-pagination">
+                {meta && <Pagination meta={meta} onPageChange={setPage} />}
+            </div>
+
              </div>
 
           </div>

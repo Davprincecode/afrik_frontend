@@ -46,6 +46,7 @@ import AdminConsultant from "./pages/admin/AdminConsultant";
 import BookingCalendars from "./pages/BookingCalendars";
 import MasterCourse from "./pages/MasterCourse";
 import MasterCourseDetail from "./pages/MasterCourseDetail";
+import MasterCoursePayment from "./pages/MasterCoursePayment";
 
 
 
@@ -113,7 +114,8 @@ const {baseUrl} = userAuth();
           <Route path="/consultant-details" element={<ConsultantDetails/>} />
 
            <Route path="/master-course" element={<MasterCourse/>} />
-          <Route path="/master-course-details" element={<MasterCourseDetail/>} />
+          <Route path="/master-course-details/:id" element={<MasterCourseDetail/>} />
+          <Route path="/master-course-payment/:id" element={<MasterCoursePayment/>} />
 
 
 

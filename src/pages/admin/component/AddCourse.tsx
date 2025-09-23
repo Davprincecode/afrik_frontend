@@ -139,7 +139,7 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                           <label>Course Price</label>
                           <input
                             name="coursePrice"
-                            type="text"
+                            type="number"
                             placeholder="Enter course price"
                             value={coursePrice}
                             onChange={(e) => setCoursePrice(parseInt(e.target.value))}

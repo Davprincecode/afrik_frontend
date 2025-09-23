@@ -105,7 +105,20 @@ function AllCourse() {
                   }
 
           };
+
           const handlePin = async (id: string) => {
+
+            const findCourse = courses.find(course => course.courseId === id);
+
+            const pinnedCount = courses.filter(course => course.pin).length;
+
+            if(pinnedCount == 3 && !findCourse?.pin){
+              toast.error("Only 3 Post Can Be Pinned");
+              return
+            }else{
+
+            }
+            
                   setLoading(true);
                   const myHeaders = new Headers();
                   myHeaders.append("Content-Type", "application/json");
@@ -199,7 +212,7 @@ function AllCourse() {
                 <th>sn</th>
                 <th>title</th>
                 <th>brief</th>
-                <th>pin post(1/3)</th>
+                <th>pin post ({courses.filter(course => course.pin).length}/3)</th>
                 <th>status</th>
                 <th>action</th>
             </tr>
@@ -311,7 +324,7 @@ function AllCourse() {
     
         <div className="adminPagination">
                {meta && <AdminPagination meta={meta} onPageChange={setPage} />}
-            </div>
+        </div>
     </div>
   )
 }

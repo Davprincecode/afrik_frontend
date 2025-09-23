@@ -13,7 +13,8 @@ function Courses() {
       const handleToggle = () => {
         setIsActive(!isActive);
       };
-    
+
+      
   return (
     <div>
         
@@ -35,8 +36,10 @@ function Courses() {
                 {
                     activeTab == 'add new' ? (
                         <AddCourse/>
-                    ) : activeTab == 'add new' ?(
+                    ) : activeTab == 'purchases' ? (
+
                             <PurchaseCourse/>
+
                     ) : (
                         <AllCourse/>
                     )

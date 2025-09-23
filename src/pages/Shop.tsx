@@ -375,13 +375,8 @@ function Shop() {
     </div>
 
     <div className="shop-pagination">
-
-
         {meta && <Pagination meta={meta} onPageChange={setPage} />}
-
-
     </div>
-
 
     {
     !signin && (

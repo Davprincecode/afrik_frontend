@@ -37,44 +37,44 @@ interface Meta {
 }
 
 const ShopTransaction: React.FC<PaymentInterface> = ({ paymentFunction }) =>{
-const [meta, setMeta] = useState<Meta | null>(null);
-const [page, setPage] = useState(1);
-  const [isActive, setIsActive] = useState(false);
-   const [loading, setLoading] = useState<boolean>(false);
-      const [order, setOrder] = useState<orderInterface[]>([]);
-      const{baseUrl, token} = userAuth();
-      
-      
-              useEffect(() => {
-              getData(page)
-              }, []);
-      
-              const getData = async (pageNumber : number) => {
-                  setLoading(true);
-                      const myHeaders = new Headers();
-                      myHeaders.append("Content-Type", "application/json");
-                      myHeaders.append("Authorization", token);
-                      const requestOptions: RequestInit = {
-                          method: "GET",
-                          headers: myHeaders,
-                          redirect: "follow"
-                      };
-                      try {
-                          const response = await fetch(`${baseUrl}/get-order?page=${pageNumber}`, requestOptions);
-                          
-                          
-                          if (!response.ok) {
-                          const errorResponse = await response.json();
-                          throw new Error(errorResponse.message);
-                          }
-                          const result = await response.json();  
-                          setOrder(result.data);
-                          setMeta(result.meta);
-                          setLoading(false);
-                      } catch (error) {
-                           setLoading(false);
-                      }
-              }
+            const [meta, setMeta] = useState<Meta | null>(null);
+            const [page, setPage] = useState(1);
+            const [isActive, setIsActive] = useState(false);
+            const [loading, setLoading] = useState<boolean>(false);
+            const [order, setOrder] = useState<orderInterface[]>([]);
+            const{baseUrl, token} = userAuth();
+
+
+            useEffect(() => {
+            getData(page)
+            }, []);
+
+            const getData = async (pageNumber : number) => {
+            setLoading(true);
+            const myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            myHeaders.append("Authorization", token);
+            const requestOptions: RequestInit = {
+            method: "GET",
+            headers: myHeaders,
+            redirect: "follow"
+            };
+            try {
+            const response = await fetch(`${baseUrl}/get-transaction?page=${pageNumber}`, requestOptions);
+
+
+            if (!response.ok) {
+            const errorResponse = await response.json();
+            throw new Error(errorResponse.message);
+            }
+            const result = await response.json();  
+            setOrder(result.data);
+            setMeta(result.meta);
+            setLoading(false);
+            } catch (error) {
+            setLoading(false);
+            }
+            }
     return (
       <div>
          
