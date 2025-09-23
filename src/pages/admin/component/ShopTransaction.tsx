@@ -120,7 +120,6 @@ const [page, setPage] = useState(1);
                         <th>date</th>
                         <th>Customer</th>
                         <th>total</th>
-                        <th>payment</th>
                         <th>status</th>
                         <th>action</th>
                         <th></th>
@@ -135,29 +134,15 @@ const [page, setPage] = useState(1);
                              <td>{item.orderDate}</td>
                              <td>{item.customerName}</td>
                              <td>{item.total}</td>
-                             <td><div className="paid">paid</div></td>
-                             <td><div className="orderpending flex-center gap-10">{item.orderStatus} <IoIosArrowDown /></div></td>
-                              <td className='action-arrow'><MdOutlineArrowDropDownCircle /></td>
+                             <td><div className={item.orderStatus}>{item.orderStatus}</div></td>
+                              <td className='action-arrow viewDetails'>view details</td>
                             </tr>
                         ))
                         
                       }
 
                        
-                        <tr>
-                        <td>1</td>
-                        <td>#564563</td>
-                        <td>21/08/2025</td>
-                        <td>joseph welder</td>
-                        <td>₦23242</td>
-                        <td>
-                           cc
-                        </td>
-                        <td>
-                            <div className="order-pending">pending</div>
-                        </td>
-                        <td className='action'>view details</td>
-                        </tr>
+                       
 
                     </table>
             </div>

@@ -298,21 +298,15 @@ function Shop() {
                             <div className="filter-input"><input type="checkbox"/></div>
                             <p>XXXL</p>
                         </div>
-                        
                         </div>
-
                     </div>
-
                   </div>
-
                 </div>
-
                 <div className="product-ads"><img src={ads}/></div>
-                <div className="product-ads"><img src={ads}/></div>
+                {/* <div className="product-ads"><img src={ads}/></div> */}
             </div>
              
              <div className="flex-center product-con">
-                
              {
                 loading ? (
                     <div className="productPreloader">

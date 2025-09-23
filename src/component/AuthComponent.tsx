@@ -116,7 +116,7 @@ const AuthComponent: React.FC<authComponentInterface> = ({authAction, setAuthAct
       }
       const result = await response.json();
   
-      loginAuth(result.data.userId, result.data.name, result.data.email,  result.data.address1, result.data.address2, result.data.phoneNumber1, result.data.phoneNumber2, result.data.city, result.data.city, result.data.postalCode, result.data.profileImage, result.data.role,  result.token);
+      loginAuth(result.data.userId, result.data.name, result.data.email,  result.data.address1, result.data.address2, result.data.phoneNumber1, result.data.phoneNumber2, result.data.city, result.data.city, result.data.postalCode,  result.data.profileImage, 0, 0, result.data.role,  result.token);
       setSubNav(false);
       toast.success("Signup in successfully!");
         if(result.data.role == "admin"){
@@ -156,7 +156,7 @@ const AuthComponent: React.FC<authComponentInterface> = ({authAction, setAuthAct
         throw new Error(errorResponse.message);
       }
       const result = await response.json();
-       loginAuth(result.data.userId, result.data.name, result.data.email,  result.data.address1, result.data.address2, result.data.phoneNumber1, result.data.phoneNumber2, result.data.city, result.data.city, result.data.postalCode, result.data.profileImage, result.data.cart, result.data.notification, result.data.role,  result.token);
+       loginAuth(result.data.userId, result.data.name, result.data.email,  result.data.address1, result.data.address2, result.data.phoneNumber1, result.data.phoneNumber2, result.data.city, result.data.city, result.data.postalCode, result.data.profileImage, result.cart, result.data.notification, result.data.role,  result.token);
        setSubNav(false);
        toast.success("Logged in successfully!");
         if(result.data.role == "admin"){

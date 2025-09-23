@@ -582,6 +582,51 @@ text-align: center;
     border-radius: 5px;
 }
 
+
+
+.pending{
+  font-family: Inter;
+color: #FFC600;
+text-transform: capitalize;
+font-weight: 600;
+font-size: 15px;
+} 
+.confirmed{
+  font-family: Inter;
+color: #0F60FF;
+text-transform: capitalize;
+font-weight: 600;
+font-size: 15px;
+} 
+.shipped{
+  font-family: Inter;
+text-transform: capitalize;
+color: #28C76F;
+font-weight: 600;
+font-size: 15px;
+} 
+.delivered{
+  font-family: Inter;
+color: #28C76F;
+text-transform: capitalize;
+font-weight: 600;
+font-size: 15px;
+} 
+
+.cancelled, .refunded{
+  font-family: Inter;
+color : #FF0000;
+text-transform: capitalize;
+font-weight: 600;
+font-size: 15px;
+}
+.viewDetails{
+  color: #0F60FF;
+  font-size: 15px;
+  text-transform: capitalize;
+  font-weight: 400;
+}
+
 .inv-con{
 
 }
