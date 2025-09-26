@@ -5,21 +5,32 @@ import PurchaseCourse from './PurchaseCourse';
 import AllCourse from './AllCourse';
 import AdminTopHeader from '../../../component/AdminTopHeader';
 import SideNavAdmin from '../../../component/SideNavAdmin';
-import Message from '../Message';
 import ComposeMessage from '../../../component/ComposeMessage';
+import MessageInbox from './MessageInbox';
+import MessageFavourite from './MessageFavourite';
+import MessageUnread from './MessageUnread';
+import MessageSent from './MessageSent';
+import { FaEnvelope, FaPlus } from 'react-icons/fa';
+import { HiOutlineEnvelope, HiOutlinePaperAirplane, HiOutlineStar } from 'react-icons/hi2';
+import { FiPlus } from 'react-icons/fi';
 
 
-const headers = ['all', 'add new', 'purchases'];
+const headers = [
+  { label: 'inbox', icon: <FaEnvelope /> },
+  { label: 'unread', icon: <HiOutlineEnvelope /> },
+  { label: 'sent', icon: <HiOutlinePaperAirplane /> },
+  { label: 'favourite', icon: <HiOutlineStar /> },
+];
 
 function MessageComponent() {
 
-     const [activeTab, setActiveTab] = useState('all');
+     const [activeTab, setActiveTab] = useState('inbox');
       const [isActive, setIsActive] = useState(false);
      const {baseUrl, token} = userAuth();
       const handleToggle = () => {
         setIsActive(!isActive);
       };   
-      const [authAction, setAuthAction] = useState<boolean>(true);   
+      const [authAction, setAuthAction] = useState<boolean>(false);   
   return (
     <div  className='admin-dashboard'>
 
@@ -30,15 +41,29 @@ function MessageComponent() {
 
            <div className="mainBody">
         
-          <div className="admin-shop-header">
-                <div className="admin-header-list flex-center gap-10">
-                    {headers.map((label) => (
-                            <div
-                            key={label}
-                            className={`header-list ${activeTab === label ? 'header-list-active' : ''}`}
-                            onClick={() => setActiveTab(label)}
-                            >
-                            {label}
+          <div className="admin-shop-header message-shop-header">
+
+                <div className="create-compose" onClick={() => setAuthAction(!authAction)}>
+                  <FiPlus />
+                  compose
+                </div>
+
+                <div className="message-header-list admin-header-list flex-center gap-10">
+                    {headers.map((label, index) => (
+                            <div className={`label-flex ${activeTab === label.label ? 'header-list-active' : ''}`}>
+
+                              <div className="label-icon">
+                                  {label.icon}
+                              </div>
+
+                                <div
+                                key={index}
+                                className={`header-list`}
+                                onClick={() => setActiveTab(label.label)}
+                                >
+                                {label.label}
+                                </div>
+                            
                             </div>
                         ))}
                 </div>
@@ -46,14 +71,15 @@ function MessageComponent() {
 
         <div className="course-container">
                 {
-                    activeTab == 'add new' ? (
-                        <AddCourse/>
-                    ) : activeTab == 'purchases' ? (
-
-                            <PurchaseCourse/>
-
+                 
+                    activeTab == 'unread' ? (
+                        <MessageUnread />
+                    ) : activeTab == 'sent' ? (
+                        <MessageSent />
+                    ) : activeTab == 'favourite' ? (
+                        <MessageFavourite />
                     ) : (
-                        <Message/>
+                        <MessageInbox />
                     )
                 }
         </div>
