@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import ButtonPreloader from '../../../component/ButtonPreloader';
 import { h2 } from 'framer-motion/client';
 import { FiUploadCloud } from 'react-icons/fi';
+import CategoryProductPop from '../../../component/CategoryProductPop';
 
 
 interface tagInterface {
@@ -60,6 +61,7 @@ function AddProduct() {
     const [sizePrice, setSizePrice] = useState<number>(0);
     const [stock, setStock] = useState<string>('');
     const [color, setColor] = useState<string>('');
+    const[authAction, setAuthAction] = useState<boolean>(false);
     // ==============================================
 
 
@@ -214,7 +216,7 @@ function AddProduct() {
                   throw new Error(errorResponse.message);
                   }
                   const result = await response.json(); 
-                   setCategory(result);
+                   setCategory(result.data);
                    setLoading(false);
               } catch (error) {
                   
@@ -268,11 +270,12 @@ const handleAddSubProduct = () => {
 const handleTagged = (tagName: string) => {
   setTagged([...tagged, { tagName }]);
 };
+const removeTag = (indexToRemove: number) => {
+  setTagged(prev => prev.filter((_, index) => index !== indexToRemove));
+};
 
 const handleSelectedCategory = (data : number) => {
-    setCategoryId(data);
-    console.log(data);
-    
+    setCategoryId(data);  
 }
 
 const handleSubProductChange = <K extends keyof SubProduct>(
@@ -330,7 +333,6 @@ const handleSubFileChange =  (index: number, file: File | null) => {
           {/* Categories */}
           <div className="prod-category">
             <div className="admin-prod-title">Categories</div>
-                
                 {
                     loading ? (
                     <ButtonPreloader/>
@@ -350,7 +352,7 @@ const handleSubFileChange =  (index: number, file: File | null) => {
                     )
                     
                 }
-            <div className="create-new">Create New</div>
+            <div className="create-new"  onClick={() => setAuthAction(!authAction)}>Create New</div>
           </div>
         </div>
 
@@ -371,22 +373,29 @@ const handleSubFileChange =  (index: number, file: File | null) => {
             <div className="admin-input">
               <label>Add Tags</label>
               <input
-                type="text"
-                placeholder="Enter Tag Name"
-                
-              />
+              type="text"
+              placeholder="Enter Tag Name"
+              onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+              handleTagged(e.currentTarget.value);
+              }
+              }}
+            />
+
             </div>
             <div className="addTags flex-center gap-10">
               {
-              tag.map((tag, index) => (
-                <div key={index} className="addTag flex-center gap-10" onClick={() => handleTagged(tag.tagName)}>
+              tagged.map((tag, index) => (
+                <div key={index} className="addTag flex-center gap-10">
                   <p>{tag.tagName}</p>
-                  <RxCross2  />
+                  <RxCross2 onClick={() => removeTag(index)} />
                 </div>
               ))
               }
             </div>
-            <div className="create-new">Create New</div>
+
+            {/* <div className="create-new">Create New</div> */}
+
           </div>
         </div>
         <div className="previewImage">
@@ -561,6 +570,10 @@ const handleSubFileChange =  (index: number, file: File | null) => {
             )}
         </div>
       </div>
+
+
+       <CategoryProductPop authAction={authAction} setAuthAction={setAuthAction} setCategory={setCategory}/>
+
     </div>
   );
 }

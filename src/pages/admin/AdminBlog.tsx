@@ -1,59 +1,55 @@
-import React, { useState } from 'react'
-
-import { LexicalComposer } from '@lexical/react/LexicalComposer';
-import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
-import { ContentEditable } from '@lexical/react/LexicalContentEditable';
-import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
-import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
-import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
-
-const theme = {
-  paragraph: 'editor-paragraph',
-  text: {
-    bold: 'editor-bold',
-    italic: 'editor-italic',
-    underline: 'editor-underline',
-  },
-};
-
-const editorConfig = {
-  namespace: 'BlogEditor',
-  theme,
-  onError(error: any) {
-    console.error('Lexical error:', error);
-  },
-  nodes: [],
-};
+import React, { useState, useEffect} from 'react'
+import AdminTopHeader from '../../component/AdminTopHeader'
+import SideNavAdmin from '../../component/SideNavAdmin'
+import Courses from './component/Courses';
+import Schedule from './component/Schedule';
+import AllBlog from './component/AllBlog';
+import BlogEditor from './component/BlogEditor';
 
 
+const headers = ['all blog posts', 'add blog post'];
+function AdminConsultant() {
+    const [activeTab, setActiveTab] = useState('all blog posts'); 
+  return (
+     <div className='admin-dashboard'>
+        <AdminTopHeader />
+
+         <div className="flex mainWrapper">
+           <SideNavAdmin/> 
+
+           <div className="mainBody">
+               <div className="mainHeader flex-center justification-center">
+                    <div className="mainHeaderRouteCon flex-center justification-between">
+                        {headers.map((label) => (
+                            <div
+                            key={label}
+                            className={`mainHeaderRoute ${activeTab === label ? 'mainHeaderActive' : ''}`}
+                            onClick={() => setActiveTab(label)}
+                            >
+                            {label}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                  <div className="mainBodyDetails">
+                    {
+                        activeTab == 'all blog posts' ? (
+                              <AllBlog />
+                        ) : (
+                            <BlogEditor />
+                        )
+                    }
+                   
+                </div>
 
 
-
-function AdminBlog() {
-
-
- const [content, setContent] = useState('');
-
-  const handleSubmit = () => {
-    console.log('Blog content:', content);
-    // You can send this to a backend or save it locally
-  };
-
- return (
-     <LexicalComposer initialConfig={editorConfig}>
-      <div className="editor-container">
-        <RichTextPlugin
-          contentEditable={<ContentEditable className="editor-input" />}
-          placeholder={<div className="editor-placeholder">Start writing your blog...</div>}
-          ErrorBoundary={LexicalErrorBoundary}
-        />
-        <HistoryPlugin />
-        <AutoFocusPlugin />
-      </div>
-    </LexicalComposer>
-  );
-
-
+           </div>
+           </div>
+           
+           </div>
+    
+  )
 }
 
-export default AdminBlog
+export default AdminConsultant

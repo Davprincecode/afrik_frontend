@@ -8,6 +8,7 @@ import { userAuth } from '../../context/AuthContext';
 import ButtonPreloader from '../../../component/ButtonPreloader';
 import AdminPagination from './AdminPagination';
 import { AiOutlineEye } from 'react-icons/ai';
+import OrderDetails from '../../../component/OrderDetails';
 
 
 interface orderInterface {
@@ -44,6 +45,7 @@ function ConfirmOrder() {
     const [order, setOrder] = useState<orderInterface[]>([]);
     const[page, setPage] = useState<number>(1);
     const{baseUrl, token} = userAuth();
+     const [authAction, setAuthAction] = useState<boolean>(false);
     
     
     useEffect(() => {
@@ -184,7 +186,7 @@ const viewOrder = (id : string) => {
                                                   {activeViewId === item.id && (
                                                   <div className="viewPop">
                                                   <div className='viewAction'>
-                                                    <div className="confirmView  statusAction"  onClick={() => viewOrder(item.id)}>
+                                                    <div className="confirmView  statusAction"  onClick={() => setAuthAction(!authAction)}>
                                                       <AiOutlineEye /> View Order Details
                                                     </div>
                                                     <div className="cancelView statusAction"  onClick={() => downLoadOrder(item.id)}>
@@ -208,6 +210,8 @@ const viewOrder = (id : string) => {
             <div className="adminPagination">
                {meta && <AdminPagination meta={meta} onPageChange={setPage} />}
             </div>
+
+            <OrderDetails  authAction={authAction} setAuthAction={setAuthAction}/>
     </div>
   )
 }

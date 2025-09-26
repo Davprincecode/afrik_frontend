@@ -8,6 +8,7 @@ import ButtonPreloader from '../../../component/ButtonPreloader';
 import AdminPagination from './AdminPagination';
 import { userAuth } from '../../context/AuthContext';
 import { AiOutlineEye } from 'react-icons/ai';
+import OrderDetails from '../../../component/OrderDetails';
 
 
 interface orderInterface {
@@ -44,6 +45,7 @@ function ShippedOrder() {
     };
         const [activeViewId, setActiveViewId] = useState<string | null>(null);
     const {baseUrl, token} = userAuth();
+    const [authAction, setAuthAction] = useState<boolean>(false);
 
     useEffect(() => {
             getData(page)
@@ -100,8 +102,8 @@ const confirmOrder = async (id: string) => {
 };
 
 const cancelOrder = async (id: string) => {
-  await fetch(`/api/orders/${id}/cancel`, { method: 'POST' });
-  setActiveOrderId(null); // Close dropdown
+//   await fetch(`/api/orders/${id}/cancel`, { method: 'POST' });
+//   setActiveOrderId(null); // Close dropdown
 };
 
 const downLoadOrder = (id : string) => {
@@ -184,7 +186,7 @@ const viewOrder = (id : string) => {
                             {activeViewId === item.id && (
                             <div className="viewPop">
                             <div className='viewAction'>
-                              <div className="confirmView  statusAction"  onClick={() => confirmOrder(item.id)}>
+                              <div className="confirmView  statusAction"   onClick={() => setAuthAction(!authAction)}>
                                 <AiOutlineEye /> View Order Details
                               </div>
                               <div className="cancelView statusAction"  onClick={() => cancelOrder(item.id)}>
@@ -208,6 +210,8 @@ const viewOrder = (id : string) => {
             <div className="adminPagination">
                {meta && <AdminPagination meta={meta} onPageChange={setPage} />}
             </div>
+
+            <OrderDetails  authAction={authAction} setAuthAction={setAuthAction}/>
     </div>
   )
 }

@@ -21,7 +21,13 @@ const Font = Quill.import("formats/font");
 Font.whitelist = ["arial","georgia","times-new","courier-new","tahoma","verdana"];
 Quill.register(Font, true);
 
-export default function WordLikeEditor(): JSX.Element {
+type Props = {
+  editorContent: string;
+  setEditorContent: React.Dispatch<React.SetStateAction<string>>;
+};
+
+const WordLikeEditor: React.FC<Props> = (editorContent, setEditorContent) => {
+  
   const quillRef = useRef<any>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [activeTab, setActiveTab] = useState<"home"|"insert"|"layout">("home");
@@ -258,6 +264,8 @@ export default function WordLikeEditor(): JSX.Element {
     editor.format("font", fontFamily);
   }, [fontSize, fontFamily]);
 
+  
+
   return (
     <div className="editor-container">
       {/* Ribbon Tabs */}
@@ -393,6 +401,8 @@ export default function WordLikeEditor(): JSX.Element {
       <ReactQuill
         ref={quillRef}
         theme="snow"
+        value={editorContent}
+        onChange={setEditorContent}
         modules={{ toolbar: false, history: { delay: 1000, maxStack: 100 } }}
         formats={[
           "bold","italic","underline","strike","list","bullet","indent","link","image",
@@ -403,3 +413,5 @@ export default function WordLikeEditor(): JSX.Element {
     </div>
   );
 }
+
+export default WordLikeEditor;

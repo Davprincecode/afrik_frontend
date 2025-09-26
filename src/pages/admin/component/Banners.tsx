@@ -11,26 +11,29 @@ import ImagePreviewModal from '../../../component/ImagePreviewModal'
 interface galleryInterface{
 id : number,
 image :  string,
+galleryType : string,
 status :  string,
 }
 
 const Banner = () => {
 
     const {baseUrl, token} = userAuth();
+    const[galleryDesktopImg, setGalleryDesktopImg] = useState<galleryInterface[]>([]);
+    const[galleryDesktopSideImg, setGallerydesktopSideImg] = useState<galleryInterface[]>([]);
+    const[galleryMobileImg, setGalleryMobileImg] = useState<galleryInterface[]>([]);
     const[galleryImg, setGalleryImg] = useState<galleryInterface[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [image, setImage] = useState<File | null>(null);
     const [showPopup, setShowPopup] = useState(false);
     const [selectedId, setSelectedId] = useState<number | null>(null);
-    const [currentIndex, setCurrentIndex] = useState<number | null>(null);
-
-    
+    const [currentIndex, setCurrentIndex] = useState<number | null>(null);    
+    const [confirmDelete, setConfirmDelete] = useState<string>('');
 
    useEffect(() => {
      getImage()
    }, [])
    
-   const handleFileChange = async(event: React.ChangeEvent<HTMLInputElement>) => {
+   const handleFileChange = async(event: React.ChangeEvent<HTMLInputElement>, galleryType : string) => {
           setLoading(true);
         const imagefile = event.target.files?.[0] || null;
                 if (!imagefile) {
@@ -38,8 +41,8 @@ const Banner = () => {
                     return;
                 }
             const formdata = new FormData();
-            formdata.append('image', imagefile);
-
+           formdata.append('image', imagefile);
+           formdata.append('galleryType', galleryType);
             const myHeaders = new Headers();
             myHeaders.append("Authorization", token);
             const requestOptions: RequestInit = {
@@ -54,8 +57,16 @@ const Banner = () => {
                 const errorResponse = await response.json();
                 throw new Error(errorResponse.message);
                 }
-                const result = await response.json();    
-                  setGalleryImg(prev => [...prev, result.data]);
+                const result = await response.json();
+                if(galleryType == "desktopHeroBanner"){ 
+                    setGalleryDesktopImg(prev => [...prev, result.data]);
+                }
+                if(galleryType == "desktopSideBanner"){
+                    setGallerydesktopSideImg(prev => [...prev, result.data]);
+                }
+                if(galleryType == "mobileHeroBanner"){
+                  setGalleryMobileImg(prev => [...prev, result.data]);
+                }
                  setLoading(false); 
                  toast.success("Data Upload Successfully");       
             } catch (error) {
@@ -79,9 +90,14 @@ const Banner = () => {
                 const errorResponse = await response.json();
                 throw new Error(errorResponse.message);
                 }
-                const result = await response.json();
-                
-                 setGalleryImg(result.data);
+                const result: { data: galleryInterface[] } = await response.json();
+
+                  const desktopHeroBanners = result.data.filter(item => item.galleryType === "desktopHeroBanner");
+                  const desktopSideBanners = result.data.filter(item => item.galleryType === "desktopSideBanner");
+                  const mobileHeroBanners = result.data.filter(item => item.galleryType === "mobileHeroBanner"); 
+                 setGalleryDesktopImg(desktopHeroBanners);
+                 setGalleryMobileImg(desktopSideBanners);
+                 setGallerydesktopSideImg(mobileHeroBanners);
                  setLoading(false);
             } catch (error) {
                 
@@ -89,17 +105,21 @@ const Banner = () => {
   }
 
   const formatImagePath = (fullPath: string): string => {
+    
+    
         const keyword = "images/";
         const startIndex = fullPath.indexOf(keyword);
+        
         if (startIndex === -1) return "Invalid path";
         const sliceStart = startIndex + keyword.length;
-        const shortSegment = fullPath.slice(sliceStart, sliceStart + 15);
+        const shortSegment = fullPath.slice(sliceStart, sliceStart + 7);
         return `${shortSegment}....`;
    };
 
 
- const openModal = (index: number) =>{
-   setCurrentIndex(index); 
+ const openModal = (index: number, galleryType : string) =>{
+   setCurrentIndex(index);
+   setConfirmDelete(galleryType); 
   } 
 
  const closeModal = () =>{
@@ -118,9 +138,10 @@ const Banner = () => {
     }
   };
 
-   const handleDeleteClick = (id: number) => {
+   const handleDeleteClick = (id: number, galleryType : string) => {
     setSelectedId(id);
     setShowPopup(true);
+    setConfirmDelete(galleryType); 
   };
 
   const handleDeleteConfirm = async(id: number | string) => {
@@ -143,8 +164,15 @@ const Banner = () => {
                 }
 
                 const result = await response.json();
-
-                 setGalleryImg(prev => prev.filter(item => item.id !== id));
+                 if(confirmDelete == "desktopHeroBanner"){ 
+                    setGalleryDesktopImg(prev => prev.filter(item => item.id !== id));
+                }
+                if(confirmDelete == "desktopSideBanner"){
+                    setGallerydesktopSideImg(prev => prev.filter(item => item.id !== id));
+                }
+                if(confirmDelete == "mobileHeroBanner"){
+                  setGalleryMobileImg(prev => prev.filter(item => item.id !== id));
+                }
                 setShowPopup(false);
                 setSelectedId(null);
                 setLoading(false);
@@ -158,9 +186,11 @@ const Banner = () => {
 
   return (
   <div>
-            <h2>website gallery images</h2>
 
+    <div className="gallery-container-wrapper">
 
+      <div className="gallery-top">
+                    <h2>Desktop Hero Banner</h2>
                       <div className="uploadGallery">
                          <div className="uploadWrapper">
                              {
@@ -169,7 +199,7 @@ const Banner = () => {
                                 ) : (
                                     <>
                                     <label htmlFor="file-input">Add Files</label>
-                                        <input id="file-input" type="file" onChange={handleFileChange} />
+                                        <input id="file-input" type="file" onChange={(e) => handleFileChange(e, "desktopHeroBanner")} />
                                     <p>or drag and drop files</p> 
                                     </>
                                 )
@@ -178,45 +208,156 @@ const Banner = () => {
 
                           <div className="flex-center justification-between">
                              <div className="imgCounter">
-                                50/100
+                                0/10
                              </div>
-                             <NavLink to="#" className='view'>view all</NavLink>
+                             
                           </div>
                       </div>
 
                       <div className="mainGallery  flex-center">
 
                         {
-                            galleryImg.map((value, index) => (
-                                <div className="flex-center gap-10" key={index}>
-                                    <IoEyeOutline className='eye' onClick={() => openModal(index)}/>
+                            galleryDesktopImg.map((value, index) => (
+                                <div className="image-list-con flex-center gap-10" key={index}>
+                                    <IoEyeOutline className='eye' onClick={() => openModal(index,  "desktopHeroBanner")}/>
                                     <p>{formatImagePath(value.image)}</p>
-                                <RiDeleteBin6Line className='delete' onClick={() => handleDeleteClick(value.id)}/>
+                                <RiDeleteBin6Line className='delete' onClick={() => handleDeleteClick(value.id,  "desktopHeroBanner")}/>
                             </div>
                             ))
                         }
                         
                       </div>
 
-                    {currentIndex !== null && (
+                    
+
+                   
+
+       </div>
+
+         <div className="gallery-container-second-wrapper">
+
+                  {/* ------------------------------------------------ */}
+                <div className="gallery-bottom-1">
+                            
+                              <div className="uploadGallery">
+                                <h2>Desktop Side Banner </h2>
+                                <div className="uploadWrapper">
+                                    {
+                                        loading ? (
+                                            <ButtonPreloader/>
+                                        ) : (
+                                            <>
+                                            <label htmlFor="file-desktop-side-input">Add Files</label>
+                                                <input id="file-desktop-side-input" type="file" onChange={(e) => handleFileChange(e, "desktopSideBanner")} />
+                                            <p>or drag and drop files</p> 
+                                            </>
+                                        )
+                                    }
+                                </div>
+
+                                  <div className="flex-center justification-end">
+                                    <div className="imgCounter">
+                                        0/10
+                                    </div>
+                                  </div>
+                               </div>
+
+                              <div className="mainGallery  flex-center">
+
+                                {
+                                    galleryDesktopSideImg.map((value, index) => (
+                                        <div className="image-list-con flex-center gap-10" key={index}>
+                                            <IoEyeOutline className='eye' onClick={() => openModal(index, "desktopSideBanner")}/>
+                                            <p>{formatImagePath(value.image)}</p>
+                                        <RiDeleteBin6Line className='delete' onClick={() => handleDeleteClick(value.id, "desktopSideBanner")}/>
+                                    </div>
+                                    ))
+                                }
+                                
+                              </div>
+
+                </div>
+              {/* ------------------------------------------------ */}
+
+              {/* =========================================== */}
+                <div className="gallery-bottom-2">
+                    <h2>Mobile Hero Banner</h2>
+                      <div className="uploadGallery">
+                         <div className="uploadWrapper">
+                             {
+                                loading ? (
+                                    <ButtonPreloader/>
+                                ) : (
+                                    <>
+                                    <label htmlFor="file-mobile-input">Add Files</label>
+                                        <input id="file-mobile-input" type="file" onChange={(e) => handleFileChange(e, "mobileHeroBanner")} />
+                                    <p>or drag and drop files</p> 
+                                    </>
+                                )
+                             }
+                         </div>
+
+                          <div className="flex-center justification-between">
+                             <div className="imgCounter">
+                                0/10
+                             </div>
+                             
+                          </div>
+                      </div>
+
+                      <div className="mainGallery  flex-center">
+
+                        {
+                            galleryMobileImg.map((value, index) => (
+                                <div className="image-list-con flex-center gap-10" key={index}>
+                                    <IoEyeOutline className='eye' onClick={() => openModal(index,  "mobileHeroBanner")}/>
+                                    <p>{formatImagePath(value.image)}</p>
+                                <RiDeleteBin6Line className='delete' onClick={() => handleDeleteClick(value.id,  "mobileHeroBanner")}/>
+                            </div>
+                            ))
+                        }
+                        
+                      </div>
+
+                    
+
+       </div>
+       {/* =========================================================== */}
+
+
+         </div>
+
+    </div>
+
+     {currentIndex !== null && (
                     <ImagePreviewModal
-                    src={galleryImg[currentIndex].image}
+                    src={    
+                      confirmDelete == "desktopHeroBanner" ? 
+                      galleryDesktopImg[currentIndex].image :
+                     confirmDelete == "desktopSideBanner" ? 
+                    galleryDesktopSideImg[currentIndex].image  :
+                    galleryMobileImg[currentIndex].image
+                }
                     onClose={closeModal}
                     onPrev={goPrev}
                     onNext={goNext}
                     hasPrev={currentIndex > 0}
-                    hasNext={currentIndex < galleryImg.length - 1}
+                    hasNext={currentIndex < ( confirmDelete == "desktopHeroBanner" ? 
+                      galleryDesktopImg.length - 1 :
+                     confirmDelete == "desktopSideBanner" ? 
+                    galleryDesktopSideImg.length- 1  :
+                    galleryMobileImg.length - 1) }
                     />
-                    )}
+            )}
 
-                    <DeletePopup
-                        isOpen={showPopup}
-                        itemId={selectedId ?? ""}
-                        onCancel={() => setShowPopup(false)}
-                        onDelete={handleDeleteConfirm}
-                    />
+    <DeletePopup
+        isOpen={showPopup}
+        itemId={selectedId ?? ""}
+        onCancel={() => setShowPopup(false)}
+        onDelete={handleDeleteConfirm}
+    />
 
-                   </div>
+  </div>
   )
 }
 

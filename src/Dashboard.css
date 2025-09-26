@@ -228,7 +228,52 @@ font-weight: 600;
     padding: 20px 60px;
   justify-content: space-around;
 }
-
+.gallery-top{
+  box-shadow: 0px 0px 22.1px 0px #0000001A;
+background: #FFFFFF;
+border-radius: 15px;
+padding: 20px;
+}
+.gallery-container-second-wrapper{
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  margin: 40px 0px;
+}
+.gallery-bottom-1, .gallery-bottom-2{
+  box-shadow: 0px 0px 22.1px 0px #0000001A;
+background: #FFFFFF;
+border-radius: 15px;
+padding: 20px;
+}
+.gallery-bottom-1{
+  display: flex;
+  gap: 10px;
+  width: 50%;
+  align-items: start;
+}
+.gallery-bottom-2{
+width: 50%;
+}
+.gallery-bottom-1 .uploadGallery, .gallery-bottom-2 .uploadGallery{
+margin: unset !important;
+}
+.gallery-bottom-1 .mainGallery, .gallery-bottom-2 .mainGallery{
+  padding: unset !important;
+}
+.gallery-bottom-1 .uploadGallery{
+  width: 60%;
+}
+.gallery-bottom-1 .mainGallery{
+ width: 40%;
+ margin-top: 25px;
+}
+.image-list-con{
+  background: #FFFFFF;
+  box-shadow: 0px 4px 16px 0px #0000000A;
+  border-radius: 5px;
+  padding: 7px;
+}
 .uploadGallery{
     margin: 10px 150px;
 }
@@ -762,6 +807,9 @@ position: relative;
     cursor: pointer;
     text-transform: capitalize;
 }
+.addTags{
+  flex-wrap: wrap;
+}
 .prod-cat-item{
     margin-bottom: 10px;
 }
@@ -846,6 +894,165 @@ position: relative;
         background-color: var(--border);
         color: white;
      }
+
+    /* =================================== sale detail pop up ========================== */
+
+     .viewDetailsPopUp{
+
+     }
+     .viewDetailsPopUp h1{
+      color: #000000;
+      font-weight: 700;
+      /* font-family: Inter; */
+      font-size: 15px;
+      text-transform: capitalize;
+     }
+     .view-pending {
+      background: #FFA52FCC;
+      border-radius: 10px;
+      padding: 10px;
+      text-transform: capitalize;
+      color: #232321;
+      /* font-size: 10px; */
+      font-weight: 600;
+     }
+     .view-date p{
+      color: #000000;
+      text-transform: capitalize;
+      font-weight: 600;
+     }
+     .print-download{
+      display: flex;
+      align-items: center;
+      justify-content: end;
+      gap: 10px;
+     }
+     .print{
+        background: #F4F2F2;
+        padding: 5px 40px;
+        cursor: pointer;
+        border-radius: 5px;
+     }
+     .download{
+      background: #F4F2F2;
+      padding: 5px 15px;
+      text-transform: capitalize;
+      cursor: pointer;
+      font-weight: 600;
+       border-radius: 5px;
+     }
+     .customer-container-wrapper{
+     margin: 20px 0px;
+     }
+     .customer-flex{
+       display: flex;
+      align-items: center;
+      justify-content: center;
+       gap: 20px;
+
+     }
+       .customer-details-con{
+          border: 0.59px solid #E7E7E3;
+          border-radius: 10px;
+          padding: 20px;
+       }
+       .order-info-con{
+          border: 0.59px solid #E7E7E3;
+          border-radius: 10px;
+          padding: 20px;
+       }
+       .customer-con{
+        gap: 10px;
+       }
+       .customer-icon{
+         background: #232321;
+         width: 45px;
+         height: 45px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+       }
+       .customer-icon  svg{
+        color: white !important;
+        font-size: 17px;
+       }
+       .customer-name > p{
+        text-transform: capitalize;
+        color: #70706E;
+        font-weight: 600;
+       }
+        .customer-name p:first-child{
+          margin-right: 4px;
+        }
+        .delivered-address{
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 5px;
+          border: 0.59px solid #E7E7E3;
+          border-radius: 10px;
+          padding: 10px;
+          margin: 10px 0px;
+        }
+        .del-icon{
+          background-color: #000000;
+          padding: 5px;
+          border-radius: 5px;
+        }
+        .del-icon svg{
+          color: white;
+        }
+        .note-con{
+
+        }
+        .note-con label{
+          margin-bottom: 10px;
+          text-transform: capitalize;
+          font-weight: 600;
+
+        }
+        .note-con input{
+          
+        }
+        .note-con textarea{
+           background-color: white !important;
+           border: none;
+           border: 0.59px solid #E7E7E3;
+           border-radius: 10px;
+           padding: 10px;
+        }
+        .product-details{
+          margin-top: 20px;
+        }
+        .product-details-header{
+          border-bottom: 1px solid #DBDADE;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+        .product-details-footer{
+          display: flex;
+          justify-content: end;
+          margin-top: 10px;
+        }
+        .details-total{
+          text-transform: capitalize;
+          gap: 40px;
+        }
+
+        .messageBtn{
+          border-top: 1px solid #DBDADE;
+         justify-content: end !important;
+           margin-top: 70px;
+          padding-top: 10px;
+          margin-bottom: 50px;
+        }
+        .messageBtn .enterBtn{
+          color: white !important;
+
+        }
+    /* =================================== sale detail pop up end ========================== */
 
      /* ===================== delete pop up ============= */
 
@@ -1254,15 +1461,67 @@ font-size: 16px;
 
 
 
+/* ================================= message start  ==================================== */
+.admin-dashboard{
+  /* background-color: white; */
+}
+.admin-message-con{
+  border: 1px solid #E7E7E7;
+  border-radius: 5px;
+  padding: 10px 20px;
+}
+.admin-message-header{
+  text-transform: capitalize;
+  padding-left: 20px;
+  margin-bottom: 10px;
+}
+.admin-message-header p{
+  color: #84818A;
+}
+.admin-message-title{
+  margin-bottom: 10px;
+  font-weight: 700;
+  font-size: 16px;
+}
+.admin-message{
+  padding-bottom: 10px;
+  border-bottom: 1px solid #E7E7E7;
+  color: #84818A;
+}
+.admin-message-icon svg{
+  font-size: 50px;
+  color :  #50575E;
+}
+.admin-message-footer{
+margin-top: 20px;
+}
+.admin-profile{
+  width: 30px;
+  height: 30px;
+}
+.admin-profile img{
+  border-radius: 50%;
+}
+/* ================================= message end ======================================== */
 
 
 .editor-container {
   border: 1px solid #ccc;
   padding: 1rem;
   border-radius: 8px;
-  max-width: 700px;
+  width: 70% !important;
   margin: 2rem auto;
   background: #fff;
+}
+.blog-2-container{
+width: 20%;
+
+}
+.create-new{
+  cursor: pointer;
+}
+.blog-2-container .prod-category{
+width: unset;
 }
 
 .editor-input {

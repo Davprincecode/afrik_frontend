@@ -38,7 +38,7 @@ interface CourseIntern {
       status: string;
 }
 
-function AllCourse() {
+const AllBlog = () => {
      const [courses, setCourses] = useState<CourseIntern[]>([]);
     const [page, setPage] = useState<number>(1);
     const [meta, setMeta] = useState<Meta | null>(null);
@@ -329,4 +329,4 @@ function AllCourse() {
   )
 }
 
-export default AllCourse
+export default AllBlog

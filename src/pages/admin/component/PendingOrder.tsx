@@ -9,6 +9,7 @@ import { tr } from 'framer-motion/client';
 import ButtonPreloader from '../../../component/ButtonPreloader';
 import AdminPagination from './AdminPagination';
 import { AiOutlineEye } from 'react-icons/ai';
+import OrderDetails from '../../../component/OrderDetails';
 
 interface orderInterface {
     id : string;
@@ -44,6 +45,8 @@ function PendingOrder() {
     const [loading, setLoading] = useState<boolean>(false);
     const [order, setOrder] = useState<orderInterface[]>([]);
     const{baseUrl, token} = userAuth();
+
+     const [authAction, setAuthAction] = useState<boolean>(false);
 
     useEffect(() => {
       getData(page)
@@ -211,7 +214,7 @@ loading && (
                             {activeViewId === item.id && (
                             <div className="viewPop">
                             <div className='viewAction'>
-                              <div className="confirmView  statusAction"  onClick={() => confirmOrder(item.id)}>
+                              <div className="confirmView  statusAction"  onClick={() => setAuthAction(!authAction)}>
                                 <AiOutlineEye /> View Order Details
                               </div>
                               <div className="cancelView statusAction"  onClick={() => cancelOrder(item.id)}>
@@ -237,6 +240,9 @@ loading && (
             <div className="adminPagination">
                {meta && <AdminPagination meta={meta} onPageChange={setPage} />}
             </div>
+
+            <OrderDetails  authAction={authAction} setAuthAction={setAuthAction}/>
+
     </div>
   )
 }

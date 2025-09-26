@@ -876,7 +876,55 @@
       scrollbar-width: none; /* Firefox */
       -ms-overflow-style: none; /* Internet Explorer 10+ */
     }
-    .track-body::-webkit-scrollbar {
+    .category-body{
+      box-shadow: 0px 2.93px 51.23px 0px #0000001A;
+      background-color: white;
+      border-radius: 20px;
+      padding: 40px 40px 20px 40px;
+      width: 40%;
+      /* height: 50vh; */
+      overflow-y: auto;
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* Internet Explorer 10+ */
+    }
+    .category-header-title{
+      text-transform: capitalize;
+      margin-bottom: 20px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 24px;
+    }
+    .category-pop-con .input{
+      margin-bottom: 20px;
+    }
+    .category-pop-con input{
+      border: 1px solid #D9E1EC !important;
+      /* border: 1px solid var(--border) !important; */
+      border-radius: 10px;
+      padding: 10px !important;
+      background-color: white !important;
+    }
+   .btn-flex-con{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    text-transform: capitalize;
+   }
+   .cancelBtn{
+    cursor: pointer;
+     border-radius: 10px;
+   padding: 10px 20px;
+   }
+   .enterBtn{
+   cursor: pointer;
+   background-color: var(--secondary1);
+   border-radius: 10px;
+   padding: 10px 20px;
+   font-weight:500;
+   }
+
+    .track-body::-webkit-scrollbar, .category-body::-webkit-scrollbar {
       display: none; /* Chrome, Safari, Opera */
     }
     .track-cancel{
@@ -5985,3 +6033,5 @@ justify-content: center;
   }
 }
 /* ================================ master course and master details end ================ */
+
+

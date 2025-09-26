@@ -40,13 +40,14 @@ import Profile from "./pages/user/Profile";
 import AdminShop from "./pages/admin/AdminShop";
 import Vlog from "./pages/admin/Vlog";
 import AdminBlog from "./pages/admin/AdminBlog";
-import BlogEditor from "./pages/admin/BlogEditor";
+import BlogEditor from "./pages/admin/component/BlogEditor";
 import Message from "./pages/admin/Message";
 import AdminConsultant from "./pages/admin/AdminConsultant";
 import BookingCalendars from "./pages/BookingCalendars";
 import MasterCourse from "./pages/MasterCourse";
 import MasterCourseDetail from "./pages/MasterCourseDetail";
 import MasterCoursePayment from "./pages/MasterCoursePayment";
+import MessageComponent from "./pages/admin/component/MessageComponent";
 
 
 
@@ -132,9 +133,9 @@ const {baseUrl} = userAuth();
          <Route path="home-page" element={<Homepage/>} />
          <Route path="vlog-page" element={<Vlog/>} />
          <Route path="admin-shop" element={<AdminShop />} />
-         <Route path="admin-blog" element={< BlogEditor />} />
-         <Route path="admin-blogs" element={< BlogEditor />} />
-         <Route path="admin-message" element={< Message />} />
+         <Route path="admin-blog" element={< AdminBlog />} />
+         {/* <Route path="admin-blogs" element={< BlogEditor />} /> */}
+         <Route path="admin-message" element={< MessageComponent />} />
          <Route path="admin-consult" element={< AdminConsultant />} />
       </Route>
       {/* ===================== admin end =================== */}

@@ -63,7 +63,6 @@ function AdminShop() {
                         ) : activeTab == 'add product' ? (
                              <AddProduct />
                         ) :(
-
                            <Orders />
                         )
                     }
