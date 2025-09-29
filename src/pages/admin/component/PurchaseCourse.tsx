@@ -62,8 +62,6 @@ const PurchaseCourse = () =>{
             };
             try {
             const response = await fetch(`${baseUrl}/order-course?page=${pageNumber}`, requestOptions);
-
-
             if (!response.ok) {
             const errorResponse = await response.json();
             throw new Error(errorResponse.message);
@@ -76,6 +74,60 @@ const PurchaseCourse = () =>{
             setLoading(false);
             }
             }
+
+         const handleSearch = async (search : string) => {
+            if(search == ''){
+                getData(page);
+            }
+            setLoading(true);
+                const myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+                const requestOptions: RequestInit = {
+                    method: "GET",
+                    headers: myHeaders,
+                    redirect: "follow"
+                };
+                try {
+                    const response = await fetch(`${baseUrl}/course-purchase-search/${search}`, requestOptions);
+                    if (!response.ok) {
+                    const errorResponse = await response.json();
+                    throw new Error(errorResponse.message);
+                    }
+                    const result = await response.json();
+                      setOrder(result.data);
+                      setMeta(result.meta);
+                    setLoading(false);
+                } catch (error) {
+                    setLoading(false);
+                }
+        }
+
+        const handleFilter = async (search : string) => {
+            if(search == ''){
+                getData(page);
+            }
+            setLoading(true);
+                const myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+                const requestOptions: RequestInit = {
+                    method: "GET",
+                    headers: myHeaders,
+                    redirect: "follow"
+                };
+                try {
+                    const response = await fetch(`${baseUrl}/course-purchase-filter/${search}`, requestOptions);
+                    if (!response.ok) {
+                    const errorResponse = await response.json();
+                    throw new Error(errorResponse.message);
+                    }
+                    const result = await response.json();
+                      setOrder(result.data);
+                      setMeta(result.meta);
+                    setLoading(false);
+                } catch (error) {
+                    setLoading(false);
+                }
+        }
     return (
       <div>
          
@@ -87,12 +139,14 @@ const PurchaseCourse = () =>{
             
                                 <div className="flex-center gap-10">
                                     <div className="header-form-filter">
-                                        <select name="" id="">
+                                        <select onChange={(e) => handleFilter(e.target.value)}>
                                             <option value="">Filter</option>
+                                            <option value="paid">Paid</option>
+                                            <option value="refunded">Refunded</option>
                                         </select>
                                     </div>
                                     <div className="header-form-input">
-                                        <input type="text" placeholder='Search' />
+                                        <input type="text" placeholder='Search'  onChange={(e) => handleSearch(e.target.value)}/>
                                         <CiSearch />
                                     </div>
                                 </div>

@@ -68,8 +68,7 @@ function AllCourse() {
                   throw new Error(errorResponse.message);
                   }
                   const result = await response.json();  
-                 
-                 setCourses(result.data);
+                  setCourses(result.data);
                   setMeta(result.meta);
                   setLoading(false);
               } catch (error) {
@@ -81,6 +80,7 @@ function AllCourse() {
           // setEditId(id);
           // heroFunction();
           };
+
           const handleStatusToggle = async (id: string) => {
                   setLoading(true);
                   const myHeaders = new Headers();
@@ -147,6 +147,7 @@ function AllCourse() {
           setSelectedId(id);
           setShowPopup(true);
           };
+
           const handleDeleteConfirm = async (id: string | number) => {
                       setLoading(true);
                       const myHeaders = new Headers();
@@ -179,6 +180,60 @@ function AllCourse() {
               
           };
 
+        const handleSearch = async (search : string) => {
+            if(search == ''){
+                getData(page);
+            }
+            setLoading(true);
+                const myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+                const requestOptions: RequestInit = {
+                    method: "GET",
+                    headers: myHeaders,
+                    redirect: "follow"
+                };
+                try {
+                    const response = await fetch(`${baseUrl}/course-search/${search}`, requestOptions);
+                    if (!response.ok) {
+                    const errorResponse = await response.json();
+                    throw new Error(errorResponse.message);
+                    }
+                    const result = await response.json();
+                    setCourses(result.data);
+                    setMeta(result.meta);
+                    setLoading(false);
+                } catch (error) {
+                    setLoading(false);
+                }
+        }
+
+        const handleFilter = async (search : string) => {
+            if(search == ''){
+                getData(page);
+            }
+            setLoading(true);
+                const myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+                const requestOptions: RequestInit = {
+                    method: "GET",
+                    headers: myHeaders,
+                    redirect: "follow"
+                };
+                try {
+                    const response = await fetch(`${baseUrl}/course-filter/${search}`, requestOptions);
+                    if (!response.ok) {
+                    const errorResponse = await response.json();
+                    throw new Error(errorResponse.message);
+                    }
+                    const result = await response.json();
+                    setCourses(result.data);
+                    setMeta(result.meta);
+                    setLoading(false);
+                } catch (error) {
+                    setLoading(false);
+                }
+        }
+          
   return (
     <div>
 
@@ -186,12 +241,14 @@ function AllCourse() {
 
             <div className="flex-center gap-10">
                 <div className="header-form-filter">
-                    <select name="" id="">
+                    <select  onChange={(e) => handleFilter(e.target.value)}>
                         <option value="">Filter</option>
+                        <option value="pin">Pinned</option>
+                        <option value="unpin">Unpinned</option>
                     </select>
                 </div>
                 <div className="header-form-input">
-                    <input type="text" placeholder='Search' />
+                    <input type="text" placeholder='Search' onChange={(e) => handleSearch(e.target.value)}/>
                     <CiSearch />
                 </div>
             </div>

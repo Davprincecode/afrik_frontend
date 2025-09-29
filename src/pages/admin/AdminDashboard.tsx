@@ -25,6 +25,7 @@ const data = {
   ],
 };
 
+ 
 
 function AdminDashboard() {
   return (
@@ -49,7 +50,15 @@ function AdminDashboard() {
                             <div className="popularBookingHeader">
                               <div className="popularBookTitle">Overview</div>
                               <div className="popularSelect">
-                                <select><option >all time</option></select>
+                              
+                                <select>
+                                  <option value="">all time</option>
+                                  <option value="today">today</option>
+                                <option value="today">this week</option>
+                                <option value="today">this month</option>
+                                <option value="today">this year</option>
+                                
+                                </select>
                               </div>
                             </div>
 
@@ -107,7 +116,7 @@ function AdminDashboard() {
                           <div className="mainRecentTransaction recentTransaction">
                               <div className="mainRecentHeader">
                                 <div className="mainTitle">recent orders</div>
-                                <NavLink to="/view">view all</NavLink>
+                                <NavLink to="/admin/admin-shop/orders">view all</NavLink>
                               </div>
                               <div className="mainRecent">
                                 <table>
@@ -144,7 +153,7 @@ function AdminDashboard() {
                           <div className="mainRecentTransaction">
                               <div className="mainRecentHeader">
                                 <div className="mainTitle">recent transactions</div>
-                                <NavLink to="/view">view all</NavLink>
+                                <NavLink to="/admin/admin-shop/transactions">view all</NavLink>
                               </div>
                               <div className="mainRecent">
                                 <table>
@@ -217,7 +226,7 @@ function AdminDashboard() {
                         </div>
                         
                         <div className="flex-product-link">
-                          <NavLink to="view" className="view">all products</NavLink>
+                          <NavLink to="/admin/admin-shop/all product" className="view">all products</NavLink>
                         </div>
                         
                      </div>
@@ -225,9 +234,9 @@ function AdminDashboard() {
                      <div className="popularBooking">
                         <div className="popularBookingHeader">
                           <div className="popularBookTitle">bookings</div>
-                          <div className="popularSelect">
+                          {/* <div className="popularSelect">
                             <select><option >recent</option></select>
-                          </div>
+                          </div> */}
                         </div>
                         <div className="popularDate">
                           <div className="popularTodayCon">
@@ -240,7 +249,7 @@ function AdminDashboard() {
                           </div>
                         </div>
 
-                        <NavLink to="view" className="view">view all</NavLink>
+                        <NavLink to="/admin/admin-consult" className="view">view all</NavLink>
                      </div>
 
                    </div>

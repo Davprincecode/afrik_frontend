@@ -69,7 +69,6 @@ const EditHero : React.FC<HeroInterface> = ({ heroFunction, editId, setEditId })
     
             const handleHeroBanner = async() => {
                     setLoading(true);
-                        
                     const formdata = new FormData();
                         if (bannerImage) {
                         formdata.append('image', bannerImage);
@@ -97,7 +96,8 @@ const EditHero : React.FC<HeroInterface> = ({ heroFunction, editId, setEditId })
                         }
                         const result = await response.json();     
                         setLoading(false); 
-                        toast.success("Data Updated Successfully");       
+                        toast.success("Data Updated Successfully");  
+                        heroFunction();     
                     } catch (error) {
                         setLoading(false); 
                     }
@@ -155,7 +155,7 @@ const EditHero : React.FC<HeroInterface> = ({ heroFunction, editId, setEditId })
                     </div>
                     <p>back</p>
                   </div>
-                  <IoSettingsOutline className="setting-icon"  onClick={backFunction}/>
+                  {/* <IoSettingsOutline className="setting-icon"  onClick={backFunction}/> */}
                 </div>
         </div>
 

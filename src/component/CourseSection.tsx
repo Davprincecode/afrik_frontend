@@ -6,7 +6,28 @@ import { NavLink } from 'react-router-dom'
 import ComingSoon from './ComingSoon';
 import Carousel from 'react-multi-carousel';
 
-function CourseSection() {
+
+interface courseIntern {
+    courseDescription : string;
+    courseId : string;
+    courseImage : string;
+    coursePrice : string;
+    courseTitle : string;
+    courseType : string;
+    discountPrice : string;
+    earlyBirdEndDate : string;
+    earlyBirdPrice : string;
+    earlyBirdStartDate : string;
+    endDate : string;
+    startDate : string;
+    status : string;
+ }
+
+ interface dataProp {
+  course : courseIntern[]
+ }
+
+const CourseSection : React.FC<dataProp> = ({course}) => {
 
 
     const responsive = {
@@ -46,7 +67,7 @@ function CourseSection() {
                   transitionDuration={500}
                  >
 
-        <div className='bookingSection'>
+        {/* <div className='bookingSection'>
             <div className="rightBooking">
                 <img src={courseImg} />
             </div>
@@ -104,7 +125,43 @@ function CourseSection() {
             </div>
 
         
+        </div> */}
+
+        {
+          course.map((item, index)=>(
+            <div className='bookingSection' key={index}>
+            <div className="rightBooking">
+                <img src={item.courseImage} />
+            </div>
+        
+            <div className="leftBooking" style={{backgroundImage :  `url(${bookingText})`}}>
+                <div className="bookingHeader">
+                    <h1> <span className='bookSpace'>{item.courseTitle} </span></h1>
+                </div>
+                <div className="bookingBody">
+                {/* <h4>Transform Your Style with Expert Guidance</h4> */}
+                    <p>
+                       {item.courseDescription.split(' ').length > 50
+                        ? item.courseDescription.split(' ').slice(0, 49).join(' ') + '...' + ' '
+                        : item.courseDescription + '...' + ' '}
+
+                        <NavLink to={`/master-course-details/${item.courseId}`}> 
+                            Read more..
+                        </NavLink>
+                    </p>
+                </div>
+                <div className="schedule">
+                    <NavLink to={`/master-course-payment/${item.courseId}`}>enroll now</NavLink>  
+                </div>
+                <div className="allCourses">
+                  <NavLink to="/master-course">all courses/masterclasses</NavLink>  
+                </div>
+            </div>
+
+        
         </div>
+          ))
+        }
         
         </Carousel>
 

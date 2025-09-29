@@ -401,7 +401,7 @@ const WordLikeEditor: React.FC<Props> = (editorContent, setEditorContent) => {
       <ReactQuill
         ref={quillRef}
         theme="snow"
-        value={editorContent}
+        // value={editorContent}
         onChange={setEditorContent}
         modules={{ toolbar: false, history: { delay: 1000, maxStack: 100 } }}
         formats={[

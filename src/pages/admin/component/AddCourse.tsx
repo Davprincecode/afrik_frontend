@@ -27,8 +27,56 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProductImage(file);
   };
 
+const validateCourseForm = () => {
+  if (!title.trim()) {
+    toast.error("Course title is required");
+    return false;
+  }
+  if (!description.trim()) {
+    toast.error("Course description is required");
+    return false;
+  }
+  if (!productImage) {
+    toast.error("Course image is required");
+    return false;
+  }
+  if (!coursePrice || isNaN(coursePrice)) {
+    toast.error("Valid course price is required");
+    return false;
+  }
+  if (!startDate.trim()) {
+    toast.error("Start date is required");
+    return false;
+  }
+  if (!endDate.trim()) {
+    toast.error("End date is required");
+    return false;
+  }
+  if (!earlyCoursePrice || isNaN(earlyCoursePrice)) {
+    toast.error("Valid early bird price is required");
+    return false;
+  }
+  if (!earlyStartDate.trim()) {
+    toast.error("Early bird start date is required");
+    return false;
+  }
+  if (!earlyEndDate.trim()) {
+    toast.error("Early bird end date is required");
+    return false;
+  }
+  if (!courseType.trim()) {
+    toast.error("Course type is required");
+    return false;
+  }
+
+  return true;
+};
+
 
   const handleProduct =  async() => {
+    if(!validateCourseForm()){
+      return;
+    }
       setLoading(true);
       if (!productImage) {
           toast.error("No product image");
@@ -189,7 +237,7 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                           <label>Course Price</label>
                           <input
                             name="coursePrice"
-                            type="text"
+                            type="number"
                             placeholder="Enter course price"
                             value={earlyCoursePrice}
                             onChange={(e) => setEarlyCoursePrice(parseInt(e.target.value))}
@@ -296,15 +344,15 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                     <div className='inActive'><ButtonPreloader/></div>
                 </div>
             ) : (
-              title !== '' && description !== '' && productImage !== null && coursePrice > 0 && courseDiscountPrice> 0 && startDate !== '' && endDate !== '' && courseType !== ''  ? (
+              // title !== '' && description !== '' && productImage !== null && coursePrice > 0 && courseDiscountPrice> 0 && startDate !== '' && endDate !== '' && courseType !== ''  ? (
                             <div className="admin-input">
                               <div className="btn" onClick={handleProduct}>Submit</div>
                             </div> 
-              ) : (
-                      <div className="admin-input inActive">
-                        <div className="btn inActive">Submit</div>
-                      </div> 
-              )
+              // ) : (
+              //         <div className="admin-input inActive">
+              //           <div className="btn inActive">Submit</div>
+              //         </div> 
+              // )
           
         )}
 

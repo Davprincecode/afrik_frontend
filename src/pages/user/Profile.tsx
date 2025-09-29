@@ -19,15 +19,11 @@ const Profile = () => {
   const [activeTab, setActiveTab] = useState('bio data'); 
 
  
-
-
- 
-  
     useEffect(() => {
       window.scrollTo(0, 0);
     }, [pathname]);
 
-    const [authAction, setAuthAction] = useState<boolean>(true);
+    const [authAction, setAuthAction] = useState<boolean>(false);
 
     
 

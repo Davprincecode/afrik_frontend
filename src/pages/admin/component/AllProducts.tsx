@@ -47,36 +47,36 @@ function AllProducts() {
       getData(page)
       }, []);
     
-      const getData = async (pageNumber : number) => {
-          setLoading(true);
-              const myHeaders = new Headers();
-              myHeaders.append("Content-Type", "application/json");
-              myHeaders.append("Authorization", token);
-              const requestOptions: RequestInit = {
-                  method: "GET",
-                  headers: myHeaders,
-                  redirect: "follow"
-              };
-              try {
-                  const response = await fetch(`${baseUrl}/product?page=${pageNumber}`, requestOptions);
-                  if (!response.ok) {
-                  const errorResponse = await response.json();
-                  throw new Error(errorResponse.message);
-                  }
-                  const result = await response.json();  
-                 setProducts(result.data);
-                  setMeta(result.meta);
-                  setLoading(false);
-              } catch (error) {
-                  
-              }
-      }
-        
-const handleId = (id : string) => {
-// setEditId(id);
-// heroFunction();
-};
-const handleStatusToggle = async (id: string) => {
+        const getData = async (pageNumber : number) => {
+            setLoading(true);
+                const myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+                myHeaders.append("Authorization", token);
+                const requestOptions: RequestInit = {
+                    method: "GET",
+                    headers: myHeaders,
+                    redirect: "follow"
+                };
+                try {
+                    const response = await fetch(`${baseUrl}/product?page=${pageNumber}`, requestOptions);
+                    if (!response.ok) {
+                    const errorResponse = await response.json();
+                    throw new Error(errorResponse.message);
+                    }
+                    const result = await response.json();  
+                    setProducts(result.data);
+                    setMeta(result.meta);
+                    setLoading(false);
+                } catch (error) {
+                    
+                }
+        }
+
+        const handleId = (id : string) => {
+        // setEditId(id);
+        // heroFunction();
+        };
+        const handleStatusToggle = async (id: string) => {
         setLoading(true);
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -99,13 +99,13 @@ const handleStatusToggle = async (id: string) => {
             
         }
 
-};
+        };
 
-const handleDeleteClick = (id: string) => {
-setSelectedId(id);
-setShowPopup(true);
-};
-const handleDeleteConfirm = async (id: string | number) => {
+        const handleDeleteClick = (id: string) => {
+        setSelectedId(id);
+        setShowPopup(true);
+        };
+        const handleDeleteConfirm = async (id: string | number) => {
             setLoading(true);
             const myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
@@ -131,8 +131,63 @@ const handleDeleteConfirm = async (id: string | number) => {
             } catch (error) {
                 
             }
-    
-};
+
+        };
+
+
+        const handleSearch = async (search : string) => {
+            if(search == ''){
+                getData(page);
+            }
+            setLoading(true);
+                const myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+                const requestOptions: RequestInit = {
+                    method: "GET",
+                    headers: myHeaders,
+                    redirect: "follow"
+                };
+                try {
+                    const response = await fetch(`${baseUrl}/all-product-search/${search}`, requestOptions);
+                    if (!response.ok) {
+                    const errorResponse = await response.json();
+                    throw new Error(errorResponse.message);
+                    }
+                    const result = await response.json();
+                    setProducts(result.data);
+                    setMeta(result.meta);
+                    setLoading(false);
+                } catch (error) {
+                    setLoading(false);
+                }
+        }
+
+        const handleFilter = async (search : string) => {
+            if(search == ''){
+                getData(page);
+            }
+            setLoading(true);
+                const myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+                const requestOptions: RequestInit = {
+                    method: "GET",
+                    headers: myHeaders,
+                    redirect: "follow"
+                };
+                try {
+                    const response = await fetch(`${baseUrl}/all-product-filter/${search}`, requestOptions);
+                    if (!response.ok) {
+                    const errorResponse = await response.json();
+                    throw new Error(errorResponse.message);
+                    }
+                    const result = await response.json();
+                    setProducts(result.data);
+                    setMeta(result.meta);
+                    setLoading(false);
+                } catch (error) {
+                    setLoading(false);
+                }
+        }
 
   return (
     <div>
@@ -141,12 +196,14 @@ const handleDeleteConfirm = async (id: string | number) => {
 
         <div className="flex-center gap-10">
             <div className="header-form-filter">
-                <select name="" id="">
-                    <option value="">Filter</option>
+                <select  onChange={(e) => handleFilter(e.target.value)}>
+                        <option value="">Filter</option>
+                        <option value="pin">Pinned</option>
+                        <option value="unpin">Unpinned</option>
                 </select>
             </div>
             <div className="header-form-input">
-                <input type="text" placeholder='Search' />
+                <input type="text" placeholder='Search' onChange={(e) => handleSearch(e.target.value)}/>
                 <CiSearch />
             </div>
         </div>

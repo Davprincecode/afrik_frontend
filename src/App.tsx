@@ -108,18 +108,12 @@ const {baseUrl} = userAuth();
           <Route path="/product-details/:productId" element={<ProductDetails/>} />
           <Route path="/cart" element={<Cart/>} />
           <Route path="/payment" element={<Payment/>} />
-
           <Route path="/booking" element={<Booking/>} />
-
           <Route path="/consultant" element={<Consultant/>} />
           <Route path="/consultant-details" element={<ConsultantDetails/>} />
-
            <Route path="/master-course" element={<MasterCourse/>} />
           <Route path="/master-course-details/:id" element={<MasterCourseDetail/>} />
           <Route path="/master-course-payment/:id" element={<MasterCoursePayment/>} />
-
-
-
           <Route path="/booking-calendar" element={<BookingCalendars/>} />
 
 
@@ -133,6 +127,7 @@ const {baseUrl} = userAuth();
          <Route path="home-page" element={<Homepage/>} />
          <Route path="vlog-page" element={<Vlog/>} />
          <Route path="admin-shop" element={<AdminShop />} />
+         <Route path="admin-shop/:param" element={<AdminShop />} />
          <Route path="admin-blog" element={< AdminBlog />} />
          {/* <Route path="admin-blogs" element={< BlogEditor />} /> */}
          <Route path="admin-message" element={< MessageComponent />} />

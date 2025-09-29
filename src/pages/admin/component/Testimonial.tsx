@@ -58,8 +58,32 @@ const Testimonial = () => {
         const handleRating = (index: number) => {
             setFormData(prev => ({ ...prev, rating: index + 1 }));
         };
-
+        const validateForm = () => {
+          
+          if (!fullName.trim()) {
+            toast.error("You need to fill the full name");
+            return false;
+          }
+          if (!testimonial.trim()) {
+            toast.error("You need to fill the testimonial");
+            return false;
+          }
+          if (!title.trim()) {
+            toast.error("You need to fill the title");
+            return false;
+          }
+          if(rating < 1){
+            toast.error("You need to fill the rating");
+            return false;
+          }
+        
+          return true;
+        };
+        
         const handleReview = async () => {
+          if(!validateForm()){
+                return;
+              }
                     const myHeaders = new Headers();
                     myHeaders.append("Authorization", token);
                     myHeaders.append("Content-Type", "application/json");

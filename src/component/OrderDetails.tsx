@@ -19,6 +19,7 @@ import { PiDotsThreeVertical } from 'react-icons/pi';
 interface authComponentInterface {
     authAction : boolean,
     setAuthAction: React.Dispatch<React.SetStateAction<boolean>>;
+    PopOrder : orderInterface[]
 }
 
 interface orderInterface {
@@ -32,9 +33,34 @@ interface orderInterface {
     total:  string;
 }
 
-const OrderDetails : React.FC<authComponentInterface> = ({authAction, setAuthAction}) =>{
+interface orderInterface {
+    id : string;
+    customerAddress:  string;
+    customerId:  string;
+    customerName:  string;
+    customerEmail:  string;
+    customerPhoneNumber: string;
+    orderDate:  string;
+    orderId:  string;
+    orderStatus:  string;
+    total:  string;
+    paymentMethod : string;
+    products : products[]
+}
+interface products {
+orderId : string;
+productColor : string;
+productId : string;
+productImage : string;
+productName : string;
+quantity : number;
+unitPrice : string;
+total : string; 
+}
 
-  const navigate = useNavigate();
+const OrderDetails : React.FC<authComponentInterface> = ({authAction, setAuthAction, PopOrder}) =>{
+
+    const navigate = useNavigate();
   const {baseUrl} = userAuth();  
   const { pathname } = useLocation();
 const [order, setOrder] = useState<orderInterface[]>([]);
@@ -42,8 +68,8 @@ const [order, setOrder] = useState<orderInterface[]>([]);
   useEffect(() => {
       window.scrollTo(0, 0);
     }, [pathname]);
-const currentStage = 'Shipped';
-const stages = ['Pending', 'Order Completed', 'Shipped', 'Delivered'];
+
+
   return (
     <div className="track-con" style={{display : authAction ? "flex" : "none"}}>
 
@@ -63,15 +89,19 @@ const stages = ['Pending', 'Order Completed', 'Shipped', 'Delivered'];
 
          </div>
 
+      {  PopOrder.map((item, index) => (
+
+
+         <div key={index}>
          <div className="track-header-title flex-center justification-between">
            <div className="flex-center gap-10">
-            <p>Order ID : 3354654654526</p>
-            <div className="view-pending">pending</div>
+            <p>Order ID : {item.orderId}</p>
+            <div className="view-pending">{item.orderStatus}</div>
             </div> 
 
             <div className='view-date flex-center gap-5'>
                  <IoCalendarOutline />
-                 <p>aug 16 2025</p> 
+                 <p>{item.orderDate}</p> 
             </div>
          </div>
 
@@ -89,15 +119,15 @@ const stages = ['Pending', 'Order Completed', 'Shipped', 'Delivered'];
                         <h1>customer</h1>
                         <div className="customer-name flex-center">
                             <p>full name : </p>
-                            <p>shritti shh</p>
+                            <p>{item.customerName}</p>
                         </div>
                         <div className="customer-name flex-center">
                             <p>email : </p>
-                            <p>davprince@gmail.com</p>
+                            <p>{item.customerEmail}</p>
                         </div>
                         <div className="customer-name flex-center">
                             <p>phone  : </p>
-                            <p>09060635654</p>
+                            <p>{item.customerPhoneNumber}</p>
                         </div>
                     </div>
                  </div>
@@ -109,16 +139,16 @@ const stages = ['Pending', 'Order Completed', 'Shipped', 'Delivered'];
                         <div className="customer-details-wrap">
                         <h1>order info</h1>
                         <div className="customer-name flex-center">
-                            <p>shipping : </p>
-                            <p>next express</p>
+                            {/* <p>shipping : </p>
+                            <p>next express</p> */}
                         </div>
                         <div className="customer-name flex-center">
                             <p>payment method : </p>
-                            <p>card</p>
+                            <p>{item.paymentMethod}</p>
                         </div>
                         <div className="customer-name flex-center">
                             <p>status  : </p>
-                            <p>pending</p>
+                            <p>{item.orderStatus}</p>
                         </div>
                     </div>
                      </div>
@@ -128,7 +158,7 @@ const stages = ['Pending', 'Order Completed', 'Shipped', 'Delivered'];
             <div className="delivered-address">
                 <div className="del-icon"><RiShoppingBag4Line /></div>
                 <h1>deliver to : </h1>
-                <p>dharam Lorem ipsum dolor sit amet.</p>
+                <p>{item.customerAddress}</p>
             </div>
             
          </div>
@@ -136,7 +166,7 @@ const stages = ['Pending', 'Order Completed', 'Shipped', 'Delivered'];
          <div className="note-con">
             <div className="input">
                 <label>Note</label>
-                <textarea name="" id="" cols={30} rows={10}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio, rerum.</textarea>
+                <textarea name="" id="" cols={30} rows={10}>{item.customerAddress}</textarea>
             </div>
          </div>
 
@@ -152,26 +182,25 @@ const stages = ['Pending', 'Order Completed', 'Shipped', 'Delivered'];
                         <th>s/n</th>
                         <th>Product Name</th>
                         <th>Order Id</th>
+                        <th>Unit Price</th>
                         <th>Quantity</th>
                         <th>total</th>
                          </tr>
-
-
 {
-                        order.map((item, index)=>(
+                        item.products.map((item, index)=>(
                             <tr key={index}>
                              <td>{index + 1}</td>
                              <td>
                                 <div className="product-item-flex">
                                     <div className="track-image">
-                                        <img src={product3sub4} alt="" />
+                                        <img src={item.productImage} alt="" />
                                     </div>
-                                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestias, magnam.</p>
+                                    <p>{item.productName}</p>
                                 </div>
                              </td>
                              <td>{item.orderId}</td>
-                             <td>{item.orderDate}</td>
-                             <td>{item.customerName}</td>
+                             <td>{item.unitPrice}</td>
+                             <td>{item.quantity}</td>
                              <td>{item.total}</td>
                             </tr>
                         ))
@@ -186,12 +215,13 @@ const stages = ['Pending', 'Order Completed', 'Shipped', 'Delivered'];
             <div className="product-details-footer">
                  <div className="details-total flex-center ">
                     <h1>total</h1>
-                    <h1>₦5353533</h1>
+                    <h1>₦{item.total}</h1>
                  </div>
             </div>
          </div>
 
-
+         </div>
+       ))}
 
       </div>
 

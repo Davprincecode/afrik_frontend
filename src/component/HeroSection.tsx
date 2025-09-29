@@ -10,7 +10,22 @@ import mobileHero4 from '../assets/images/mobilehero4.png'
 import Carousel from 'react-multi-carousel'
 import { NavLink } from 'react-router-dom'
 
-function HeroSection() {
+ interface heroIntern {
+      buttonExternalLink : string;
+      buttonLink : string;
+      buttonText : string;
+      headingText : string;
+      id : number;
+      image : string;
+      status : string;
+      subheadingText : string;
+ }
+
+ interface dataProp{
+   hero  : heroIntern[]
+ }
+
+const  HeroSection : React.FC<dataProp> = ({hero}) => {
 
 
 const responsive = {
@@ -35,7 +50,6 @@ const responsive = {
   return (
     <div className='hero'>
 
-
 <Carousel 
       responsive={responsive}
       autoPlay={true}
@@ -48,7 +62,33 @@ const responsive = {
       customTransition="all .5"
       transitionDuration={500}
      >
-        <div className="heroImgCon">
+     
+     {
+         hero.map((item, index)=>(
+
+            <div className="heroImgCon" key={index}>
+           <div className="heroImg">
+            <img src={item.image} alt="" />
+            <div className="gradientOverlay"></div>
+           </div> 
+           <div className="heroText">
+              <div className="heroHeader"> <h1>{item.headingText}</h1></div>
+              <div className="heroBody">{item.subheadingText}</div>
+             {
+               item.buttonExternalLink ? (
+                 <div className="heroBtn"><a href={item.buttonExternalLink}>{item.buttonText}</a></div>
+               ) : (
+                  <div className="heroBtn"><NavLink to={item.buttonLink}>{item.buttonText}</NavLink></div>
+               )
+             }
+              
+           </div>
+        </div>
+
+         ))
+     }
+      
+        {/* <div className="heroImgCon">
            <div className="heroImg">
             <img src={hero1} alt="" />
             <div className="gradientOverlay"></div>
@@ -91,7 +131,9 @@ const responsive = {
               <div className="heroBody">Transform your space with rich, refined fragrances that awaken the senses and leave a lasting impression.</div>
               <div className="heroBtn"><NavLink to="#">shop now</NavLink></div>
            </div>
-        </div>
+        </div> */}
+
+
         </Carousel>
     </div>
   )

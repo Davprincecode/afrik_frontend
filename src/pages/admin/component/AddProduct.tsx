@@ -8,6 +8,7 @@ import ButtonPreloader from '../../../component/ButtonPreloader';
 import { h2 } from 'framer-motion/client';
 import { FiUploadCloud } from 'react-icons/fi';
 import CategoryProductPop from '../../../component/CategoryProductPop';
+import { validate } from 'numeral';
 
 
 interface tagInterface {
@@ -99,9 +100,62 @@ function AddProduct() {
     setProductImage(file);
   };
 
+  const validateProductForm = () => {
+  if (!productName.trim()) {
+    toast.error("Product name is required");
+    return false;
+  }
+  if (!productDescription.trim()) {
+    toast.error("Product description is required");
+    return false;
+  }
+  if (!productImage) {
+    toast.error("Product image is required");
+    return false;
+  }
+  if (!price || isNaN(price)) {
+    toast.error("Valid product price is required");
+    return false;
+  }
+  if (!productColor.trim()) {
+    toast.error("Product color is required");
+    return false;
+  }
+  if (!productSize.trim()) {
+    toast.error("Product size is required");
+    return false;
+  }
+
+  // Optional: Validate subProducts
+  for (let i = 0; i < subProducts.length; i++) {
+    const p = subProducts[i];
+    if (!p.productPrice || isNaN(p.productPrice)) {
+      toast.error(`Sub-product ${i + 1} needs a valid price`);
+      return false;
+    }
+    if (!p.productColor.trim()) {
+      toast.error(`Sub-product ${i + 1} needs a color`);
+      return false;
+    }
+    if (!p.productSize.trim()) {
+      toast.error(`Sub-product ${i + 1} needs a size`);
+      return false;
+    }
+    if (!p.productImage) {
+      toast.error(`Sub-product ${i + 1} needs an image`);
+      return false;
+    }
+  }
+
+  return true;
+};
+
 
 
  const handleProduct =  async() => {
+    if(!validateProductForm()){
+       return;
+    }
     setLoading(true);
     if (!productImage) {
         toast.error("No product image");
@@ -218,12 +272,8 @@ function AddProduct() {
                   const result = await response.json(); 
                    setCategory(result.data);
                    setLoading(false);
-              } catch (error) {
-                  
+              } catch (error) {   
               }
-    
-
-
   }
 
   const handleSize = async () => {

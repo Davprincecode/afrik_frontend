@@ -22,7 +22,13 @@ import ButtonPreloader from '../component/ButtonPreloader'
 import AuthComponent from '../component/AuthComponent'
 import { toast } from 'react-toastify'
 import { NavLink } from 'react-router-dom'
+import Carousel from 'react-multi-carousel'
 
+
+interface categoryInterface {
+"id": string,
+"categoryName": string
+}
 
  interface Category {
   id: number;
@@ -51,9 +57,18 @@ interface Meta {
   next_page_url: string | null;
   prev_page_url: string | null;
 }
+
+interface bannerIntern {
+galleryType : string;
+id : string;
+image : string;
+status : string;
+}
   
 function Shop() {
     const [products, setProducts] = useState<Product[]>([]);
+    const[category, setCategory] = useState<categoryInterface[]>([]);
+    const[banner, SetBanner] = useState<bannerIntern[]>([]);
      const [meta, setMeta] = useState<Meta | null>(null);
     const [filter, setFilter] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
@@ -61,6 +76,7 @@ function Shop() {
     const [subNav, setSubNav] = useState<boolean>(false);
     const [page, setPage] = useState(1);
      const [loadingProductId, setLoadingProductId] = useState<string | null>(null);
+     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
     const {baseUrl, signin,  token, cart, setCart, loggedIn} = userAuth();
 
@@ -106,48 +122,200 @@ function Shop() {
       }
 
       useEffect(() => {
+            getBanner();
+      }, []);
+
+      useEffect(() => {
             getData(page);
+            handleCategory();
       }, [page]);
 
-     const getData = async (pageNumber : number) => {
+    const getBanner = async () => {
+        setLoading(true);
+            const myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            const requestOptions: RequestInit = {
+                method: "GET",
+                headers: myHeaders,
+                redirect: "follow"
+            };
+            try {
+                const response = await fetch(`${baseUrl}/product-banner`, requestOptions);
+                if (!response.ok) {
+                const errorResponse = await response.json();
+                throw new Error(errorResponse.message);
+                }
+                const result = await response.json();
+                SetBanner(result.data);
+                setLoading(false);
+            } catch (error) {
+                
+            }
+    }
+
+    const getData = async (pageNumber : number) => {
+        setSelectedCategory('');
+        setLoading(true);
+            const myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            const requestOptions: RequestInit = {
+                method: "GET",
+                headers: myHeaders,
+                redirect: "follow"
+            };
+            try {
+                const response = await fetch(`${baseUrl}/active-product?page=${pageNumber}`, requestOptions);
+                if (!response.ok) {
+                const errorResponse = await response.json();
+                throw new Error(errorResponse.message);
+                }
+                const result = await response.json();
+                setProducts(result.data); // products come under "data"
+                setMeta(result.meta);     // pagination meta
+                setLoading(false);
+            } catch (error) {
+                
+            }
+    }
+
+     const handleCategory = async () => {
             setLoading(true);
               const myHeaders = new Headers();
               myHeaders.append("Content-Type", "application/json");
+              myHeaders.append("Authorization", token);
               const requestOptions: RequestInit = {
                   method: "GET",
                   headers: myHeaders,
                   redirect: "follow"
               };
               try {
-                  const response = await fetch(`${baseUrl}/active-product?page=${pageNumber}`, requestOptions);
+                  const response = await fetch(`${baseUrl}/product-category`, requestOptions);
                   if (!response.ok) {
                   const errorResponse = await response.json();
                   throw new Error(errorResponse.message);
                   }
-                  const result = await response.json();
-                   setProducts(result.data); // products come under "data"
-                   setMeta(result.meta);     // pagination meta
+                  const result = await response.json(); 
+                   setCategory(result.data);
                    setLoading(false);
-              } catch (error) {
-                  
+              } catch (error) {   
               }
+      }
+    const productSearch = async (search : string) => {
+        if(search == ''){
+             getData(page);
+        }
+        setLoading(true);
+            const myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            const requestOptions: RequestInit = {
+                method: "GET",
+                headers: myHeaders,
+                redirect: "follow"
+            };
+            try {
+                const response = await fetch(`${baseUrl}/product-search/${search}`, requestOptions);
+                if (!response.ok) {
+                const errorResponse = await response.json();
+                throw new Error(errorResponse.message);
+                }
+                const result = await response.json();
+                setProducts(result.data); // products come under "data"
+                setMeta(result.meta);     // pagination meta
+                setLoading(false);
+            } catch (error) {
+                
+            }
     }
 
+    const productFilter = async (key: string, value : string) => {
+        setSelectedCategory(value);
+        setLoading(true);
+            const myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            const requestOptions: RequestInit = {
+                method: "POST",
+                headers: myHeaders,
+                body: JSON.stringify({
+                    [key]: value
+                }),
+                redirect: "follow"
+            };
+            try {
+                const response = await fetch(`${baseUrl}/product-filter`, requestOptions);
+                if (!response.ok) {
+                const errorResponse = await response.json();
+                throw new Error(errorResponse.message);
+                }
+                const result = await response.json();
+                setProducts(result.data); // products come under "data"
+                setMeta(result.meta);     // pagination meta
+                setLoading(false);
+            } catch (error) {
+                
+            }
+    }
+
+    const productPriceRangeFilter = async (minValue : string, maxValue : string) => {
+        // setSelectedCategory(values); 
+        setLoading(true);
+            const myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            const requestOptions: RequestInit = {
+                method: "POST",
+                headers: myHeaders,
+                body: JSON.stringify({
+                   'min_price' : minValue,
+                   'max_price' : maxValue
+                }),
+                redirect: "follow"
+            };
+            try {
+                const response = await fetch(`${baseUrl}/product-filter`, requestOptions);
+                if (!response.ok) {
+                const errorResponse = await response.json();
+                throw new Error(errorResponse.message);
+                }
+                const result = await response.json();
+                setProducts(result.data); // products come under "data"
+                setMeta(result.meta);     // pagination meta
+                setLoading(false);
+            } catch (error) {
+                
+            }
+    }
+
+
+    const responsive = {
+    superLargeDesktop: {
+      breakpoint: { max: 4000, min: 3000 },
+      items: 1
+    },
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 1
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 1
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 1
+    }
+  }
   return (
     <div className="shop-con pageNav">
     <Header />
 
     <div className="shop-container">
-
                     {
-                    loading && (
-                        <div className="cart-prealoader">
-                            <ButtonPreloader/>
-                        </div>
+                        loading && (
+                            <div className="cart-prealoader">
+                                <ButtonPreloader/>
+                            </div>
 
-                    ) 
+                        ) 
                     }
-
         <div className="flex-center justification-between shop-header">
             <div className="page-title">
                <span> Home </span> / Shop
@@ -172,8 +340,53 @@ function Shop() {
         </div>
 
         <div className="shop-banner">
-            <img src={shopImage}  className='shop-desk-image' />
-            <img src={shopImage1}  className='shop-mobile-image' />
+            <Carousel 
+                  responsive={responsive}
+                  autoPlay={true}
+                  swipeable={true}
+                  draggable={true}
+                  showDots={false}
+                  infinite={true}
+                  partialVisible={false}
+                  autoPlaySpeed={10000}
+                  customTransition="all .5"
+                  transitionDuration={500}
+                 >
+                {
+                    banner.map((item, index) => (
+                        item.galleryType == "desktopHeroBanner" ? 
+                        (
+                        <img src={item.image} className='shop-desk-image' />
+                        ) : (
+                            null
+                        )
+                    ))
+                }
+                </Carousel>
+                
+                 <Carousel 
+                  responsive={responsive}
+                  autoPlay={true}
+                  swipeable={true}
+                  draggable={true}
+                  showDots={false}
+                  infinite={true}
+                  partialVisible={false}
+                  autoPlaySpeed={10000}
+                  customTransition="all .5"
+                  transitionDuration={500}
+                 >
+                {
+                    banner.map((item, index) => (
+                        item.galleryType == "mobileHeroBanner" ? 
+                        (
+                        <img src={item.image} className='shop-mobile-image' />
+                        ) : (
+                            null
+                        )
+                    ))
+                }
+                </Carousel>
         </div>
 
         <div className="shop-search-con flex-center justification-between">
@@ -186,7 +399,7 @@ function Shop() {
 
             <div className="shop-search">
                 <IoSearchOutline />
-                <input type="text" placeholder='Search Shop'/>
+                <input type="text" placeholder='Search Shop' onChange={(e) => productSearch(e.target.value)}/>
                 <div className="search-shop">search</div>
             </div>  
 
@@ -206,25 +419,42 @@ function Shop() {
                     <div className="filter-category">
                         <div className="filter-header">category</div>
 
-                        <div className="filter-list flex-center gap-10">
-                            <div className="filter-input"><input type="checkbox" name="" id="" /></div>
-                            <p>diffusers</p>
+                             {
+                                category.map((item, index)=>(
+                                    <div className="filter-list flex-center gap-10" key={index}>
+                            <div className="filter-input">
+                                <input type="checkbox"
+                                 checked={selectedCategory === item.id} 
+                                 onChange={(e) => {
+                                        if (e.target.checked) {
+                                        productFilter("category_id", item.id);
+                                        } else {
+                                        getData(page);
+                                        }
+                                    }}  />
+                            </div>
+                            <p>{item.categoryName}</p>
                         </div>
-                        <div className="filter-list flex-center gap-10">
+                                ))
+                             }
+                       
+                        {/* <div className="filter-list flex-center gap-10">
                             <div className="filter-input"><input type="checkbox" name="" id="" /></div>
                             <p>Men’s Fashion</p>
                         </div>
                         <div className="filter-list flex-center gap-10">
                             <div className="filter-input"><input type="checkbox"/></div>
                             <p>Women’s Fashion</p>
-                        </div>
+                        </div> */}
                     </div>
 
                     <div className="filter-price">
                         <div className="filter-header">price range</div>
 
                         <div className="filter-list flex-center gap-10">
-                            <div className="filter-input"><input type="checkbox"/></div>
+                            <div className="filter-input">
+                                <input type="checkbox" />
+                            </div>
                             <p className="flex-center gap-5">
                                 <div className="start-price"><span>₦</span>0</div>
                                 <div className="price-dash">-</div>
@@ -302,8 +532,31 @@ function Shop() {
                     </div>
                   </div>
                 </div>
-                <div className="product-ads"><img src={ads}/></div>
-                {/* <div className="product-ads"><img src={ads}/></div> */}
+      <Carousel 
+        responsive={responsive}
+        autoPlay={true}
+        swipeable={true}
+        draggable={true}
+        showDots={false}
+        infinite={true}
+        partialVisible={false}
+        autoPlaySpeed={10000}
+        customTransition="all .5"
+        transitionDuration={500}
+                 >
+                   {
+                    banner.map((item, index) => (
+                        item.galleryType == "desktopSideBanner" ? 
+                        (
+                        <div className="product-ads">
+                        <img src={item.image}/>
+                        </div> 
+                        ) : (
+                            null
+                        )
+                    ))
+                   }
+               </Carousel>
             </div>
              
              <div className="flex-center product-con">

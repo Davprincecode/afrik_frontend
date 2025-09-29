@@ -14,6 +14,12 @@ import ButtonPreloader from '../component/ButtonPreloader'
 function ContactUs() {
   const { pathname } = useLocation();
   const [loading, setLoading] = useState<boolean>(false);
+  const [subject, setSubject] = useState<string>('');
+  const [name, setName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [address, setAddress] = useState<string>('');
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
+  const [message, setMessage] = useState<string>('');
   const {baseUrl} = userAuth();
   
     useEffect(() => {
@@ -21,16 +27,19 @@ function ContactUs() {
     }, [pathname]);
 
  const handleContact = async() => {
+   if (!validateForm()) {
+    return
+   }
     setLoading(true);
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     const raw = JSON.stringify({
-    'messageType' : 'word',
-        'name' : 'obafemi david',
-        'email' : 'obafemidavprince',
-        'address' : 'oke ola',
-        'phoneNumber' :  '0813857885',
-        'message' : 'hello world how are you doing'
+          'subject' : subject,
+          'name' : name,
+          'email' : email,
+          'address' : address,
+          'phoneNumber' : phoneNumber,
+          'message' : message
     });
     const requestOptions: RequestInit = {
       method: "POST",
@@ -40,19 +49,20 @@ function ContactUs() {
     };
 
     try {
-      const response = await fetch(`${baseUrl}/contactus`, requestOptions);
-      const results = await response.text(); 
-      console.log(results);
+      const response = await fetch(`${baseUrl}/page-contact-us`, requestOptions);
       
       if (!response.ok) {
         const errorResponse = await response.json();
         throw new Error(errorResponse.message);
         }
         const result = await response.json(); 
-
-       console.log(result);
-       
-      toast.success("Data uploaded successfully");
+        setSubject('');
+        setName('');
+        setEmail('');
+        setAddress('');
+        setPhoneNumber('');
+        setMessage('');       
+        toast.success("Sent successfully");
     } catch (error: any) {
       toast.error(error.message || "Something went wrong");
     } finally {
@@ -60,6 +70,34 @@ function ContactUs() {
     }
   
  }
+
+    const validateForm = () => {
+      if (!subject.trim()) {
+        toast.error("You need to fill the subject");
+        return false;
+      }
+      if (!name.trim()) {
+        toast.error("You need to fill the name");
+        return false;
+      }
+      if (!email.trim()) {
+        toast.error("You need to fill the email");
+        return false;
+      }
+      if (!address.trim()) {
+        toast.error("You need to fill the address");
+        return false;
+      }
+      if (!phoneNumber.trim()) {
+        toast.error("You need to fill the phone number");
+        return false;
+      }
+      if (!message.trim()) {
+        toast.error("You need to fill the message");
+        return false;
+      }
+      return true;
+    };
 
   return (
 
@@ -112,25 +150,42 @@ function ContactUs() {
 
                   <div className="input inputCon">
                     <label >Message Type</label>
-                    <select >
+                    <select onChange={(e) => setSubject(e.target.value)}>
                       <option value="">Select Type</option>
+                      <option value="inquiry">inquiry</option>
+                      <option value="support">support</option>
+                      <option value="purchase">purchase</option>
+                      <option value="consultation">consultation</option>
+                      <option value="other">other</option>
                     </select>
                   </div>
 
                   <div className="inputFlex flex-center gap-20">
-                    <div className='input'> <label>Name <span>(First Name & Last Name)</span></label><input type="text"/></div>
-                    <div className='input'> <label>Email</label><input type="email"/></div>
+                    <div className='input'>
+                       <label>Name <span>(First Name & Last Name)</span>
+                    </label>
+                    <input type="text" onChange={(e) => setName(e.target.value)}/></div>
+                    <div className='input'> 
+                      <label>Email</label>
+                    <input type="email" onChange={(e) => setEmail(e.target.value)}/>
+                    </div>
                   </div>  
 
                   <div className="inputFlex flex-center gap-10">
-                    <div className='input'> <label>City/State</label><input type="text"/></div>
-                    <div className='input'> <label>Phone Number</label><input type="email"/></div>
+                    <div className='input'> 
+                      <label>City/State</label>
+                      <input type="text" onChange={(e) => setAddress(e.target.value)}/>
+                      </div>
+                    <div className='input'>
+                       <label>Phone Number</label>
+                       <input type="number" onChange={(e) => setPhoneNumber(e.target.value)}/>
+                       </div>
                   </div>  
 
                   <div className="text-area">
                     <div className="input">
                        <label >message</label>
-                     <textarea  cols={20} rows={8} ></textarea>
+                     <textarea  cols={20} rows={8} onChange={(e) => setMessage(e.target.value)}></textarea>
                     </div>   
                     </div>
                      
@@ -142,9 +197,12 @@ function ContactUs() {
                                 <ButtonPreloader/>
                             </div>
                         ) : (
-                      <div className="contactBtn" onClick={handleContact}>
-                          send message
-                      </div>
+                         
+                            <div className="contactBtn" onClick={handleContact}>
+                                 send message
+                           </ div>
+                         
+                      
                         )
                       }
                     

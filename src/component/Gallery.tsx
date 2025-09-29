@@ -10,19 +10,60 @@ import gallery8 from '../assets/images/gallery8.png'
 import gallery9 from '../assets/images/gallery9.png'
 import ImagePreviewModal from './ImagePreviewModal'
 import { LiaEyeSolid } from 'react-icons/lia'
+import { userAuth } from '../pages/context/AuthContext'
+import ButtonPreloader from './ButtonPreloader'
 
 
 
 function Gallery() {
 
    const allImages = [
-    gallery1, gallery2, gallery3, gallery4, gallery5, gallery6, gallery7, gallery8, gallery9
+    gallery1
   ];
 
   const [currentIndex, setCurrentIndex] = useState<number | null>(null);
   const [images, setImages] = useState(allImages);
   const [fade, setFade] = useState(true); 
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+
+  const {baseUrl} = userAuth();
+       const [loading, setLoading] = useState<boolean>(false);
+      //  const [data, setData] = useState<vlogIntern[]>([]); 
+       
+        useEffect(() => {
+                getData()
+                }, []);
+       
+           const getData = async () => {
+               setLoading(true);
+                   const myHeaders = new Headers();
+                   myHeaders.append("Content-Type", "application/json");
+                   const requestOptions: RequestInit = {
+                       method: "GET",
+                       headers: myHeaders,
+                       redirect: "follow"
+                   };
+                   try {
+                       const response = await fetch(`${baseUrl}/page-gallery`, requestOptions);
+                       if (!response.ok) {
+                       const errorResponse = await response.json();
+                       throw new Error(errorResponse.message);
+                       }
+                       const result = await response.json(); 
+                            const updatedImages = [...allImages];
+                          result.data.forEach((item: { image: string }, index: number) => {
+                          if (item.image && index < updatedImages.length) {
+                          updatedImages[index] = item.image;
+                          }
+                          });
+
+                          setImages(updatedImages);
+                       setLoading(false);
+                   } catch (error) {
+                       
+                   }
+           }
 
   const openModal = (index: number) =>{
    setCurrentIndex(index); 
@@ -87,8 +128,15 @@ function Gallery() {
             <h1>Gallery</h1>
             <p>jobs, features, masterclasses & picture portfolio</p>
         </div>
+            {
+            loading && (
+            <div className="cart-prealoader">
+              <ButtonPreloader/>
+            </div>
 
-
+            ) 
+            }
+            
         <div className= {`galleryWrapper  flex gap-10 galleryContainer ${fade ? "fade-in" : "fade-out"}`}>
 
             <div className="galleryCon">

@@ -62,11 +62,39 @@ interface SideNavProps {
     setOpen: (open: boolean) => void;
   }
   
+
+
   const SideNavAdmin = () => {
 
-    const {role, adminLoading, logout} = userAuth(); 
-    
+    const {baseUrl, token, role, adminLoading, logout} = userAuth(); 
+     const[loading, setLoading] = useState<boolean>(false);
     const [activeMenu, setActiveMenu] = useState<string | null>(null);
+
+
+      const handleStatusToggle = async (id: string) => {
+        setLoading(true);
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Authorization", token);
+        const requestOptions: RequestInit = {
+            method: "GET",
+            headers: myHeaders,
+            redirect: "follow"
+        };
+        try {
+            const response = await fetch(`${baseUrl}/status-product/${id}`, requestOptions);
+            if (!response.ok) {
+            const errorResponse = await response.json();
+            throw new Error(errorResponse.message);
+            }
+            const result = await response.json();   
+          
+                // setLoading(false);
+        } catch (error) {
+            
+        }
+
+        };
 
   return (
     <>
@@ -84,13 +112,33 @@ interface SideNavProps {
         <li key={index} className='sidebar-menu-item'>
       
             <NavLink to={menuItem.link!} className={({ isActive }) =>
-    `flex-center gap-20 nav-link sidebar-parent ${isActive ? 'active-nav' : ''}`
-  }>
+              `flex-center gap-20 nav-link sidebar-parent ${isActive ? 'active-nav' : ''}`
+            }>
+
+              
               <div className="menuIcon">
                 {menuItem.icon}
               </div> 
-              <div className="menu-title">{menuItem.title}</div>        
+              <div className="menu-title">{menuItem.title}</div> 
             </NavLink>
+
+            {
+              menuItem.title == "shop" && (
+                  <div className="radio-group">
+                      <label className="toggle-switch">
+                      <input
+                      type="checkbox"
+                      // checked={item.status === 'active'}
+                      onChange={() => handleStatusToggle("1")}
+                      />
+                      <span className="slider"></span>
+                      </label>
+                  </div> 
+              )
+            }
+
+
+
             
         </li>
       ))}

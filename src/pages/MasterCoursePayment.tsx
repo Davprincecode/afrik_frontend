@@ -34,7 +34,7 @@ const [total, setTotal] =useState<number>(0);
  const[courseDescription, setCourseDescription] = useState<string>('');
     const[courseId, setCourseId] = useState<string>('');
  const[courseImage, setCourseImage] = useState<string>('');
-     const[coursePrice, setCoursePrice] = useState<string>('');
+     const[coursePrice, setCoursePrice] = useState<number>(0);
      const[courseTitle, setCourseTitle] = useState<string>('');
      const[courseType, setCourseType] = useState<string>('');
      const[discountPrice, setDiscountPrice] = useState<string>('');
@@ -74,7 +74,25 @@ const { id } = useParams<{ id: string }>();
                     setCourseDescription(result.data.courseDescription);
                     setCourseId(result.data.courseId);
                     setCourseImage(result.data.courseImage);
-                    setCoursePrice(result.data.coursePrice);
+
+                                                            
+                            const now = new Date();
+                            const earlyBirdEnd = new Date(result.data.earlyBirdEndDate);
+                            const discount = parseFloat(result.data.discountPrice);
+                            const course = result.data.coursePrice;
+                            const earlyBird = parseFloat(result.data.earlyBirdPrice);
+
+                            if (now <= earlyBirdEnd) {
+                                setCoursePrice(earlyBird);
+                            } else if (!isNaN(discount) && discount !== 0) {
+                                setCoursePrice(discount);
+                            } else {
+                               setCoursePrice(course);
+                            }
+                                                            
+
+                    // setCoursePrice(result.data.coursePrice);
+
                     setCourseTitle(result.data.courseTitle);
                     setCourseType(result.data.courseType);
                     setDiscountPrice(result.data.discountPrice);

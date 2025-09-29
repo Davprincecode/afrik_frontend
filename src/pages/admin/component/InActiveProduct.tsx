@@ -65,7 +65,7 @@ function InActiveProduct() {
                       const errorResponse = await response.json();
                       throw new Error(errorResponse.message);
                       }
-                      const result = await response.json();  
+                      const result = await response.json();     
                       setProducts(result.data);
                       setMeta(result.meta);
                       setLoading(false);
@@ -74,70 +74,121 @@ function InActiveProduct() {
                   }
           }
         
-const handleId = (id : string) => {
-// setEditId(id);
-// heroFunction();
-};
-const handleStatusToggle = async (id: string) => {
-        setLoading(true);
-        const myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Authorization", token);
-        const requestOptions: RequestInit = {
-            method: "GET",
-            headers: myHeaders,
-            redirect: "follow"
-        };
-        try {
-            const response = await fetch(`${baseUrl}/status-product/${id}`, requestOptions);
-            if (!response.ok) {
-            const errorResponse = await response.json();
-            throw new Error(errorResponse.message);
-            }
-            const result = await response.json();   
-                 getData(page);
-                // setLoading(false);
-        } catch (error) {
-            
-        }
-
-};
-
-const handleDeleteClick = (id: string) => {
-setSelectedId(id);
-setShowPopup(true);
-};
-const handleDeleteConfirm = async (id: string | number) => {
+    const handleId = (id : string) => {
+    // setEditId(id);
+    // heroFunction();
+    };
+    const handleStatusToggle = async (id: string) => {
             setLoading(true);
             const myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
             myHeaders.append("Authorization", token);
             const requestOptions: RequestInit = {
-                method: "DELETE",
+                method: "GET",
                 headers: myHeaders,
                 redirect: "follow"
             };
             try {
-                const response = await fetch(`${baseUrl}/hero-section/${id}`, requestOptions);
+                const response = await fetch(`${baseUrl}/status-product/${id}`, requestOptions);
                 if (!response.ok) {
                 const errorResponse = await response.json();
                 throw new Error(errorResponse.message);
                 }
                 const result = await response.json();   
-                setProducts(result.data);
-                setLoading(false);
-                setShowPopup(false);
-                setSelectedId(null);
-                setLoading(false);
-                toast.error("delete successfully");
+                    getData(page);
+                    // setLoading(false);
             } catch (error) {
                 
             }
-    
-};
 
+    };
 
+    const handleDeleteClick = (id: string) => {
+    setSelectedId(id);
+    setShowPopup(true);
+    };
+    const handleDeleteConfirm = async (id: string | number) => {
+                setLoading(true);
+                const myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+                myHeaders.append("Authorization", token);
+                const requestOptions: RequestInit = {
+                    method: "DELETE",
+                    headers: myHeaders,
+                    redirect: "follow"
+                };
+                try {
+                    const response = await fetch(`${baseUrl}/hero-section/${id}`, requestOptions);
+                    if (!response.ok) {
+                    const errorResponse = await response.json();
+                    throw new Error(errorResponse.message);
+                    }
+                    const result = await response.json();   
+                    setProducts(result.data);
+                    setLoading(false);
+                    setShowPopup(false);
+                    setSelectedId(null);
+                    setLoading(false);
+                    toast.error("delete successfully");
+                } catch (error) {
+                    
+                }
+        
+    };
 
+const handleSearch = async (search : string) => {    
+            if(search == ''){
+                getData(page);      
+            }
+            setLoading(true);
+                const myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+                const requestOptions: RequestInit = {
+                    method: "GET",
+                    headers: myHeaders,
+                    redirect: "follow"
+                };
+                try {
+                    const response = await fetch(`${baseUrl}/all-product-search/inactive/${search}`, requestOptions);
+                    if (!response.ok) {
+                    const errorResponse = await response.json();
+                    throw new Error(errorResponse.message);
+                    }
+                    const result = await response.json();
+                    setProducts(result.data);
+                    setMeta(result.meta);
+                    setLoading(false);
+                } catch (error) {
+                    setLoading(false);
+                }
+        }
+
+    const handleFilter = async (search : string) => {
+        if(search == ''){
+            getData(page);
+        }
+        setLoading(true);
+            const myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            const requestOptions: RequestInit = {
+                method: "GET",
+                headers: myHeaders,
+                redirect: "follow"
+            };
+            try {
+                const response = await fetch(`${baseUrl}/all-product-filter/inactive/${search}`, requestOptions);
+                if (!response.ok) {
+                const errorResponse = await response.json();
+                throw new Error(errorResponse.message);
+                }
+                const result = await response.json();
+                setProducts(result.data);
+                setMeta(result.meta);
+                setLoading(false);
+            } catch (error) {
+                setLoading(false);
+            }
+    }
   return (
     <div>
 
@@ -148,12 +199,14 @@ const handleDeleteConfirm = async (id: string | number) => {
         
                 <div className="flex-center gap-10">
                     <div className="header-form-filter">
-                        <select name="" id="">
-                            <option value="">Filter</option>
-                        </select>
+                        <select  onChange={(e) => handleFilter(e.target.value)}>
+                        <option value="">Filter</option>
+                        <option value="pin">Pinned</option>
+                        <option value="unpin">Unpinned</option>
+                </select>
                     </div>
                     <div className="header-form-input">
-                        <input type="text" placeholder='Search' />
+                        <input type="text" placeholder='Search' onChange={(e) => handleSearch(e.target.value)}/>
                         <CiSearch />
                     </div>
                 </div>

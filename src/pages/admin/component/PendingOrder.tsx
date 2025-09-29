@@ -16,10 +16,24 @@ interface orderInterface {
     customerAddress:  string;
     customerId:  string;
     customerName:  string;
+    customerEmail : string;
+   customerPhoneNumber : string;
     orderDate:  string;
     orderId:  string;
     orderStatus:  string;
     total:  string;
+    paymentMethod: string;
+    products : products[]
+}
+interface products {
+orderId : string;
+productColor : string;
+productId : string;
+productImage : string;
+productName : string;
+quantity : number;
+unitPrice : string;
+total : string; 
 }
 interface Meta {
   current_page: number;
@@ -41,9 +55,12 @@ function PendingOrder() {
     const handleToggleView = (id: string) => {
     setActiveViewId(prev => (prev === id ? null : id));
     };
+
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState<boolean>(false);
     const [order, setOrder] = useState<orderInterface[]>([]);
+    const [PopOrder, setPopOrder] = useState<orderInterface[]>([]);
+
     const{baseUrl, token} = userAuth();
 
      const [authAction, setAuthAction] = useState<boolean>(false);
@@ -68,7 +85,7 @@ function PendingOrder() {
                 const errorResponse = await response.json();
                 throw new Error(errorResponse.message);
                 }
-                const result = await response.json();   
+                const result = await response.json();      
                 setOrder(result.data);
                 setMeta(result.meta);
                 setLoading(false);
@@ -129,25 +146,55 @@ function PendingOrder() {
       setActiveOrderId(null); // Close dropdown
     };
 
-    const downLoadOrder = (id : string) => {
+      const downLoadOrder = (id : string) => {
 
-}
-const viewOrder = (id : string) => {
+      }
 
-}
+  const viewOrder = (id : string) => {
+   setPopOrder(order.filter(item => item.id == id));
+   setAuthAction(!authAction)
+  }
+
+   const handleSearch = async (search : string, status : string) => {
+        if(search == ''){
+             getData(page);
+        }
+        setLoading(true);
+            const myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            const requestOptions: RequestInit = {
+                method: "GET",
+                headers: myHeaders,
+                redirect: "follow"
+            };
+            try {
+                const response = await fetch(`${baseUrl}/order-search/${search}/${status}`, requestOptions);
+                
+                if (!response.ok) {
+                const errorResponse = await response.json();
+                throw new Error(errorResponse.message);
+                }
+                const result = await response.json();
+                setOrder(result.data);
+                setMeta(result.meta);
+                setLoading(false);
+            } catch (error) {
+                
+            }
+    }
 
   return (
     <div>
           <div className="admin-header-form  flex-center gap-10 justification-between">
             
                                 <div className="flex-center gap-10">
-                                    <div className="header-form-filter">
+                                    {/* <div className="header-form-filter">
                                         <select name="" id="">
                                             <option value="">Filter</option>
                                         </select>
-                                    </div>
+                                    </div> */}
                                     <div className="header-form-input">
-                                        <input type="text" placeholder='Search' />
+                                        <input type="text" placeholder='Search' onChange={(e) => handleSearch(e.target.value, "pending")}/>
                                         <CiSearch />
                                     </div>
                                 </div>
@@ -214,7 +261,7 @@ loading && (
                             {activeViewId === item.id && (
                             <div className="viewPop">
                             <div className='viewAction'>
-                              <div className="confirmView  statusAction"  onClick={() => setAuthAction(!authAction)}>
+                              <div className="confirmView  statusAction"  onClick={() => viewOrder(item.id)}>
                                 <AiOutlineEye /> View Order Details
                               </div>
                               <div className="cancelView statusAction"  onClick={() => cancelOrder(item.id)}>
@@ -241,7 +288,7 @@ loading && (
                {meta && <AdminPagination meta={meta} onPageChange={setPage} />}
             </div>
 
-            <OrderDetails  authAction={authAction} setAuthAction={setAuthAction}/>
+            <OrderDetails  authAction={authAction} setAuthAction={setAuthAction} PopOrder={PopOrder}/>
 
     </div>
   )

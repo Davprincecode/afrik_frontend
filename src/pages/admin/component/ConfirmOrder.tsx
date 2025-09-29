@@ -16,10 +16,24 @@ interface orderInterface {
     customerAddress:  string;
     customerId:  string;
     customerName:  string;
+    customerEmail : string;
+   customerPhoneNumber : string;
     orderDate:  string;
     orderId:  string;
     orderStatus:  string;
     total:  string;
+    paymentMethod: string;
+    products : products[]
+}
+interface products {
+orderId : string;
+productColor : string;
+productId : string;
+productImage : string;
+productName : string;
+quantity : number;
+unitPrice : string;
+total : string; 
 }
 
 interface Meta {
@@ -33,6 +47,7 @@ interface Meta {
 
 function ConfirmOrder() {
     const [meta, setMeta] = useState<Meta | null>(null);
+    const [PopOrder, setPopOrder] = useState<orderInterface[]>([]);
     const [activeOrderId, setActiveOrderId] = useState<string | null>(null);
     const handleToggleDropdown = (id: string) => {
     setActiveOrderId(prev => (prev === id ? null : id));
@@ -110,18 +125,46 @@ const viewOrder = (id : string) => {
 
 }
 
+
+  const handleSearch = async (search : string, status : string) => {
+        if(search == ''){
+             getData(page);
+        }
+        setLoading(true);
+            const myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            const requestOptions: RequestInit = {
+                method: "GET",
+                headers: myHeaders,
+                redirect: "follow"
+            };
+            try {
+                const response = await fetch(`${baseUrl}/order-search/${search}/${status}`, requestOptions);
+                
+                if (!response.ok) {
+                const errorResponse = await response.json();
+                throw new Error(errorResponse.message);
+                }
+                const result = await response.json();
+                setOrder(result.data);
+                setMeta(result.meta);
+                setLoading(false);
+            } catch (error) {
+                
+            }
+    }
   return (
     <div>
           <div className="admin-header-form  flex-center gap-10 justification-between">
             
                                 <div className="flex-center gap-10">
-                                    <div className="header-form-filter">
+                                    {/* <div className="header-form-filter">
                                         <select name="" id="">
                                             <option value="">Filter</option>
                                         </select>
-                                    </div>
+                                    </div> */}
                                     <div className="header-form-input">
-                                        <input type="text" placeholder='Search' />
+                                        <input type="text" placeholder='Search'  onChange={(e) => handleSearch(e.target.value, "confirmed")}/>
                                         <CiSearch />
                                     </div>
                                 </div>
@@ -211,7 +254,7 @@ const viewOrder = (id : string) => {
                {meta && <AdminPagination meta={meta} onPageChange={setPage} />}
             </div>
 
-            <OrderDetails  authAction={authAction} setAuthAction={setAuthAction}/>
+            <OrderDetails  authAction={authAction} setAuthAction={setAuthAction} PopOrder={PopOrder}/>
     </div>
   )
 }

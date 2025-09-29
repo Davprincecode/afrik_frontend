@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { userAuth } from '../../context/AuthContext';
 import AddCourse from './AddCourse';
 import PurchaseCourse from './PurchaseCourse';
@@ -13,6 +13,9 @@ import MessageSent from './MessageSent';
 import { FaEnvelope, FaPlus } from 'react-icons/fa';
 import { HiOutlineEnvelope, HiOutlinePaperAirplane, HiOutlineStar } from 'react-icons/hi2';
 import { FiPlus } from 'react-icons/fi';
+import { toast } from 'react-toastify';
+
+
 
 
 const headers = [
@@ -23,14 +26,14 @@ const headers = [
 ];
 
 function MessageComponent() {
-
+      
      const [activeTab, setActiveTab] = useState('inbox');
       const [isActive, setIsActive] = useState(false);
-     const {baseUrl, token} = userAuth();
       const handleToggle = () => {
         setIsActive(!isActive);
       };   
       const [authAction, setAuthAction] = useState<boolean>(false);   
+      
   return (
     <div  className='admin-dashboard'>
 

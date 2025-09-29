@@ -8,16 +8,17 @@ import AllProduct from './component/AllProduct';
 import AddProduct from './component/AddProduct';
 import Orders from './component/Orders';
 import AddPayment from './component/AddPayment';
+import { useParams } from 'react-router-dom';
 
 
 const headers = ['orders', 'transactions', 'banners', 'all product', 'add product'];
 
 function AdminShop() {
-
-   const [activeTab, setActiveTab] = useState('orders'); 
-
-   const [paymentActive, setPaymentActive] = useState<boolean>(false);
     
+    const { param } = useParams();
+   const [activeTab, setActiveTab] = useState(param || 'orders'); 
+   const [paymentActive, setPaymentActive] = useState<boolean>(false);
+
    const paymentFunction = () => {
     setPaymentActive(!paymentActive);
    }

@@ -1,7 +1,16 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import blogImg from '../assets/images/blogpic.png'
 import { NavLink } from 'react-router-dom'
 import { FiInstagram } from 'react-icons/fi';
+import { userAuth } from '../pages/context/AuthContext';
+import ButtonPreloader from './ButtonPreloader';
+
+
+interface vlogIntern {
+    'title' :  string;
+    'videoUrl':  string;
+    'status':  string;
+    }
 
 function Vlog() {
 
@@ -16,12 +25,50 @@ function Vlog() {
   };
   document.body.appendChild(script);
 }, []);
-
+ 
+    const {baseUrl} = userAuth();
+     const [loading, setLoading] = useState<boolean>(false);
+     const [data, setData] = useState<vlogIntern[]>([]); 
+     
+      useEffect(() => {
+              getData()
+              }, []);
+     
+         const getData = async () => {
+             setLoading(true);
+                 const myHeaders = new Headers();
+                 myHeaders.append("Content-Type", "application/json");
+                 const requestOptions: RequestInit = {
+                     method: "GET",
+                     headers: myHeaders,
+                     redirect: "follow"
+                 };
+                 try {
+                     const response = await fetch(`${baseUrl}/page-instagram`, requestOptions);
+                     if (!response.ok) {
+                     const errorResponse = await response.json();
+                     throw new Error(errorResponse.message);
+                     }
+                     const result = await response.json(); 
+                     setData(result.data); 
+                     setLoading(false);
+                 } catch (error) {
+                     
+                 }
+         }
   return (
    <div className='vlog'>
           <div className="vlogHeader">
              <h1>vlog</h1>
           </div>
+            {
+            loading && (
+            <div className="cart-prealoader">
+              <ButtonPreloader/>
+            </div>
+
+            ) 
+            }
            
            <div className="vlogLogoTitle flex-center gap-10">
                            <div className="vlogoIcon">
@@ -34,7 +81,29 @@ function Vlog() {
 
           <div className="vlogConFlex flex gap-10">
 
-              <div className="vlogCon">
+            {
+                data.map((item, index)=>(
+                    <div className="vlogCon" key={index}>
+
+                <div className="vlogImage">
+                      <blockquote
+                      className="instagram-media"
+                      data-instgrm-permalink={item.videoUrl}
+                      data-instgrm-version="14"
+                      style={{ width: '100%', margin: 'auto' }}
+                      ></blockquote>
+                </div>
+
+                <div className="vlogContent">
+                    <div className="vlogHeading">
+                        {item.title}
+                    </div>                   
+                </div>
+              </div>
+                ))
+            }
+
+              {/* <div className="vlogCon">
 
                 <div className="vlogImage">
                       <blockquote
@@ -87,7 +156,7 @@ function Vlog() {
                     </div>
                    
                 </div>
-              </div>
+              </div> */}
               
 
           </div>

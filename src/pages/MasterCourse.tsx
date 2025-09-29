@@ -68,6 +68,7 @@ function MasterCourse() {
                   throw new Error(errorResponse.message);
                   }
                   const result = await response.json();  
+                 console.log(result);
                  
                  setCourses(result.data);
                   setMeta(result.meta);
@@ -140,6 +141,7 @@ function MasterCourse() {
                                             </NavLink>
                                         </p>
                                     </div>
+
                                     <div className="master-body-footer">
 
                                         <div className="master-body-date flex-center">
@@ -147,7 +149,7 @@ function MasterCourse() {
 
                                             <div className="master-date-title flex-center">
                                                 <p>{item.startDate}</p>
-                                                <span>-</span>
+                                                <span className='dateSpace'>-</span>
                                                 <p>{item.endDate}</p>
                                             </div>
                                             
@@ -160,13 +162,68 @@ function MasterCourse() {
                                             </div>
                                         </div>
 
-                                        <div className="master-body-date flex-center">
-                                            <div className="master-date">price:</div>
-                                            <div className="master-date-title flex-center">
-                                                <p><span>₦</span>{item.coursePrice.toLocaleString()}</p>
-                                            </div>
-                                            
-                                        </div>
+                                         {(() => {
+                                                    const now = new Date();
+                                                    const earlyBirdEnd = new Date(item.earlyBirdEndDate);
+                                                    // Calculate difference in milliseconds
+                                                    const diffTime = earlyBirdEnd.getTime() - now.getTime();
+
+                                                    // Convert to days
+                                                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                                                    // Result
+                                                    const daysLeftText = diffDays > 0 ? `${diffDays} day${diffDays > 1 ? 's' : ''} left` : 'Early bird ended';
+
+                                                    const discount = parseFloat(item.discountPrice);
+                                                    const course = item.coursePrice;
+                                                    const earlyBird = parseFloat(item.earlyBirdPrice);
+                                                      
+                                                    if (now <= earlyBirdEnd) {
+                                                    return (
+                                                                <div className="master-body-date  date-data flex">
+                                                                    <div className="early-bird">
+                                                                    <h1 className='early-bird-title'>
+                                                                    early bird : 
+                                                                    <div className="day-left">{daysLeftText}</div>  
+                                                                    </h1>
+                                                                    <h1>₦{earlyBird.toLocaleString()}</h1>
+                                                                    </div>
+                                                                    <div className="course-price">
+                                                                    <p>course price</p>
+                                                                    <h1>₦{course.toLocaleString()}</h1>
+                                                                    </div>
+                                                                </div>
+                                                    );
+                                                    } else if (!isNaN(discount) && discount !== 0) {
+                                                    return (
+                                                        <div className="master-body-date date-data flex-center">
+                                                            <div className="discount-offer">
+                                                            <p>
+                                                            discount offer
+                                                            </p>
+                                                            <h1>₦{discount.toLocaleString()}</h1>
+                                                            </div>
+                                                            <div className="course-price line-through">
+                                                            <p>course price</p>
+                                                            <h1>₦{course.toLocaleString()}</h1>
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                    } else {
+
+                                                    return (
+                                                        <div className="master-body-date date-data flex-center">
+                                                            <div className="normal-course-price">
+                                                            <p>course price</p>
+                                                            <h1>₦{course.toLocaleString()}</h1>
+                                                            </div>
+                                                        </div>
+                                                    );
+
+                                                    }
+                                                })()}
+
+                                          
 
                                         <NavLink to={`/master-course-payment/${item.courseId}`} className="master-btn">
                                             enrol now
@@ -210,7 +267,7 @@ function MasterCourse() {
 
                                             <div className="master-date-title flex-center">
                                                 <p>{item.startDate}</p>
-                                                <span>-</span>
+                                                <span className='dateSpace'>-</span>
                                                 <p>{item.endDate}</p>
                                             </div>
                                             
@@ -222,15 +279,68 @@ function MasterCourse() {
                                                 <p>{item.courseType}</p>
                                             </div>
                                         </div>
+                                        
+                                              {(() => {
+                                                    const now = new Date();
+                                                    const earlyBirdEnd = new Date(item.earlyBirdEndDate);
+                                                    // Calculate difference in milliseconds
+                                                    const diffTime = earlyBirdEnd.getTime() - now.getTime();
 
-                                        <div className="master-body-date flex-center">
-                                            <div className="master-date">price:</div>
-                                            <div className="master-date-title flex-center">
-                                                <p><span>₦</span>{item.coursePrice.toLocaleString()}</p>
-                                            </div>
-                                            
-                                        </div>
+                                                    // Convert to days
+                                                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
+                                                    // Result
+                                                    const daysLeftText = diffDays > 0 ? `${diffDays} day${diffDays > 1 ? 's' : ''} left` : 'Early bird ended';
+
+                                                    const discount = parseFloat(item.discountPrice);
+                                                    const course = item.coursePrice;
+                                                    const earlyBird = parseFloat(item.earlyBirdPrice);
+                                                      
+                                                    if (now <= earlyBirdEnd) {
+                                                    return (
+                                                                <div className="master-body-date  date-data flex">
+                                                                    <div className="early-bird">
+                                                                    <h1 className='early-bird-title'>
+                                                                    early bird : 
+                                                                    <div className="day-left">{daysLeftText}</div>  
+                                                                    </h1>
+                                                                    <h1>₦{earlyBird.toLocaleString()}</h1>
+                                                                    </div>
+                                                                    <div className="course-price">
+                                                                    <p>course price</p>
+                                                                    <h1>₦{course.toLocaleString()}</h1>
+                                                                    </div>
+                                                                </div>
+                                                    );
+                                                    } else if (!isNaN(discount) && discount !== 0) {
+                                                    return (
+                                                        <div className="master-body-date date-data flex-center">
+                                                            <div className="discount-offer">
+                                                            <p>
+                                                            discount offer
+                                                            </p>
+                                                            <h1>₦{discount.toLocaleString()}</h1>
+                                                            </div>
+                                                            <div className="course-price line-through">
+                                                            <p>course price</p>
+                                                            <h1>₦{course.toLocaleString()}</h1>
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                    } else {
+
+                                                    return (
+                                                        <div className="master-body-date date-data flex-center">
+                                                            <div className="normal-course-price">
+                                                            <p>course price</p>
+                                                            <h1>₦{course.toLocaleString()}</h1>
+                                                            </div>
+                                                        </div>
+                                                    );
+
+                                                    }
+                                                })()}
+                                                
                                         <NavLink to={`/master-course-payment/${item.courseId}`} className="master-btn">
                                             enrol now
                                         </NavLink>
@@ -244,8 +354,6 @@ function MasterCourse() {
                         )) 
                      }
                  
-
-
 
             <div className="shop-pagination">
                 {meta && <Pagination meta={meta} onPageChange={setPage} />}

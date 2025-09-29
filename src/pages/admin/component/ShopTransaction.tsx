@@ -75,6 +75,61 @@ const ShopTransaction: React.FC<PaymentInterface> = ({ paymentFunction }) =>{
             setLoading(false);
             }
             }
+
+        const handleSearch = async (search : string) => {
+            if(search == ''){
+                getData(page);
+            }
+            setLoading(true);
+                const myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+                const requestOptions: RequestInit = {
+                    method: "GET",
+                    headers: myHeaders,
+                    redirect: "follow"
+                };
+                try {
+                    const response = await fetch(`${baseUrl}/transaction-search/${search}`, requestOptions);
+                    if (!response.ok) {
+                    const errorResponse = await response.json();
+                    throw new Error(errorResponse.message);
+                    }
+                    const result = await response.json();
+                    setOrder(result.data);
+                    setMeta(result.meta);
+                    setLoading(false);
+                } catch (error) {
+                    setLoading(false);
+                }
+        }
+
+        const handleFilter = async (search : string) => {
+            if(search == ''){
+                getData(page);
+            }
+            setLoading(true);
+                const myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+                const requestOptions: RequestInit = {
+                    method: "GET",
+                    headers: myHeaders,
+                    redirect: "follow"
+                };
+                try {
+                    const response = await fetch(`${baseUrl}/transaction-filter/${search}`, requestOptions);
+                    if (!response.ok) {
+                    const errorResponse = await response.json();
+                    throw new Error(errorResponse.message);
+                    }
+                    const result = await response.json();
+                    setOrder(result.data);
+                    setMeta(result.meta);
+                    setLoading(false);
+                } catch (error) {
+                    setLoading(false);
+                }
+        }
+
     return (
       <div>
          
@@ -85,13 +140,21 @@ const ShopTransaction: React.FC<PaymentInterface> = ({ paymentFunction }) =>{
                             <div className="admin-header-form  flex-center gap-10 justification-between">
             
                                 <div className="flex-center gap-10">
+
                                     <div className="header-form-filter">
-                                        <select name="" id="">
+                                        <select name="" id="" onChange={(e) => handleFilter(e.target.value)}>
                                             <option value="">Filter</option>
+                                            <option value="pending">Pending</option>
+                                            <option value="confirmed">Confirmed</option>
+                                            <option value="shipped">Shipped</option>
+                                            <option value="delivered">Delivered</option>
+                                            <option value="cancelled">Cancelled</option>
                                         </select>
                                     </div>
+
                                     <div className="header-form-input">
-                                        <input type="text" placeholder='Search' />
+
+                                     <input type="text" placeholder='Search'  onChange={(e) => handleSearch(e.target.value)} />
                                         <CiSearch />
                                     </div>
                                 </div>

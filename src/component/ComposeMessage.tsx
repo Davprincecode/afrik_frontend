@@ -20,7 +20,92 @@ interface authComponentInterface {
 }
 
 const ComposeMessage : React.FC<authComponentInterface> = ({authAction, setAuthAction}) =>{
-const [content, setContent] = useState('');
+
+
+const {baseUrl, token} = userAuth();
+  const [subject, setSubject] = useState<string>('');
+  const [copyEmail, setCopyEmail] = useState<string>('');
+  const [name, setName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [address, setAddress] = useState<string>('');
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
+  const [message, setMessage] = useState<string>('');
+const [loading, setLoading] = useState<boolean>(false);
+
+
+ const handleContact = async() => {
+   if (!validateForm()) {
+    return
+   }
+    setLoading(true);
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    const raw = JSON.stringify({
+          'subject' : subject,
+          'name' : name,
+          'email' : email,
+          'address' : address,
+          'phoneNumber' : phoneNumber,
+          'message' : message
+    });
+    const requestOptions: RequestInit = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    try {
+      const response = await fetch(`${baseUrl}/page-contact-us`, requestOptions);
+      
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        throw new Error(errorResponse.message);
+        }
+        const result = await response.json(); 
+        setSubject('');
+        setName('');
+        setEmail('');
+        setAddress('');
+        setPhoneNumber('');
+        setMessage('');       
+        toast.success("Sent successfully");
+    } catch (error: any) {
+      toast.error(error.message || "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  
+ }
+
+    const validateForm = () => {
+      if (!subject.trim()) {
+        toast.error("You need to fill the subject");
+        return false;
+      }
+      if (!name.trim()) {
+        toast.error("You need to fill the name");
+        return false;
+      }
+      if (!email.trim()) {
+        toast.error("You need to fill the email");
+        return false;
+      }
+      if (!address.trim()) {
+        toast.error("You need to fill the address");
+        return false;
+      }
+      if (!phoneNumber.trim()) {
+        toast.error("You need to fill the phone number");
+        return false;
+      }
+      if (!message.trim()) {
+        toast.error("You need to fill the message");
+        return false;
+      }
+      return true;
+    };
+
 
   const modules = {
     toolbar: [
@@ -39,16 +124,14 @@ const [content, setContent] = useState('');
     'image'
   ];
 
-
-  const navigate = useNavigate();
-  const {baseUrl} = userAuth();  
+   const navigate = useNavigate();
   const { pathname } = useLocation();
   
   useEffect(() => {
       window.scrollTo(0, 0);
     }, [pathname]);
-const currentStage = 'Shipped';
-const stages = ['Pending', 'Order Completed', 'Shipped', 'Delivered'];
+
+
   return (
     <div className="track-con" style={{display : authAction ? "flex" : "none"}}>
 
@@ -71,22 +154,22 @@ const stages = ['Pending', 'Order Completed', 'Shipped', 'Delivered'];
          <div className="message-body">
             <div className="admin-input">
                 <label>To:</label>
-                <input  type="text" placeholder="Enter Email"/>
+                <input  type="text" placeholder="Enter Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
             </div>
             <div className="admin-input">
                 <label>Cc/Bcc:</label>
-                <input  type="text" placeholder="Enter Email"/>
+                <input  type="text" placeholder="Enter Email" value={copyEmail}  onChange={(e) => setCopyEmail(e.target.value)}/>
             </div>
             <div className="admin-input">
                 <label>Subject:</label>
-                <input  type="text" placeholder="Enter Subject"/>
+                <input  type="text" placeholder="Enter Subject" value={subject} onChange={(e) => setSubject(e.target.value)}/>
             </div>
 
             <div className="admin-input messageBody">
                 <label>Message Body:</label>
                <ReactQuill
-        value={content}
-        onChange={setContent}
+        value={message}
+        onChange={setMessage}
         modules={modules}
         formats={formats}
         placeholder="Compose your message..."
@@ -96,7 +179,7 @@ const stages = ['Pending', 'Order Completed', 'Shipped', 'Delivered'];
 
              <div className="btn-flex-con messageBtn">
                     
-                    <div className="enterBtn">
+                    <div className="enterBtn" onClick={handleContact}>
                         send message
                     </div>
             </div>

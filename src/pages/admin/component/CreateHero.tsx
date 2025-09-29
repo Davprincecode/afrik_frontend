@@ -33,7 +33,32 @@ function CreateHero() {
     const [buttonLink, setButtonLink] = useState('');
   const [buttonExternalLink, setButtonExternalLink] = useState('');
 
- 
+    const validateForm = () => {
+        // New fields
+        if (!bannerImage) {
+            toast.error("You need to upload a banner image");
+            return false;
+        }
+        if (!headerText.trim()) {
+            toast.error("You need to fill the header text");
+            return false;
+        }
+        if (!subHeadLine.trim()) {
+            toast.error("You need to fill the subheadline");
+            return false;
+        }
+        if (!buttonText.trim()) {
+            toast.error("You need to fill the button text");
+            return false;
+        }
+        if (!buttonLink.trim() && !buttonExternalLink.trim()) {
+            toast.error("You need to provide a button link or external link");
+            return false;
+        }
+
+        return true;
+        };
+
 
         const charCount = headerText.replace(/\s/g, '').length;
         const subHeadLineCount = subHeadLine.replace(/\s/g, '').length;
@@ -78,6 +103,9 @@ function CreateHero() {
            };
 
         const handleHeroBanner = async() => {
+              if(!validateForm()){  
+                return;
+              }
                 setLoading(true);
 
                 if (!bannerImage) {
@@ -191,15 +219,15 @@ function CreateHero() {
                         <div className='inActive'><ButtonPreloader/></div>
                     </div>
                 ) : (
-                    bannerImage !== null && headerText !== '' && subHeadLine !== '' && buttonText !== '' && buttonLink !== ''  ? (
+                    // bannerImage !== null && headerText !== '' && subHeadLine !== '' && buttonText !== '' && buttonLink !== ''  ? (
                       <div className="admin-input" onClick={handleHeroBanner}>
                     <button>Apply & Save</button>
                     </div>  
-                    ) :(
-                        <div className="admin-input">
-                            <button className='inActive'>Apply & Save</button>
-                        </div>
-                    )
+                    // ) :(
+                    //     <div className="admin-input">
+                    //         <button className='inActive'>Apply & Save</button>
+                    //     </div>
+                    // )
                     
                 )}
 
