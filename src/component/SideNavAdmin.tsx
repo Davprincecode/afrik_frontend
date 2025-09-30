@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { MdHome, MdLogout} from 'react-icons/md';
 import { NavLink } from 'react-router-dom'
 import { userAuth } from '../pages/context/AuthContext';
@@ -9,6 +9,7 @@ import { RxEnvelopeClosed } from 'react-icons/rx';
 import { BiHome } from 'react-icons/bi';
 import { PiNewspaperClippingLight } from 'react-icons/pi';
 import ButtonPreloader from './ButtonPreloader';
+import { toast } from 'react-toastify';
 
 
 interface MenuItem {
@@ -67,11 +68,15 @@ interface SideNavProps {
   const SideNavAdmin = () => {
 
     const {baseUrl, token, role, adminLoading, logout} = userAuth(); 
-     const[loading, setLoading] = useState<boolean>(false);
+    const[loading, setLoading] = useState<boolean>(false);
     const [activeMenu, setActiveMenu] = useState<string | null>(null);
+    const [shopActive, setShopActive] = useState<boolean>(false);
 
+    useEffect(() => {
+      handleStatus();
+  }, [])
 
-      const handleStatusToggle = async (id: string) => {
+    const handleStatus = async () => {
         setLoading(true);
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -82,14 +87,42 @@ interface SideNavProps {
             redirect: "follow"
         };
         try {
-            const response = await fetch(`${baseUrl}/status-product/${id}`, requestOptions);
+            const response = await fetch(`${baseUrl}/shop-status`, requestOptions);
             if (!response.ok) {
             const errorResponse = await response.json();
             throw new Error(errorResponse.message);
             }
-            const result = await response.json();   
-          
-                // setLoading(false);
+            const result = await response.json(); 
+            setShopActive(result.status == 'OPEN' ? true : false);
+            
+                setLoading(false);
+        } catch (error) {
+            
+        }
+
+        };
+
+
+    const handleStatusToggle = async (id: string) => {
+        setLoading(true);
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Authorization", token);
+        const requestOptions: RequestInit = {
+            method: "GET",
+            headers: myHeaders,
+            redirect: "follow"
+        };
+        try {
+            const response = await fetch(`${baseUrl}/shop/${id}`, requestOptions);
+            if (!response.ok) {
+            const errorResponse = await response.json();
+            throw new Error(errorResponse.message);
+            }
+            const result = await response.json(); 
+              setShopActive(result.status == 'OPEN' ? true : false);
+                setLoading(false);
+                toast.success(result.message);
         } catch (error) {
             
         }
@@ -124,16 +157,24 @@ interface SideNavProps {
 
             {
               menuItem.title == "shop" && (
+                 loading ? (
+                    <div className="radio-group">
+                      <ButtonPreloader/>
+                    </div>
+                 ) : (
+
+                 
                   <div className="radio-group">
                       <label className="toggle-switch">
                       <input
                       type="checkbox"
-                      // checked={item.status === 'active'}
+                      checked={shopActive}
                       onChange={() => handleStatusToggle("1")}
                       />
                       <span className="slider"></span>
                       </label>
                   </div> 
+                  )
               )
             }
 

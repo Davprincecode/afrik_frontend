@@ -8,6 +8,7 @@ import { MdDelete } from 'react-icons/md';
 import AllProducts from './AllProducts';
 import ActiveProduct from './ActiveProduct';
 import InActiveProduct from './InActiveProduct';
+import EditProduct from './EditProduct';
 
 
 const headers = ['all', 'live', 'inactive'];
@@ -15,7 +16,14 @@ const headers = ['all', 'live', 'inactive'];
 function AllProduct() {
     const [loading, setLoading] = useState<boolean>(false);
  
-  const [activeTab, setActiveTab] = useState('all'); 
+    const [activeTab, setActiveTab] = useState('all'); 
+
+    const [editHero, setEditHero] = useState<boolean>(false);
+      const [editId, setEditId] = useState<string>('');
+          
+          const heroFunction = () => {
+            setEditHero(!editHero);
+          }
 
     return (
       <div>
@@ -42,8 +50,13 @@ function AllProduct() {
                 ) : (
                       <AllProducts/>
                 )
-            }
-             
+
+                }
+                {
+                    editHero && (
+                    <EditProduct heroFunction={heroFunction} editId={editId} setEditId={setEditId}/>
+                        ) 
+                }
          </div>
   
       </div>

@@ -8,6 +8,8 @@ import Schedule from './component/Schedule';
 const headers = ['schedules', 'courses'];
 function AdminConsultant() {
     const [activeTab, setActiveTab] = useState('schedules'); 
+      
+    
   return (
      <div className='admin-dashboard'>
         <AdminTopHeader />

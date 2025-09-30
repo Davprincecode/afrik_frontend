@@ -82,7 +82,6 @@ const {baseUrl} = userAuth();
           <Route path="/:token" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/notification" element={<Notification />} />
           <Route path="/redirectform" element={<RedirectForm />} />
           <Route path="/emailconfirm/:token" element={<ConfirmEmail/>} />
           {/* <Route path="/forgetpassword" element={<ForgetPassword/>} />

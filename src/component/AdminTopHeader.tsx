@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import { IoSearchOutline } from 'react-icons/io5';
 import { GoBell } from 'react-icons/go';
 import { NavLink } from 'react-router-dom';
+import Notification from './Notification';
 
 interface SideNavProps {
   open: boolean;
@@ -120,8 +121,12 @@ const AdminTopHeader = () => {
           </div>
 
       </div>
-
-  
+      {
+        notifications && (
+            <Notification notifications={notifications} setNotifications={setNotifications}/>
+        )
+      }
+   
     </div>
   )
 }

@@ -10,6 +10,12 @@ import BlogEditor from './component/BlogEditor';
 const headers = ['all blog posts', 'add blog post'];
 function AdminConsultant() {
     const [activeTab, setActiveTab] = useState('all blog posts'); 
+    const [editHero, setEditHero] = useState<boolean>(false);
+          const [editId, setEditId] = useState<string>('');
+              
+              const heroFunction = () => {
+                setEditHero(!editHero);
+              }
   return (
      <div className='admin-dashboard'>
         <AdminTopHeader />

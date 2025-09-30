@@ -3,16 +3,23 @@ import { userAuth } from '../../context/AuthContext';
 import AddCourse from './AddCourse';
 import PurchaseCourse from './PurchaseCourse';
 import AllCourse from './AllCourse';
+import EditCourse from './EditCourse';
 
 
 const headers = ['all', 'add new', 'purchases'];
 function Courses() {
-     const [activeTab, setActiveTab] = useState('all');
+      const [activeTab, setActiveTab] = useState('all');
       const [isActive, setIsActive] = useState(false);
-     const {baseUrl, token} = userAuth();
+      const {baseUrl, token} = userAuth();
       const handleToggle = () => {
-        setIsActive(!isActive);
-      };      
+      setIsActive(!isActive);
+      };     
+      
+  const [editHero, setEditHero] = useState<boolean>(false);
+  const [editId, setEditId] = useState<string>('');
+  const heroFunction = () => {
+    setEditHero(!editHero);
+  }
   return (
     <div>
         
@@ -35,11 +42,13 @@ function Courses() {
                     activeTab == 'add new' ? (
                         <AddCourse/>
                     ) : activeTab == 'purchases' ? (
-
                             <PurchaseCourse/>
-
                     ) : (
-                        <AllCourse/>
+                        editHero ? (
+                            <EditCourse heroFunction={heroFunction} editId={editId} setEditId={setEditId}/>
+                        ) : (
+                          <AllCourse  heroFunction={heroFunction} setEditId={setEditId}/>
+                        )   
                     )
                 }
         </div>

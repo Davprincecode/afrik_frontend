@@ -15,7 +15,7 @@ interface HeroInterface {
   setEditId : (id : string) => void;
 }
 
-const EditHero : React.FC<HeroInterface> = ({ heroFunction, editId, setEditId }) => {     
+const EditProduct : React.FC<HeroInterface> = ({ heroFunction, editId, setEditId }) => {     
         const {baseUrl, token} = userAuth();
         const [loading, setLoading] = useState<boolean>(false);
         const [bannerImage, setBannerImage] = useState<File | null>(null);
@@ -70,7 +70,7 @@ const EditHero : React.FC<HeroInterface> = ({ heroFunction, editId, setEditId })
             const handleHeroBanner = async() => {
                     setLoading(true);
                     const formdata = new FormData();
-                       if (bannerImage) {
+                        if (bannerImage) {
                         formdata.append('image', bannerImage);
                         }
                       formdata.append('headingText', headerText);
@@ -269,4 +269,4 @@ const EditHero : React.FC<HeroInterface> = ({ heroFunction, editId, setEditId })
   )
 }
 
-export default EditHero
+export default EditProduct

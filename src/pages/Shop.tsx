@@ -23,6 +23,7 @@ import AuthComponent from '../component/AuthComponent'
 import { toast } from 'react-toastify'
 import { NavLink } from 'react-router-dom'
 import Carousel from 'react-multi-carousel'
+import OfflineShop from '../component/OfflineShop'
 
 
 interface categoryInterface {
@@ -75,6 +76,7 @@ function Shop() {
     const [authAction, setAuthAction] = useState<boolean>(false);
     const [subNav, setSubNav] = useState<boolean>(false);
     const [page, setPage] = useState(1);
+    const [popAction, setPopAction] = useState<boolean>(false);
      const [loadingProductId, setLoadingProductId] = useState<string | null>(null);
      const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
@@ -169,10 +171,13 @@ function Shop() {
                 const errorResponse = await response.json();
                 throw new Error(errorResponse.message);
                 }
-                const result = await response.json();
-                setProducts(result.data); // products come under "data"
-                setMeta(result.meta);     // pagination meta
-                setLoading(false);
+                const result = await response.json();                
+                if (result.status === true) {
+                    setProducts(result.data);
+                }else{
+                    setPopAction(true);
+                }
+                
             } catch (error) {
                 
             }
@@ -414,7 +419,7 @@ function Shop() {
 
                   <div className="product-filter-list" style={{display : filter ? "block" : "none"}}>
                     <div className="filter-number">
-                        Showing <span>50</span> items
+                        Showing <span>{products.length}</span> items
                     </div>
                     <div className="filter-category">
                         <div className="filter-header">category</div>
@@ -569,18 +574,26 @@ function Shop() {
                 ) : (
 
                     products.map((item, index) => (
+                        
                         <div className="shopProduct"  key={index}>
-                            <div className="shopProductImage">
-                            <img src={item.productImage} />
-                            </div>
-                            <div className="shopProductDetails">
-                            <div className="shopProductTitle">
-                                <h2>{item.productName}</h2>
-                                <div className="shopPrice">
-                                    {/* .toLocaleString() */}
-                                    <span>₦</span> {item.discountPrice.toLocaleString()}
+
+                            <NavLink to={`/product-details/${item.productId}`}>
+                                <div className="shopProductImage">
+                                <img src={item.productImage} />
                                 </div>
-                            </div>
+                            </NavLink>
+
+                            <div className="shopProductDetails">
+                                <NavLink to={`/product-details/${item.productId}`}>
+                                <div className="shopProductTitle">
+                                    <h2>{item.productName}</h2>
+                                    <div className="shopPrice">
+                                        {/* .toLocaleString() */}
+                                        <span>₦</span> {item.discountPrice.toLocaleString()}
+                                    </div>
+                                </div>
+                              </NavLink>
+
                             <div className="shopProductDetail">
                                   
                                 <NavLink to={`/product-details/${item.productId}`}>
@@ -627,10 +640,13 @@ function Shop() {
         </div>
     </div>
 
+
+
     <div className="shop-pagination">
         {meta && <Pagination meta={meta} onPageChange={setPage} />}
     </div>
 
+    <OfflineShop popAction={popAction} setPopAction={setPopAction}/>
     {
     !signin && (
         <AuthComponent authAction={authAction} setAuthAction={setAuthAction} setSubNav={setSubNav}/>

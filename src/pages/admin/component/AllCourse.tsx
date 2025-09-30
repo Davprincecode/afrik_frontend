@@ -38,8 +38,15 @@ interface CourseIntern {
       status: string;
 }
 
-function AllCourse() {
-     const [courses, setCourses] = useState<CourseIntern[]>([]);
+
+interface HeroInterface {
+  heroFunction: () => void;
+  setEditId : (id : string) => void;
+}
+
+const  AllCourse : React.FC<HeroInterface> = ({  heroFunction, setEditId }) => {
+
+    const [courses, setCourses] = useState<CourseIntern[]>([]);
     const [page, setPage] = useState<number>(1);
     const [meta, setMeta] = useState<Meta | null>(null);
     const {baseUrl, token} = userAuth();
@@ -77,8 +84,8 @@ function AllCourse() {
       }
         
           const handleId = (id : string) => {
-          // setEditId(id);
-          // heroFunction();
+                setEditId(id);
+                heroFunction();
           };
 
           const handleStatusToggle = async (id: string) => {

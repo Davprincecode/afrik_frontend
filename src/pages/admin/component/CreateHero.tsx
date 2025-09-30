@@ -176,22 +176,35 @@ function CreateHero() {
             <div className="admin-hero-form">
 
                 <div className="admin-input">
+                    <div className="input-header-flex flex-center justification-between">
+                    <label >Headline Text</label>
                     <div className="input-header">{charCount}/45 character</div>
+                    </div>
                     <input type="text" placeholder="Headline Text"  value={headerText} onChange={handleChange}/>
                 </div>
 
                 <div className="admin-input">
+                    <div className="input-header-flex flex-center justification-between">
+                    <label >Sub Headline</label>
                     <div className="input-header">{subHeadLineCount}/120 character</div>
+                    </div>
                 <textarea cols={10} rows={5} placeholder="Sub Headline" value={subHeadLine} onChange={handleSubHeadLine}></textarea>
                 </div>
 
                 <div className="admin-input">
+                     <div className="input-header-flex flex-center justification-between">
+                    <label >Button Text</label>
                     <div className="input-header">{buttonCount}/16 character</div>
+                    </div>
+                    
                     <input type="text" placeholder="Button Text" value={buttonText} onChange={handleButtonText}/>
                 </div>
 
                 <div className="admin-input">
-                    <div className="input-header">Button Link</div>
+                    
+                    <div className="input-header-flex flex-center justification-between">
+                    <label >Button Link</label>
+                    </div>
                     <select name="" id="" value={buttonLink} onChange={handleLinkChange}>
                         <option value="">Select Link</option>
                         <option value="shop">Shop Now</option>

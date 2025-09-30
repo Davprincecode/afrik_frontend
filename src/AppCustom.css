@@ -1319,19 +1319,37 @@ flex: 1;
 
     /* ========================= notification ===================== */
     .notification-con{
-      background-color: gainsboro;
-      display: flex;
-      height: 100vh;
-      align-items: center;
-      justify-content: end;
+    display: flex;
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 100%;
+    right: 0px;
+    z-index: 1000;
+    transition: all 0.5;
+    }
+      .notification-con.open {
+      left: 0;
+      }
+    .notification-shaddow{
+       background-color: rgba(128, 128, 128, 0.5);
+       width: 65%;
     }
     .notification-body{
       background-color: rgba(255, 255, 255, 0.95);
       padding: 20px 40px 20px 40px;
       height: 100vh;
       overflow-y: auto;
-      width: 50%;
+      width: 35%;
     }
+    .notification-flex{
+      display: flex;
+      justify-content: end;
+    }
+     .notification-flex svg{
+      color: red;
+      font-size: 26px;
+     }
     .notification-header{
     display: flex;
     align-items: center;
@@ -3623,7 +3641,7 @@ margin-top: 60px;
       background-color: rgba(0, 0, 0, 1);
       background-position: center;
       background-repeat: no-repeat;
-      background-size: cover;
+      /* background-size: cover; */
       width: 100%;
       border-radius: 20px;
       color: white;

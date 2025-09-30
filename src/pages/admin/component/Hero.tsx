@@ -177,10 +177,6 @@ function Hero() {
               }
     };
 
-
-
-    
-
   return (
     <div>
       

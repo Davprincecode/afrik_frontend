@@ -3,10 +3,26 @@ import { IoIosNotificationsOutline } from 'react-icons/io'
 import { RxCross2 } from 'react-icons/rx'
 import { NavLink } from 'react-router-dom'
 
-function Notification() {
+
+interface notifyIntern {
+  notifications : boolean,
+  setNotifications :  React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const Notification : React.FC<notifyIntern> = ({notifications, setNotifications}) => {
   return (
-    <div className="notification-con">
+    <div   className={`notification-con ${notifications ? 'open' : ''}`} >
+
+      <div className="notification-shaddow" onClick={() => setNotifications(!notifications)}></div>
+
         <div className="notification-body">
+
+             <div className="notification-flex">
+              <div className="notification-cancel" onClick={() => setNotifications(!notifications)}>
+                      <RxCross2 />
+                </div>
+             </div>
+
              <div className="notification-header">
                 <div className="notification-header-title"><h1>notifications</h1></div>
                 <div className="notification-count flex-center gap-5">

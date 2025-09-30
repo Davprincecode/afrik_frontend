@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { IoIosArrowDown } from 'react-icons/io';
 import invImg from '../../../assets/images/inventoryImg.png'
-import { RiDeleteBin6Line, RiDeleteBinLine, RiEdit2Fill } from 'react-icons/ri';
+import { RiDeleteBin6Line, RiDeleteBinLine, RiEdit2Fill, RiPushpinFill, RiUnpinLine } from 'react-icons/ri';
 import { FiEdit3 } from 'react-icons/fi';
 import { CiSearch } from 'react-icons/ci';
 import { MdDelete } from 'react-icons/md';
@@ -32,6 +32,7 @@ interface Product {
     productSize: string;
     availableQty: string;
     availableStockUnlimited: boolean;
+    pin : boolean;
     status : string
 }
 
@@ -189,6 +190,42 @@ function AllProducts() {
                 }
         }
 
+
+    const handlePin = async (id: string) => {
+
+        const findProduct = products.find(prd => prd.productId === id);
+
+        const pinnedCount = products.filter(prd => prd.pin).length;
+
+        if(pinnedCount == 3 && !findProduct?.pin){
+            toast.error("Only 3 Post Can Be Pinned");
+            return
+        }else{
+
+        }
+                setLoading(true);
+                const myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+                myHeaders.append("Authorization", token);
+                const requestOptions: RequestInit = {
+                    method: "GET",
+                    headers: myHeaders,
+                    redirect: "follow"
+                };
+                try {
+                    const response = await fetch(`${baseUrl}/pin-product/${id}`, requestOptions);
+                    if (!response.ok) {
+                    const errorResponse = await response.json();
+                    throw new Error(errorResponse.message);
+                    }
+                    const result = await response.json();   
+                        getData(page);
+                        // setLoading(false);
+                } catch (error) {
+                    
+                }
+
+        };
   return (
     <div>
 
@@ -227,6 +264,7 @@ function AllProducts() {
                 <th>inventory</th>
                 <th>price</th>
                 <th>rating</th>
+                <th>pin post ({products.filter(prd => prd.pin).length}/3)</th>
                 <th>status</th>
                 <th>action</th>
             </tr>
@@ -256,7 +294,21 @@ function AllProducts() {
                             }</td>
                         <td>{item.productPrice.toLocaleString()}</td>
                         <td>later imp</td>
-                       
+                        <td> 
+                            {
+                                item.pin ? (
+                                <div className="pin pinned" onClick={() => handlePin(item.productId)}>
+                                    <RiPushpinFill />
+                                </div>
+
+                                ) : (
+                                <div className="pin notPinned" onClick={() => handlePin(item.productId)}>
+                                    <RiUnpinLine />
+                                </div>
+
+                                )
+                            }
+                        </td>
                         <td>
                             <div className="radio-group">
                             <label className="toggle-switch">
