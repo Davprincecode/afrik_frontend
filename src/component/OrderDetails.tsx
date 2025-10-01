@@ -22,16 +22,16 @@ interface authComponentInterface {
     PopOrder : orderInterface[]
 }
 
-interface orderInterface {
-    id : string;
-    customerAddress:  string;
-    customerId:  string;
-    customerName:  string;
-    orderDate:  string;
-    orderId:  string;
-    orderStatus:  string;
-    total:  string;
-}
+// interface orderInterface {
+//     id : string;
+//     customerAddress:  string;
+//     customerId:  string;
+//     customerName:  string;
+//     orderDate:  string;
+//     orderId:  string;
+//     orderStatus:  string;
+//     total:  string;
+// }
 
 interface orderInterface {
     id : string;
@@ -63,7 +63,7 @@ const OrderDetails : React.FC<authComponentInterface> = ({authAction, setAuthAct
     const navigate = useNavigate();
   const {baseUrl} = userAuth();  
   const { pathname } = useLocation();
-const [order, setOrder] = useState<orderInterface[]>([]);
+// const [order, setOrder] = useState<orderInterface[]>([]);
 
   useEffect(() => {
       window.scrollTo(0, 0);

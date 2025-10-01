@@ -66,7 +66,7 @@ const AdminPagination: React.FC<PaginationProps> = ({ meta, onPageChange }) =>{
             );
           })}
                           
-                            <div className="pagination-num-arrow"><IoIosArrowForward /></div>
+                      <div className="pagination-num-arrow" onClick={() => meta.next_page_url && onPageChange(meta.current_page + 1)}><IoIosArrowForward /></div>
                            </div>
             
             </div>

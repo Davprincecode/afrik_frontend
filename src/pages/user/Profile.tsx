@@ -12,6 +12,7 @@ import BioData from './BioData'
 import UserOrder from './UserOrder'
 import UserBooking from './UserBooking'
 import UserCourse from './UserCourse'
+import EditBioData from './EditBioData'
 
 const headers = ['bio data', 'orders', 'booking', 'course'];
 const Profile = () => {
@@ -23,9 +24,13 @@ const Profile = () => {
       window.scrollTo(0, 0);
     }, [pathname]);
 
-    const [authAction, setAuthAction] = useState<boolean>(false);
+ 
 
-    
+    const [bioData, setData] = useState<boolean>(false);
+
+    const bioFunction = () => {
+      setData(!bioData);
+    }
 
   return (
 
@@ -62,7 +67,13 @@ const Profile = () => {
                 ) :  activeTab == 'course' ? (
                        <UserCourse/>
                 ): (
-                     <BioData/>
+                  bioData ? (
+                    <EditBioData bioFunction={bioFunction}/>
+                  ) : (
+                    <BioData bioFunction={bioFunction}/>
+                  )
+                     
+                     
                 )
             }
 
@@ -71,7 +82,7 @@ const Profile = () => {
              
         </div>
 
-    <ProductComponent  authAction={authAction} setAuthAction={setAuthAction}/>
+   
 
 
     </div>

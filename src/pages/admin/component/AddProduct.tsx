@@ -9,6 +9,7 @@ import { h2 } from 'framer-motion/client';
 import { FiUploadCloud } from 'react-icons/fi';
 import CategoryProductPop from '../../../component/CategoryProductPop';
 import { validate } from 'numeral';
+import SizePop from '../../../component/SizePop';
 
 
 interface tagInterface {
@@ -16,7 +17,7 @@ interface tagInterface {
 "tagName": string
 }
 interface categoryInterface {
-"id": number,
+"id": string,
 "categoryName": string
 }
 interface sizeInterface {
@@ -26,11 +27,13 @@ interface sizeInterface {
 
  type SubProduct = {
   productImage : File | null;
+  measurement : File | null;
   productPrice : number;
   discountPrice : number;
   productColor : string;
   productSize : string;
-  availableStockUnlimited : string;
+  productDescription : string;
+  availableStockUnlimited : boolean;
   availableQty : number | null;
 };
 
@@ -38,15 +41,20 @@ type tagType = {
     tagName  : string; 
 }
 
+interface sizeInterface {
+"id": number,
+"sizeName": string
+}
+
 function AddProduct() {
     const {baseUrl, token} = userAuth();
     const[tag, setTag] = useState<tagInterface[]>([]);
     const[tagged, setTagged] = useState<tagType[]>([]);
     const[category, setCategory] = useState<categoryInterface[]>([]);
-    const[size, setSize] = useState<tagInterface[]>([]);
+    
     const [loading, setLoading] = useState<boolean>(false);
 
-    const[categoryId, setCategoryId] = useState<number>(0);
+    const[categoryId, setCategoryId] = useState<string>('');
     const [productName, setProductName] = useState<string>('');
     const [productDescription, setProductDescription] = useState<string>('');
     const [price, setPrice] = useState<number>(0);
@@ -54,6 +62,7 @@ function AddProduct() {
     const [productColor, setProductColor] = useState<string>('');
      const [productSize, setProductSize] = useState<string>('');
     const [productImage, setProductImage] = useState<File | null>(null);
+    const [measurement, setMeasurement] = useState<File | null>(null);
     const [availableStockUnlimited, setAvailableStockUnlimited] = useState<boolean>(false);
     const [availableQty, setAvailableQty] = useState<number>(0);
     // ==================================================
@@ -63,18 +72,24 @@ function AddProduct() {
     const [stock, setStock] = useState<string>('');
     const [color, setColor] = useState<string>('');
     const[authAction, setAuthAction] = useState<boolean>(false);
-    // ==============================================
+    const[sizeAction, setSizeAction] = useState<boolean>(false);
 
+   const[size, setSize] = useState<sizeInterface[]>([]);
+
+    // ==============================================
 
   const [isActive, setIsActive] = useState(false);
 
     const [subProducts, setSubProducts] = useState<SubProduct[]>([
-    {   productImage : null,
+    {   
+        productImage : null,
+        measurement : null,
         productPrice : 0,
         discountPrice : 0,
         productColor : '',
         productSize : '',
-        availableStockUnlimited : '',
+        productDescription : '',
+        availableStockUnlimited : false,
         availableQty : 0
     }
     ]);
@@ -86,18 +101,22 @@ function AddProduct() {
     setIsActive(!isActive);
   };
 
-   const availableFunction = (data: string) =>{
-         setStock(data);
-        if(data === "unlimited"){
-          setAvailableStockUnlimited(true);
-        }else{
-            setAvailableStockUnlimited(false);
-        }
+   const availableFunction = (data : boolean) =>{
+        //  setStock(data);
+        // if(data === "unlimited"){
+          setAvailableStockUnlimited(data);
+        // }else{
+        //     setAvailableStockUnlimited(false);
+        // }
      }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
     setProductImage(file);
+  };
+  const handleMeasurementChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    setMeasurement(file);
   };
 
   const validateProductForm = () => {
@@ -150,8 +169,6 @@ function AddProduct() {
   return true;
 };
 
-
-
  const handleProduct =  async() => {
     if(!validateProductForm()){
        return;
@@ -170,8 +187,11 @@ function AddProduct() {
         formdata.append("discountPrice", discount.toString());
         formdata.append("productColor", productColor);
         formdata.append("productSize", productSize);
-        formdata.append("categoryId", "1");
+        formdata.append("categoryId", categoryId);
         formdata.append("availableStockUnlimited", availableStockUnlimited ? "1" : "0");
+        if(measurement){
+          formdata.append('sizeMeasurement', measurement);
+        }
         if(availableQty){
             formdata.append("availableQty", availableQty.toString());
         }
@@ -181,6 +201,7 @@ function AddProduct() {
             formdata.append(`products[${index}][discountPrice]`, product.discountPrice.toString());
             formdata.append(`products[${index}][productColor]`, product.productColor);
             formdata.append(`products[${index}][productSize]`, product.productSize);
+            formdata.append(`products[${index}][productDescription]`, product.productDescription);
             formdata.append(`products[${index}][availableStockUnlimited]`, product.availableStockUnlimited ? '1' : '0');
 
             if (product.availableQty) {
@@ -190,12 +211,16 @@ function AddProduct() {
             if (product.productImage) {
                 formdata.append(`products[${index}][productImage]`, product.productImage);
             }
+            if (product.measurement) {
+                formdata.append(`products[${index}][measurement]`, product.measurement);
+            }
+
             });
         }
 
         if(tagged.length > 0){
             tagged.forEach((tag, index) => {
-              formdata.append(`tag[${index}][tagName]`, tag.tagName);
+              formdata.append(`tags[${index}][tagName]`, tag.tagName);
              });
         }
         const myHeaders = new Headers();
@@ -216,16 +241,21 @@ function AddProduct() {
                 setLoading(false); 
                 toast.success("Data Upload Successfully");       
         } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
             setLoading(false); 
         }
       
   }
 
-   useEffect(() => {
-          handleTags()
-          handleCategory()
-          handleSize()
-        }, []);
+  useEffect(() => {
+        handleCategory()
+        handleSize()
+      }, []);
 
   const handleTags = async () => {
 
@@ -248,6 +278,12 @@ function AddProduct() {
                    setTag(result);
                    setLoading(false);
               } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                   
               }
     
@@ -272,7 +308,13 @@ function AddProduct() {
                   const result = await response.json(); 
                    setCategory(result.data);
                    setLoading(false);
-              } catch (error) {   
+              } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }   
               }
   }
 
@@ -288,32 +330,35 @@ function AddProduct() {
                   redirect: "follow"
               };
               try {
-                  const response = await fetch(`${baseUrl}/product-category`, requestOptions);
+                  const response = await fetch(`${baseUrl}/product-size`, requestOptions);
                   if (!response.ok) {
                   const errorResponse = await response.json();
                   throw new Error(errorResponse.message);
                   }
-                  const result = await response.json();  
+                  const result = await response.json();        
                    setSize(result);
                    setLoading(false);
               } catch (error) {
-                  
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }   
               }
-    
-
-
   }
 
 const handleAddSubProduct = () => {
     setSubProducts([...subProducts, { 
         productImage : null,
+        measurement : null,
         productPrice : 0,
         discountPrice : 0,
         productColor : '',
         productSize : '',
-        availableStockUnlimited : '',
+        productDescription : '',
+        availableStockUnlimited :  true,
         availableQty : 0
-
     }]);
   };
 
@@ -324,7 +369,7 @@ const removeTag = (indexToRemove: number) => {
   setTagged(prev => prev.filter((_, index) => index !== indexToRemove));
 };
 
-const handleSelectedCategory = (data : number) => {
+const handleSelectedCategory = (data : string) => {
     setCategoryId(data);  
 }
 
@@ -339,10 +384,13 @@ const handleSubProductChange = <K extends keyof SubProduct>(
   };
 
 const handleSubFileChange =  (index: number, file: File | null) => {
-    console.log(index);
-    
   const updated = [...subProducts];
   updated[index].productImage = file;
+  setSubProducts(updated);
+};
+const handleSubMeasurementFileChange =  (index: number, file: File | null) => {
+  const updated = [...subProducts];
+  updated[index].measurement = file;
   setSubProducts(updated);
 };
 
@@ -375,7 +423,28 @@ const handleSubFileChange =  (index: number, file: File | null) => {
 
             <div className="admin-input">
               <label>Product Size</label>
-              <input value={productSize} onChange={(e) => setProductSize(e.target.value) } placeholder="Product Size" />
+
+               {
+                    loading ? (
+                    <ButtonPreloader/>
+                    ) : (
+                  <select value={productSize} onChange={(e) => setProductSize(e.target.value) }>
+                        <option value="">Product Size</option>
+                     {
+                      size.map((value, index)=>(
+                        <option value={value.id}>{value.sizeName}</option>
+                    )) 
+                     }  
+
+                    </select>
+
+                    )
+                    
+                }
+              
+              <div className="createNew" onClick={() => setSizeAction(!sizeAction)}>
+                create new size
+              </div>
             </div>
 
           </div>
@@ -445,6 +514,22 @@ const handleSubFileChange =  (index: number, file: File | null) => {
             </div>
 
             {/* <div className="create-new">Create New</div> */}
+             <div className="admin-input color-image">
+                        <p>Measurement</p>
+                    <label htmlFor={`file-measurement`} > <FiUploadCloud /> Upload measurement</label>
+                    <input id={`file-measurement`} type="file" onChange={handleMeasurementChange} 
+                    />
+                </div>
+
+              <div className="previewImage">
+                      {measurement && (
+                      <img
+                      src={URL.createObjectURL(measurement)}
+                      alt="Preview"
+                      style={{ width: '150px', height: 'auto', marginTop: '10px' }}
+                      />
+                      )}
+              </div>
 
           </div>
         </div>
@@ -457,6 +542,13 @@ const handleSubFileChange =  (index: number, file: File | null) => {
                 />
                 )}
         </div>
+
+        
+
+
+
+
+
 
         {/* Pricing */}
         <div className="product-form-top flex justification-between">
@@ -474,21 +566,28 @@ const handleSubFileChange =  (index: number, file: File | null) => {
             </div>
 
             <div className="admin-flex-input flex-center gap-10">
-              <div className="admin-input">
-                <label>Available Stock</label>
-                <select value={stock} onChange={(e) => availableFunction(e.target.value) }>
+                  <div className="admin-input">
+                  <label>Available Stock</label>
+                  <select
+                  value={availableStockUnlimited === true ? "true" : "false"}
+                  onChange={(e) => availableFunction(e.target.value === "true")}
+                  >
                   <option value="">Available stock</option>
-                  <option value="unlimited">Unlimited</option>
-                  <option value="custom">Custom</option>
-                </select>
-              </div>
+                  <option value="true">Unlimited</option>
+                  <option value="false">Custom</option>
+                  </select>
+                  </div>
 
+               {
+                !availableStockUnlimited && (
+                      <div className="admin-input">
+                      <label>Available Quantity</label>
+                      <input  type="number" value={availableQty} onChange={(e) => setAvailableQty(parseInt(e.target.value))}  />
+                      </div>
+                )
+               }
+              
 
-
-              <div className="admin-input">
-                <label>Available Quantity</label>
-               <input  type="number" value={availableQty} onChange={(e) => setAvailableQty(parseInt(e.target.value))}  />
-              </div>
             </div>
 
           </div>
@@ -515,24 +614,25 @@ const handleSubFileChange =  (index: number, file: File | null) => {
                         
                         <div key={index} className="sub-product">
                             <h2>product {index + 1}</h2>  
+
                                 <div className="admin-flex-input flex-center gap-10">
 
-                                <div className="admin-input">
-                                <label>Color</label>
-                                <input
-                                type="text"
-                                value={subProduct.productColor}
-                                onChange={(e) => handleSubProductChange(index, 'productColor', e.target.value)}
-                                placeholder="Enter Color"
-                                />
-                                </div>
+                                        <div className="admin-input">
+                                        <label>Color</label>
+                                        <input
+                                        type="text"
+                                        value={subProduct.productColor}
+                                        onChange={(e) => handleSubProductChange(index, 'productColor', e.target.value)}
+                                        placeholder="Enter Color"
+                                        />
+                                        </div>
 
-                            <div className="admin-input color-image">
-                                <p>Color Image</p>
-                            <label htmlFor={`file-color-input-${index}`} > <FiUploadCloud /> Upload Color Image</label>
-                            <input id={`file-color-input-${index}`} type="file" onChange={(e) => handleSubFileChange(index, e.target.files?.[0] || null)} 
-                            />
-                            </div>
+                                    <div className="admin-input color-image">
+                                        <p>Color Image</p>
+                                    <label htmlFor={`file-color-input-${index}`} > <FiUploadCloud /> Upload Color Image</label>
+                                    <input id={`file-color-input-${index}`} type="file" onChange={(e) => handleSubFileChange(index, e.target.files?.[0] || null)} 
+                                    />
+                                    </div>
                                 </div>
 
                             <div className="ColorPreview">
@@ -549,16 +649,28 @@ const handleSubFileChange =  (index: number, file: File | null) => {
 
                                     <div className="admin-input">
                                     <label>Size</label>
-                                    <select
-                                    value={subProduct.productSize}
-                                    onChange={(e) => handleSubProductChange(index, 'productSize', e.target.value)}
-                                    >
-                                    <option value="">Size</option>
-                                    <option value="x">X</option>
-                                    <option value="md">MD</option>
-                                    <option value="xl">XL</option>
-                                    <option value="xxl">XXL</option>
-                                    </select>
+                                    
+
+                                    {
+                                      loading ? (
+                                      <ButtonPreloader/>
+                                      ) : (
+                                      <select value={subProduct.productSize}
+                                       onChange={(e) => handleSubProductChange(index, 'productSize', e.target.value)}>
+                                      <option value="">Product Size</option>
+                                          {
+                                          size.map((value, index)=>(
+                                          <option value={value.id}>{value.sizeName}</option>
+                                          )) 
+                                          }  
+                                      </select>
+
+                                      )
+
+                                    }
+                                    <div className="createNew" onClick={() => setSizeAction(!sizeAction)}>
+                                      create new size
+                                    </div>
                                     </div>
 
                                     <div className="admin-input">
@@ -585,24 +697,72 @@ const handleSubFileChange =  (index: number, file: File | null) => {
                                     </div>
 
                                     <div className="admin-input">
-                                    <label>Available stock</label>
-                                    <select 
-                                    value= {subProduct.availableStockUnlimited}
-                                    onChange={(e) => handleSubProductChange(index, 'availableStockUnlimited', e.target.value)}
-                                    >
-                                           <option value="">Available stock</option>
-                                            <option value="1">Unlimited</option>
-                                            <option value="0">Custom</option>
-                                    </select>
-                                    
-                                    </div>
+                                      <label>Available stock</label>
+                                      <select
+                                        value={subProduct.availableStockUnlimited ? "true" : "false"}
+                                        onChange={(e) =>
+                                          handleSubProductChange(index, 'availableStockUnlimited', e.target.value === "true")
+                                        }
+                                      >
+                                        <option value="">Available stock</option>
+                                        <option value="true">Unlimited</option>
+                                        <option value="false">Custom</option>
+                                      </select>
+                                      </div>
 
                                 </div>
+
+                        {!subProduct.availableStockUnlimited && (
+                        <div className="admin-input">
+                        <label>Available Quantity</label>
+                        <input
+                          type="number"
+                          value={subProduct.availableQty ?? 0}
+                          onChange={(e) =>
+                            handleSubProductChange(index, 'availableQty', parseInt(e.target.value))
+                          }
+                        />
+                        </div>
+                        )}
+
+
+
+
+                                {/* <div className="admin-flex-input flex-center gap-10">
+
+                                  
+                                        <div className="admin-input">
+                                              <label>Product Description</label>
+                                              <textarea name="description" 
+                                              value={productDescription} 
+                                              onChange={(e) => handleSubProductChange(index, 'productDescription', e.target.value)}
+                                              placeholder="Product Description" />
+                                         </div>
+
+                                    <div className="admin-input color-image">
+                                        <p>Measurement</p>
+                                    <label htmlFor={`file-measurement-input-${index}`} > <FiUploadCloud /> Upload measurement</label>
+                                    <input id={`file-measurement-input-${index}`} type="file" onChange={(e) => handleSubMeasurementFileChange(index, e.target.files?.[0] || null)} 
+                                    />
+                                    </div>
+
+                                </div> */}
+
+                            {/* <div className="ColorPreview">
+                                {subProduct.measurement && (
+                                <img
+                                src={URL.createObjectURL(subProduct.measurement)}
+                                alt="Preview"
+                                style={{ width: '100px', height: '100px', marginTop: '10px' }}
+                                />
+                                )}
+                            </div> */}
+
                         </div>
                         ))
                   )  
                 }
-           <div className="div" onClick={handleAddSubProduct}> add more </div>
+           <div className="addmore" onClick={handleAddSubProduct}> add more </div>
           </div>
         </div>
 
@@ -623,6 +783,8 @@ const handleSubFileChange =  (index: number, file: File | null) => {
 
 
        <CategoryProductPop authAction={authAction} setAuthAction={setAuthAction} setCategory={setCategory}/>
+
+       <SizePop sizeAction={sizeAction} setSizeAction={setSizeAction} setSize={setSize}/>
 
     </div>
   );

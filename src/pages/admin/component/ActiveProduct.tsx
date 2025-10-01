@@ -36,14 +36,20 @@ interface Product {
     pin : boolean;
     status : string
 }
+interface HeroInterface {
+  heroFunction: () => void;
+  editId : string;
+  setEditId : (id : string) => void;
+}
 
-function ActiveProduct() {
+const ActiveProduct : React.FC<HeroInterface> = ({ heroFunction, editId, setEditId }) => {
     const [products, setProducts] = useState<Product[]>([]);
     const [page, setPage] = useState<number>(1);
     const [meta, setMeta] = useState<Meta | null>(null);
     const {baseUrl, token} = userAuth();
       const[loading, setLoading] = useState<boolean>(false);
         const [showPopup, setShowPopup] = useState(false);
+        
             const [selectedId, setSelectedId] = useState<string | null>(null);
         useEffect(() => {
           getData(page)
@@ -70,13 +76,19 @@ function ActiveProduct() {
                       setMeta(result.meta);
                       setLoading(false);
                   } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                       
                   }
           }
 
 const handleId = (id : string) => {
-// setEditId(id);
-// heroFunction();
+setEditId(id);
+heroFunction();
 };
 const handleStatusToggle = async (id: string) => {
         setLoading(true);
@@ -98,6 +110,12 @@ const handleStatusToggle = async (id: string) => {
                 getData(page);
                 // setLoading(false);
         } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
             
         }
 
@@ -131,6 +149,12 @@ const handleDeleteConfirm = async (id: string | number) => {
                 setLoading(false);
                 toast.error("delete successfully");
             } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                 
             }
     
@@ -160,6 +184,12 @@ const handleDeleteConfirm = async (id: string | number) => {
                     setMeta(result.meta);
                     setLoading(false);
                 } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                     setLoading(false);
                 }
         }
@@ -187,6 +217,12 @@ const handleDeleteConfirm = async (id: string | number) => {
                 setMeta(result.meta);
                 setLoading(false);
             } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                 setLoading(false);
             }
     }
@@ -223,6 +259,12 @@ const handleDeleteConfirm = async (id: string | number) => {
                             getData(page);
                             // setLoading(false);
                     } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                         
                     }
     

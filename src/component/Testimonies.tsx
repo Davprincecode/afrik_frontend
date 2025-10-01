@@ -7,6 +7,7 @@ import testimoniesMobile from '../assets/images/testimonialsMobile.png'
 import { AnimatePresence, motion } from 'framer-motion'
 import { userAuth } from '../pages/context/AuthContext'
 import ButtonPreloader from './ButtonPreloader'
+import { toast } from 'react-toastify'
 
 
 // const data = [
@@ -83,6 +84,12 @@ function Testimonies() {
                      setTestimonies(result.data); 
                      setLoading(false);
                  } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                      
                  }
          }

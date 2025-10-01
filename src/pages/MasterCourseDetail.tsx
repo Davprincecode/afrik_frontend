@@ -5,6 +5,7 @@ import { FaArrowLeft } from 'react-icons/fa'
 import img from '../assets/images/consultingimages.png'
 import { userAuth } from './context/AuthContext'
 import ButtonPreloader from '../component/ButtonPreloader'
+import { toast } from 'react-toastify'
 
 
 
@@ -67,6 +68,12 @@ const { id } = useParams<{ id: string }>();
                     setStatus(result.data.status);
                   setLoading(false);
               } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                   
               }
       }

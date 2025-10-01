@@ -59,6 +59,12 @@ type tagType = {
                    setTag(result);
                    setLoading(false);
               } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                   
               }
   }
@@ -83,6 +89,12 @@ type tagType = {
                    setCategory(result.data);
                    setLoading(false);
               } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                   
               }
     
@@ -134,6 +146,12 @@ const handleBlog = async () => {
                  setLoading(false); 
                  toast.success("Data Upload Successfully");       
          } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
              setLoading(false); 
          }
 };

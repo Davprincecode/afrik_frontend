@@ -13,6 +13,7 @@ import { PiMinusThin } from 'react-icons/pi'
 import { userAuth } from './context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import ButtonPreloader from '../component/ButtonPreloader'
+import { toast } from 'react-toastify'
 
 
 interface cartInterface {
@@ -60,7 +61,13 @@ function Cart() {
                  setCarts(result.data);
                  setTotal(result.total);
                  setLoading(false);
-             } catch (error) {          
+             } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }          
                
              }
           
@@ -90,7 +97,13 @@ function Cart() {
                  setTotal(result.total);
                  setCart(result.cartCount);
                  setLoading(false);
-             } catch (error) {          
+             } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }          
                
              }
           
@@ -118,7 +131,13 @@ function Cart() {
                  setTotal(result.total);
                   setCart(result.cartCount);
                  setLoading(false);
-             } catch (error) {          
+             } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }          
                
              }
           
@@ -146,7 +165,13 @@ function Cart() {
                  setTotal(result.total);
                  setCart(result.cartCount);
                  setLoading(false);
-             } catch (error) {          
+             } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }          
                
              }
           
@@ -177,7 +202,7 @@ function Cart() {
 
          <div className="cart-body-con">
              <div className="tableCount-header">
-                  <h1>cart (4 items)</h1>
+                  <h1>cart ({carts.length } items)</h1>
              </div>
              <div className="flex-center cart-body-item cart-body-desk">
                         <table id="customers">

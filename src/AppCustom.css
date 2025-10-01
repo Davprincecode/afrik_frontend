@@ -775,6 +775,38 @@
       border-radius: 50px;
       padding: 4px;
     }
+    .user-profile-table .pending{
+      background-color: #FFDB56;
+       color: white;
+      text-transform: capitalize;
+      text-align: center;
+      border-radius: 50px;
+      padding: 4px;
+    }
+    .user-profile-table .shipped{
+       background-color: #92BFFF;
+       color: white !important;
+      text-transform: capitalize;
+      text-align: center;
+      border-radius: 50px;
+      padding: 4px;
+    }
+    .user-profile-table .confirmed, .user-profile-table .paid{
+      background: #94E9B8;
+      color: white;
+      text-transform: capitalize;
+      text-align: center;
+      border-radius: 50px;
+      padding: 4px;
+    }
+    .user-profile-table .cancelled{
+        background-color: red;
+       color: white !important;
+      text-transform: capitalize;
+      text-align: center;
+      border-radius: 50px;
+      padding: 4px;
+    }
     .rejected{
       background-color: red;
        color: white !important;
@@ -835,6 +867,51 @@
       background-color: var(--inactive-btn) !important;
     }
 
+    /* ======================= profile ====== */
+  .profileImageCon{
+    padding-bottom: 40px;
+    border-bottom: 1px solid #E5E5E5 !important;
+  }
+.profileImage{
+ width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+.profileImage img{
+  border-radius: 50%;
+}
+.profileName{
+  text-transform: capitalize;
+}
+.email{
+  color: #6B7280;
+  font-size: 16px;
+  font-weight: 400;
+  margin-top: 10px;
+  text-transform: lowercase;
+}
+.profile-section{
+ padding-top: 20px;
+ padding-bottom: 20px;
+ border-bottom: 1px solid #E5E5E5 !important;
+}
+.profile{
+  padding: 10px 0px;
+}
+.profile-first{
+  text-transform: capitalize;
+ color: #00000066;
+
+}
+.profileEditBtn {
+padding: 10px;
+border-radius: 50px;
+border: 2px solid;
+width: fit-content;
+margin-top: 20px;
+cursor: pointer;
+}
+/* ==== profile end =========== */
     .formInputBtn{
       background-color: var(--secondary1);
       cursor: pointer;
@@ -1124,6 +1201,7 @@ flex: 1;
   margin-top: 8px;
   text-align: center;
   font-size: 14px;
+  text-transform: capitalize;
 }
 
 .progress-line {

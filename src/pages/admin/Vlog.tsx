@@ -6,6 +6,7 @@ import Testimonial from './component/Testimonial'
 import Gallery from './component/Gallery'
 import BrandLogo from './component/BrandLogo'
 import VlogInstagram from './component/VlogInstagram'
+import VlogYoutube from './component/VlogYoutube'
 
 
 
@@ -22,7 +23,8 @@ function Vlog() {
 
                 <div className="mainBodyDetails vlog-con">
                     <h2 className='vlog-title'>featured vlogs</h2>
-                            <VlogInstagram/>
+                    <VlogInstagram/>
+                    <VlogYoutube/>
                 </div>
            </div>
 

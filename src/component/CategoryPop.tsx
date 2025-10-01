@@ -59,6 +59,12 @@ const CategoryPop : React.FC<authComponentInterface> = ({authAction, setAuthActi
                   setCategory(prev => [...prev, result.data]); 
                    setAuthAction(!authAction);
               } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                   
               }
             }

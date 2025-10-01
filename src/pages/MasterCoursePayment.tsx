@@ -105,11 +105,19 @@ const { id } = useParams<{ id: string }>();
                     setStatus(result.data.status);
                     setLoading(false);
               } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                   
               }
       }
 
-
+    const url = window.location.origin;
+   
+    
      const fetchData = async () => {
        setLoading(true);
         const myHeaders = new Headers();
@@ -127,7 +135,7 @@ const { id } = useParams<{ id: string }>();
              "courseName" : courseTitle,
              "startDate" : startDate,
              "endDate" : endDate,
-             "callBackUrl" : 'http://localhost:5173/payment/callback'
+             "callBackUrl" : `${url}/payment/course/callback`
          });
         const requestOptions: RequestInit = {
             method: "POST",
@@ -137,6 +145,8 @@ const { id } = useParams<{ id: string }>();
         };
         try {
           const response = await fetch(`${baseUrl}/payment`, requestOptions);  
+          
+          
           if (!response.ok) {
             const errorResponse = await response.json();  
             throw new Error(errorResponse.message);
@@ -144,7 +154,13 @@ const { id } = useParams<{ id: string }>();
             const result = await response.json();  
             setLoading(false);
             window.location.href = result.authorization_url;
-        } catch (error) {          
+        } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }          
          setLoading(false);
                if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
                  toast.error(error.message);

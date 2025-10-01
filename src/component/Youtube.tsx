@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom'
 import { CiYoutube } from 'react-icons/ci'
 import { userAuth } from '../pages/context/AuthContext';
 import ButtonPreloader from './ButtonPreloader';
+import { toast } from 'react-toastify';
 
 
     interface vlogIntern {
@@ -41,6 +42,12 @@ function Youtube() {
                      setData(result.data); 
                      setLoading(false);
                  } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                      
                  }
          }
@@ -70,18 +77,20 @@ function Youtube() {
             {
               data.map((item, index)=>(
                   <div className="vlogCon" key={index}>
+               <div className="youtubeImage">
+                  <iframe
+                    width="560"
+                    height="500"
+                    src={`https://www.youtube.com/embed/${item.videoUrl?.split('/').pop()?.split('?')[0] ?? ''}`}
+                    title="YouTube video player"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
+               </div>
 
-                <div className="youtubeImage">
-                      <iframe
-                            width="560"
-                            height="500"
-                            src={item.videoUrl}
-                            title="YouTube video player"
-                            frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                        ></iframe>
-                </div>
+
 
                 <div className="vlogContent">
                     <div className="vlogHeading">

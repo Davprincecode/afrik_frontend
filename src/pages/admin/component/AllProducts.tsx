@@ -35,8 +35,13 @@ interface Product {
     pin : boolean;
     status : string
 }
+interface HeroInterface {
+  heroFunction: () => void;
+  editId : string;
+  setEditId : (id : string) => void;
+}
 
-function AllProducts() {
+const AllProducts : React.FC<HeroInterface> = ({ heroFunction, editId, setEditId }) => {
      const [products, setProducts] = useState<Product[]>([]);
     const [page, setPage] = useState<number>(1);
     const [meta, setMeta] = useState<Meta | null>(null);
@@ -46,7 +51,7 @@ function AllProducts() {
         const [selectedId, setSelectedId] = useState<string | null>(null);
     useEffect(() => {
       getData(page)
-      }, []);
+      }, [page]);
     
         const getData = async (pageNumber : number) => {
             setLoading(true);
@@ -69,13 +74,19 @@ function AllProducts() {
                     setMeta(result.meta);
                     setLoading(false);
                 } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                     
                 }
         }
 
         const handleId = (id : string) => {
-        // setEditId(id);
-        // heroFunction();
+            setEditId(id);
+            heroFunction();
         };
         const handleStatusToggle = async (id: string) => {
         setLoading(true);
@@ -97,6 +108,12 @@ function AllProducts() {
                 getData(page);
                 // setLoading(false);
         } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
             
         }
 
@@ -130,6 +147,12 @@ function AllProducts() {
                 setLoading(false);
                 toast.error("delete successfully");
             } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                 
             }
 
@@ -159,6 +182,12 @@ function AllProducts() {
                     setMeta(result.meta);
                     setLoading(false);
                 } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                     setLoading(false);
                 }
         }
@@ -186,6 +215,12 @@ function AllProducts() {
                     setMeta(result.meta);
                     setLoading(false);
                 } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                     setLoading(false);
                 }
         }
@@ -222,6 +257,12 @@ function AllProducts() {
                         getData(page);
                         // setLoading(false);
                 } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                     
                 }
 
@@ -337,32 +378,7 @@ function AllProducts() {
             }
 
 
-            {/* <tr>
-            <td>1</td>
-            <td>#564563</td>
-            <td>
-                <div className="flex gap-5 inv-con">
-                    <div className="inv">
-                        <img src={invImg}/>
-                    </div>
-                    <div className="invProductName">
-                        <h4>Men Grey Hoodle</h4>
-                        <p>Hoodle</p>
-                    </div>
-                </div>
-                    
-            </td>
-            <td>1</td>
-            <td>15252</td>
-            <td>1-2</td>
-            <td>
-            <FiEdit3 />
-            <RiDeleteBin6Line />
-            </td>
-        
-            </tr> */}
-
-            
+      
 
         
         </table>

@@ -57,7 +57,13 @@ const [total, setTotal] =useState<number>(0);
                  setCart(result.data);
                  setTotal(result.total);
                  setLoading(false);
-             } catch (error) {          
+             } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }          
                
              }
           
@@ -67,7 +73,7 @@ const [total, setTotal] =useState<number>(0);
     
            }, []);
 
-
+ const url = window.location.origin;
      const fetchData = async () => {
        setLoading(true);
         const myHeaders = new Headers();
@@ -81,7 +87,7 @@ const [total, setTotal] =useState<number>(0);
              "orderNote" : orderNote,
              "service_type" : "product",
              "amount" : total,
-             "callBackUrl" : 'http://localhost:5173/payment/callback'
+             "callBackUrl" : `${url}/payment/callback` 
          });
         const requestOptions: RequestInit = {
             method: "POST",
@@ -98,7 +104,13 @@ const [total, setTotal] =useState<number>(0);
             const result = await response.json();  
             setLoading(false);
             window.location.href = result.authorization_url;
-        } catch (error) {          
+        } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }          
          setLoading(false);
                if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
                  toast.error(error.message);

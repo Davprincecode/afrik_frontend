@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { userAuth } from '../context/AuthContext';
 import Pagination from '../../component/Pagination';
+import { toast } from 'react-toastify';
+import ButtonPreloader from '../../component/ButtonPreloader';
 
 
 interface orderInterface {
@@ -47,7 +49,7 @@ function UserCourse() {
     
         useEffect(() => {
         getData(page)
-        }, []);
+        }, [page]);
     
         const getData = async (pageNumber : number) => {
         setLoading(true);
@@ -60,18 +62,24 @@ function UserCourse() {
         redirect: "follow"
         };
         try {
-        const response = await fetch(`${baseUrl}/get-user-order?page=${pageNumber}`, requestOptions);
+        const response = await fetch(`${baseUrl}/user-order-course?page=${pageNumber}`, requestOptions);
         if (!response.ok) {
         const errorResponse = await response.json();
         throw new Error(errorResponse.message);
         }
         const result = await response.json(); 
-        console.log(result);
+       
     
         setOrder(result.data);
         setMeta(result.meta);
         setLoading(false);
         } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
     
         }
         }
@@ -81,6 +89,11 @@ function UserCourse() {
          
                 <div className="user-profile-table">
                 <h1>Order List</h1>
+
+                {
+                    loading ? (
+                           <ButtonPreloader/>
+                    ) : (
                 <table>
                 <tr className='table-header'>
                     <th>order Id</th>
@@ -99,55 +112,18 @@ function UserCourse() {
                             <td>{item.paymentMethod}</td>
                             <td>₦{item.total}</td>
                             <td>
-                                <div className="inprogress">{item.orderStatus}</div> 
+                                <div className={item.orderStatus}>{item.orderStatus}</div> 
                             </td>
                             <td> <div className="track">tracking details</div> </td>
                         </tr>
                     ))
                 }
-                <tr>
-                    <td>#cmd7hsh2</td>
-                    <td>1</td>
-                    <td>₦2222</td>
-                    <td>feb 2 2022</td>
-                    <td>
-                        <div className="completed">complete</div> 
-                    </td>
-                    <td> <div className="track">tracking details</div> </td>
-                </tr>
-                <tr>
-                    <td>#cmd7hsh2</td>
-                    <td>1</td>
-                    <td>₦2222</td>
-                    <td>feb 2 2022</td>
-                    <td>
-                        <div className="approved">approved</div> 
-                    </td>
-                    <td> <div className="track">tracking details</div> </td>
-                </tr>
-                <tr>
-                    <td>#cmd7hsh2</td>
-                    <td>1</td>
-                    <td>₦2222</td>
-                    <td>feb 2 2022</td>
-                    <td>
-                        <div className="rejected">reject</div> 
-                    </td>
-                    <td> <div className="track">tracking details</div> </td>
-                </tr>
-                <tr>
-                    <td>#cmd7hsh2</td>
-                    <td>1</td>
-                    <td>₦2222</td>
-                    <td>feb 2 2022</td>
-                    <td>
-                        <div className="pendings">pending</div> 
-                    </td>
-                    <td>
-                        <div className="track">tracking details</div> 
-                    </td>
-                </tr>
+               
+               
+                
                 </table>
+                    )}
+
                 </div> 
 
 

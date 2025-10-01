@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 function UserBooking() {
+    const [loading, setLoading] = useState<boolean>(false);
   return (
     <div className='userBooking'>
 

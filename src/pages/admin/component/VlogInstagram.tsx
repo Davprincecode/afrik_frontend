@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import ButtonPreloader from '../../../component/ButtonPreloader';
 import DeletePopup from './DeletePopUp';
 import TestimonialReview from '../../../component/TestimonialReview';
+import InstagramPreview from '../../../component/InstagramPreview';
 
 
 
@@ -52,7 +53,6 @@ const VlogInstagram = () => {
                     };
                     try {
                         const response = await fetch(`${baseUrl}/instagram`, requestOptions);
-                       
                         if (!response.ok) {
                         const errorResponse = await response.json();
                         throw new Error(errorResponse.message);
@@ -60,11 +60,16 @@ const VlogInstagram = () => {
                         const result = await response.json();    
                         setInstagram(prev => [...prev, result.data]);
                         setLoading(false); 
-                        setVideoLink("");
+                        setVlogTitle("");
                         setVideoLink("");
                         toast.success("Data Upload Successfully");       
                     } catch (error) {
-                        setLoading(false); 
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                     }
         }
 
@@ -88,7 +93,12 @@ const VlogInstagram = () => {
                     setInstagram(result.data);
                     setLoading(false);
                 } catch (error) {
-                    setLoading(false); 
+                    setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                 }
     }
 
@@ -127,7 +137,12 @@ const VlogInstagram = () => {
                   toast.error("delete successfully");
   
               } catch (error) {
-                  setLoading(false); 
+                  setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
               }
     };
 
@@ -210,16 +225,16 @@ const VlogInstagram = () => {
     </div>
 
 
-                 {/* {currentIndex !== null && (
-                    <TestimonialReview
-                    src={instagram[currentIndex]}
+                  {currentIndex !== null && (
+                    <InstagramPreview
+                    data={instagram[currentIndex]}
                     onClose={closeModal}
                     onPrev={goPrev}
                     onNext={goNext}
                     hasPrev={currentIndex > 0}
                     hasNext={currentIndex < instagram.length - 1}
                     />
-                    )} */}
+                    )} 
 
                     <DeletePopup
                         isOpen={showPopup}

@@ -8,6 +8,7 @@ import { userAuth } from '../../context/AuthContext';
 import { MdOutlineArrowDropDownCircle } from 'react-icons/md';
 import ButtonPreloader from '../../../component/ButtonPreloader';
 import AdminPagination from './AdminPagination';
+import { toast } from 'react-toastify';
 
 
 
@@ -72,6 +73,12 @@ const ShopTransaction: React.FC<PaymentInterface> = ({ paymentFunction }) =>{
             setMeta(result.meta);
             setLoading(false);
             } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
             setLoading(false);
             }
             }
@@ -99,6 +106,12 @@ const ShopTransaction: React.FC<PaymentInterface> = ({ paymentFunction }) =>{
                     setMeta(result.meta);
                     setLoading(false);
                 } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                     setLoading(false);
                 }
         }
@@ -126,6 +139,12 @@ const ShopTransaction: React.FC<PaymentInterface> = ({ paymentFunction }) =>{
                     setMeta(result.meta);
                     setLoading(false);
                 } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                     setLoading(false);
                 }
         }

@@ -43,20 +43,19 @@ function AllProduct() {
                 </div>
             </div>
             {
-                activeTab == 'live' ? (
-                    <ActiveProduct/>
-                ) : activeTab == 'inactive' ? (
-                    <InActiveProduct/>
-                ) : (
-                      <AllProducts/>
-                )
-
-                }
-                {
-                    editHero && (
+                 editHero ?  (
                     <EditProduct heroFunction={heroFunction} editId={editId} setEditId={setEditId}/>
-                        ) 
+                    ) : (
+                activeTab == 'live' ? (
+                    <ActiveProduct heroFunction={heroFunction} editId={editId} setEditId={setEditId} />
+                ) : activeTab == 'inactive' ? (
+                    <InActiveProduct heroFunction={heroFunction} editId={editId} setEditId={setEditId} />
+                ) : (
+                      <AllProducts heroFunction={heroFunction} editId={editId} setEditId={setEditId} />
+                )
+                 )
                 }
+               
          </div>
   
       </div>

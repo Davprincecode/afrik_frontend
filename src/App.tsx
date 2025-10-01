@@ -48,6 +48,7 @@ import MasterCourse from "./pages/MasterCourse";
 import MasterCourseDetail from "./pages/MasterCourseDetail";
 import MasterCoursePayment from "./pages/MasterCoursePayment";
 import MessageComponent from "./pages/admin/component/MessageComponent";
+import VerifyCoursePayment from "./pages/payment/VerifyCoursePayment";
 
 
 
@@ -90,6 +91,7 @@ const {baseUrl} = userAuth();
 
          
           <Route path="/payment/callback" element={<VerifyPayment />} />
+          <Route path="/payment/course/callback" element={<VerifyCoursePayment />} />
 
           {/* <Route path="/coming-soon" element={<ComingSoon />} /> */}
 

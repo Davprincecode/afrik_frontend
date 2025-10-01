@@ -12,6 +12,7 @@ import ImagePreviewModal from './ImagePreviewModal'
 import { LiaEyeSolid } from 'react-icons/lia'
 import { userAuth } from '../pages/context/AuthContext'
 import ButtonPreloader from './ButtonPreloader'
+import { toast } from 'react-toastify'
 
 
 
@@ -61,6 +62,12 @@ function Gallery() {
                           setImages(updatedImages);
                        setLoading(false);
                    } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                        
                    }
            }

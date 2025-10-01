@@ -79,6 +79,12 @@ const  AllCourse : React.FC<HeroInterface> = ({  heroFunction, setEditId }) => {
                   setMeta(result.meta);
                   setLoading(false);
               } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                   
               }
       }
@@ -108,6 +114,12 @@ const  AllCourse : React.FC<HeroInterface> = ({  heroFunction, setEditId }) => {
                           getData(page);
                           // setLoading(false);
                   } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                       
                   }
 
@@ -145,6 +157,12 @@ const  AllCourse : React.FC<HeroInterface> = ({  heroFunction, setEditId }) => {
                           getData(page);
                           // setLoading(false);
                   } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                       
                   }
 
@@ -182,6 +200,12 @@ const  AllCourse : React.FC<HeroInterface> = ({  heroFunction, setEditId }) => {
                           
                           toast.error("delete successfully");
                       } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                           
                       }
               
@@ -210,6 +234,12 @@ const  AllCourse : React.FC<HeroInterface> = ({  heroFunction, setEditId }) => {
                     setMeta(result.meta);
                     setLoading(false);
                 } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                     setLoading(false);
                 }
         }
@@ -237,6 +267,12 @@ const  AllCourse : React.FC<HeroInterface> = ({  heroFunction, setEditId }) => {
                     setMeta(result.meta);
                     setLoading(false);
                 } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                     setLoading(false);
                 }
         }

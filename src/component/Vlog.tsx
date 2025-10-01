@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom'
 import { FiInstagram } from 'react-icons/fi';
 import { userAuth } from '../pages/context/AuthContext';
 import ButtonPreloader from './ButtonPreloader';
+import { toast } from 'react-toastify';
 
 
 interface vlogIntern {
@@ -53,9 +54,16 @@ function Vlog() {
                      setData(result.data); 
                      setLoading(false);
                  } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                      
                  }
          }
+         
   return (
    <div className='vlog'>
           <div className="vlogHeader">

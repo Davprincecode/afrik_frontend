@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import SuccessfulPayment from '../../component/SuccessfulPayment';
 import ButtonPreloader from '../../component/ButtonPreloader';
 
-function VerifyPayment() {
+function VerifyCoursePayment() {
      const params = new URLSearchParams(window.location.search);
      const reference = params.get('reference');
      const tranRef = params.get('trxref');
@@ -13,8 +13,6 @@ function VerifyPayment() {
      const [loading, setLoading] = useState<boolean>(false);
      const {baseUrl, token} = userAuth(); 
      const navigate = useNavigate();
-
-     
 
      const fetchData = async () => {
       setLoading(true);
@@ -28,7 +26,8 @@ function VerifyPayment() {
         };
         try {
           const response = await fetch(`${baseUrl}/payment/${reference}`, requestOptions);
-          
+        //   const results = await response.text();  
+        //   console.log(results);
           if (!response.ok) {
             const errorResponse = await response.json();
             throw new Error(errorResponse.message);
@@ -40,7 +39,7 @@ function VerifyPayment() {
         } catch (error) { 
           setLoading(false);         
           toast.error("Payment not successful");
-          navigate("/payment");
+          navigate("/master-course");
         }
     };
     
@@ -79,4 +78,4 @@ function VerifyPayment() {
   )
 }
 
-export default VerifyPayment
+export default VerifyCoursePayment

@@ -9,6 +9,7 @@ import ButtonPreloader from '../../../component/ButtonPreloader';
 import AdminPagination from './AdminPagination';
 import { AiOutlineEye } from 'react-icons/ai';
 import OrderDetails from '../../../component/OrderDetails';
+import { toast } from 'react-toastify';
 
 
 interface orderInterface {
@@ -89,6 +90,12 @@ const getData = async (pageNumber : number) => {
             setMeta(result.meta);
             setLoading(false);
         } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
             
         }
 }
@@ -112,8 +119,15 @@ const confirmOrder = async (id: string) => {
               const result = await response.json();   
               setOrder(result.data);
               setMeta(result.meta);
+              toast.success("order status updated successfully");
               setLoading(false);
           } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
               
           }
   setActiveOrderId(null); // Close dropdown
@@ -149,9 +163,20 @@ const cancelOrder = async (id: string) => {
                 setMeta(result.meta);
                 setLoading(false);
             } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                 
             }
     }
+
+     const viewOrder = (id : string) => {
+   setPopOrder(order.filter(item => item.id == id));
+   setAuthAction(!authAction)
+  }
   return (
     <div>
           <div className="admin-header-form  flex-center gap-10 justification-between">
@@ -230,7 +255,7 @@ const cancelOrder = async (id: string) => {
                                                     {activeViewId === item.id && (
                                                     <div className="viewPop">
                                                     <div className='viewAction'>
-                                                      <div className="confirmView  statusAction"  onClick={() => setAuthAction(!authAction)}>
+                                                      <div className="confirmView  statusAction"    onClick={() => viewOrder(item.id)}>
                                                         <AiOutlineEye /> View Order Details
                                                       </div>
                                                       <div className="cancelView statusAction"  onClick={() => cancelOrder(item.id)}>

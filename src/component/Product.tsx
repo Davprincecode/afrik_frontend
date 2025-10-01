@@ -93,6 +93,12 @@ const [popAction, setPopAction] = useState<boolean>(false);
                    setProduct(result.data); 
                    
               } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                   
               }
     }
@@ -130,6 +136,12 @@ const [popAction, setPopAction] = useState<boolean>(false);
                             setLoadingProductId(null);
                             toast.success("Product added Successfully");       
                         } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                             setLoading(false); 
                         }
           }

@@ -9,6 +9,7 @@ import { FaArrowLeft } from 'react-icons/fa'
 import { userAuth } from './context/AuthContext'
 import Pagination from '../component/Pagination'
 import ButtonPreloader from '../component/ButtonPreloader'
+import { toast } from 'react-toastify'
 
 
 interface Meta {
@@ -68,12 +69,18 @@ function MasterCourse() {
                   throw new Error(errorResponse.message);
                   }
                   const result = await response.json();  
-                 console.log(result);
+                 
                  
                  setCourses(result.data);
                   setMeta(result.meta);
                   setLoading(false);
               } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                   
               }
       }

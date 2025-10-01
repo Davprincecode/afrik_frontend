@@ -15,23 +15,23 @@ import { CiCircleQuestion } from 'react-icons/ci';
 import ButtonPreloader from './ButtonPreloader';
 
 
-interface categoryInterface {
-"id": string,
-"categoryName": string
+interface sizeInterface {
+"id": number,
+"sizeName": string
 }
 
 interface authComponentInterface {
-    authAction : boolean,
-    setAuthAction: React.Dispatch<React.SetStateAction<boolean>>;
-    setCategory: React.Dispatch<React.SetStateAction<categoryInterface[]>>;
+    sizeAction : boolean,
+    setSizeAction: React.Dispatch<React.SetStateAction<boolean>>;
+    setSize: React.Dispatch<React.SetStateAction<sizeInterface[]>>;
 }
 
-const CategoryProductPop : React.FC<authComponentInterface> = ({authAction, setAuthAction, setCategory}) =>{
+const SizePop : React.FC<authComponentInterface> = ({sizeAction, setSizeAction, setSize}) =>{
 
   const navigate = useNavigate();
   const {baseUrl, token} = userAuth();  
   const { pathname } = useLocation();
-  const [categoryName, setCategoryName] = useState<string>('');
+  const [sizeName, setSizeName] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   
 const handleCategoryPost = async () => {
@@ -40,7 +40,7 @@ const handleCategoryPost = async () => {
               myHeaders.append("Content-Type", "application/json");
               myHeaders.append("Authorization", token);
               const raw = JSON.stringify({
-                        'category_name' : categoryName
+                        'size_name' : sizeName
                     });
               const requestOptions: RequestInit = {
                   method: "POST",
@@ -49,15 +49,15 @@ const handleCategoryPost = async () => {
                   redirect: "follow"
               };
               try {
-                  const response = await fetch(`${baseUrl}/product-category`, requestOptions);
+                  const response = await fetch(`${baseUrl}/product-size`, requestOptions);  
                   if (!response.ok) {
                   const errorResponse = await response.json();
                   throw new Error(errorResponse.message);
                   }
                   const result = await response.json(); 
                    setLoading(false);
-                   setCategory(prev => [...prev, result.data]);
-                   setAuthAction(!authAction)
+                   setSize(prev => [...prev, result.data]);
+                   setSizeAction(!sizeAction)
               } catch (error) {
                         setLoading(false);
                         if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
@@ -84,7 +84,7 @@ const handleCategoryPost = async () => {
 
   
   return (
-    <div className="track-con" style={{display : authAction ? "flex" : "none"}}>
+    <div className="track-con" style={{display : sizeAction ? "flex" : "none"}}>
 
       <div className="category-body">
          
@@ -92,15 +92,15 @@ const handleCategoryPost = async () => {
                 <RxCross2 />
                 </div> */}
              <div className="category-header-title">
-                new category
+                new product size
              </div>
             <div className="category-pop-con">
             <div className="input">
-            <input type="text" placeholder='Enter Category'  value={categoryName} onChange={(e) => setCategoryName(e.target.value) }/>
+            <input type="text" placeholder='Enter Category'  value={sizeName} onChange={(e) => setSizeName(e.target.value) }/>
             </div>
 
             <div className="btn-flex-con">
-            <div className="cancelBtn"  onClick={() => setAuthAction(!authAction)}>
+            <div className="cancelBtn"  onClick={() => setSizeAction(!sizeAction)}>
                 cancel
             </div>
             { loading ? (
@@ -122,6 +122,6 @@ const handleCategoryPost = async () => {
   )
 }
 
-export default CategoryProductPop
+export default SizePop
 
 

@@ -127,6 +127,12 @@ const validateCourseForm = () => {
               setCourseType('');
               toast.success(result.message);       
           } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
               setLoading(false); 
           }
         
@@ -234,7 +240,7 @@ const validateCourseForm = () => {
 
                     <div className="admin-flex-input flex-center gap-10">
                           <div className="admin-input">
-                          <label>Course Price</label>
+                          <label>Course Price (early bird)</label>
                           <input
                             name="coursePrice"
                             type="number"

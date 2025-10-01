@@ -73,6 +73,12 @@ const AllBlog = () => {
                   setMeta(result.meta);
                   setLoading(false);
               } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                   
               }
       }
@@ -101,6 +107,12 @@ const AllBlog = () => {
                           getData(page);
                           // setLoading(false);
                   } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                       
                   }
 
@@ -138,6 +150,12 @@ const AllBlog = () => {
                           getData(page);
                           // setLoading(false);
                   } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                       
                   }
 
@@ -174,6 +192,12 @@ const AllBlog = () => {
                           
                           toast.error("delete successfully");
                       } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                           
                       }
               

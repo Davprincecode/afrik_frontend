@@ -63,6 +63,12 @@ function BrandLogo() {
                    setLoading(false); 
                    toast.success("Data Upload Successfully");       
               } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                   setLoading(false); 
               }
     }
@@ -87,6 +93,12 @@ function BrandLogo() {
                    setGalleryImg(result.data);
                    setLoading(false);
               } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                   
               }
     }
@@ -154,6 +166,12 @@ function BrandLogo() {
                   toast.error("delete successfully");
   
               } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                   
               }
     };

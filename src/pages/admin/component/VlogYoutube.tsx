@@ -7,6 +7,8 @@ import { toast } from 'react-toastify';
 import ButtonPreloader from '../../../component/ButtonPreloader';
 import DeletePopup from './DeletePopUp';
 import TestimonialReview from '../../../component/TestimonialReview';
+import InstagramPreview from '../../../component/InstagramPreview';
+import YoutubePreview from '../../../component/YoutubePreview';
 
 
 
@@ -51,8 +53,8 @@ const VlogYoutube = () => {
                         redirect: "follow"
                     };
                     try {
-                        const response = await fetch(`${baseUrl}/instagram`, requestOptions);
-                       
+                        const response = await fetch(`${baseUrl}/youtube`, requestOptions);
+                        
                         if (!response.ok) {
                         const errorResponse = await response.json();
                         throw new Error(errorResponse.message);
@@ -60,11 +62,16 @@ const VlogYoutube = () => {
                         const result = await response.json();    
                         setInstagram(prev => [...prev, result.data]);
                         setLoading(false); 
-                        setVideoLink("");
+                        setVlogTitle("");
                         setVideoLink("");
                         toast.success("Data Upload Successfully");       
                     } catch (error) {
-                        setLoading(false); 
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                     }
         }
 
@@ -79,7 +86,7 @@ const VlogYoutube = () => {
                     redirect: "follow"
                 };
                 try {
-                    const response = await fetch(`${baseUrl}/instagram`, requestOptions);
+                    const response = await fetch(`${baseUrl}/youtube`, requestOptions);
                     if (!response.ok) {
                     const errorResponse = await response.json();
                     throw new Error(errorResponse.message);
@@ -88,7 +95,12 @@ const VlogYoutube = () => {
                     setInstagram(result.data);
                     setLoading(false);
                 } catch (error) {
-                    setLoading(false); 
+                    setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                 }
     }
 
@@ -109,7 +121,7 @@ const VlogYoutube = () => {
                   redirect: "follow"
               };
               try {
-                  const response = await fetch(`${baseUrl}/instagram/${id}`, requestOptions);
+                  const response = await fetch(`${baseUrl}/youtube/${id}`, requestOptions);
                   
                   if (!response.ok) {
                   const errorResponse = await response.json();
@@ -127,7 +139,12 @@ const VlogYoutube = () => {
                   toast.error("delete successfully");
   
               } catch (error) {
-                  setLoading(false); 
+                  setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
               }
     };
 
@@ -154,8 +171,8 @@ const VlogYoutube = () => {
 
 
   return (
-    <div>
-        <h2 className='vlog-instagram'>instagram</h2>
+    <div style={{marginTop : "40px"}}>
+        <h2 className='vlog-instagram'>youtube</h2>
         <div className="admin-testimonial-form">
 
       <div className="admin-input">
@@ -210,16 +227,16 @@ const VlogYoutube = () => {
     </div>
 
 
-                 {/* {currentIndex !== null && (
-                    <TestimonialReview
-                    src={instagram[currentIndex]}
+                  {currentIndex !== null && (
+                    <YoutubePreview
+                    data={instagram[currentIndex]}
                     onClose={closeModal}
                     onPrev={goPrev}
                     onNext={goNext}
                     hasPrev={currentIndex > 0}
                     hasNext={currentIndex < instagram.length - 1}
                     />
-                    )} */}
+                    )} 
 
                     <DeletePopup
                         isOpen={showPopup}

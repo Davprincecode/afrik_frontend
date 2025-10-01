@@ -65,6 +65,12 @@ const AllHero : React.FC<HeroInterface> = ({  heroFunction, setEditId }) => {
                    
                    setLoading(false);
               } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                   
               }
     }
@@ -89,6 +95,12 @@ const handleStatusToggle = async (id: string) => {
                    setHero(result.data);
                    setLoading(false);
               } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                   
               }
     
@@ -122,6 +134,12 @@ const handleDeleteConfirm = async (id: string | number) => {
                     setLoading(false);
                     toast.error("delete successfully");
                 } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                     
                 }
         

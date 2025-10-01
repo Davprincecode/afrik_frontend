@@ -126,6 +126,12 @@ const AuthComponent: React.FC<authComponentInterface> = ({authAction, setAuthAct
       logInUser();
       setLoading(false);
     } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
       setLoading(false);
       if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
         toast.error(error.message);
@@ -166,6 +172,12 @@ const AuthComponent: React.FC<authComponentInterface> = ({authAction, setAuthAct
         logInUser();
         setLoading(false);
     } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
       setLoading(false);
       if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
         toast.error(error.message);

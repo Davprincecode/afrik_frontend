@@ -94,6 +94,12 @@ function ProductDetails() {
                         setSubProducts(result.data.subProduct);   
                         setLoading(false);
                     } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                         
                     }
             }
@@ -176,6 +182,12 @@ function ProductDetails() {
                             setLoadingProductId(null);       
                             toast.success("Product added Successfully");       
                         } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                             setLoading(false); 
                         }
           }
@@ -217,6 +229,12 @@ function ProductDetails() {
                             navigate('/payment');      
                                  
                         } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                             setLoading(false); 
                         }
           }
@@ -253,12 +271,9 @@ function ProductDetails() {
                     <div className="flex-center sub-img-con" >
                     {
                         subProducts.map((value, index)=> (
-
-                            
-
-                                <div className="sub-img"  key={index} onClick={() => getProduct(value.productId, value.productName, value.productColor, value.availableQty,
-     value.availableStockUnlimited, value.productDescription, value.productSize,
-      value.productPrice, value.discountPrice, value.productImage) }><img src={value.productImage} /></div>
+        <div className="sub-img"  key={index} onClick={() => getProduct(value.productId, value.productName, value.productColor, value.availableQty, value.availableStockUnlimited, value.productDescription, value.productSize, value.productPrice, value.discountPrice, value.productImage) }>
+        <img src={value.productImage} />
+        </div>
                             
                         ))
                     }
@@ -296,11 +311,11 @@ function ProductDetails() {
                 </div>
 
                 <div className="flex-center gap-10 qty-con">
-                    <div className="flex-center justification-between qty">
+                    {/* <div className="flex-center justification-between qty">
                         <div className="decreament"><HiOutlineMinusSmall /></div>
                         <div className="qty-number">{quantity}</div>
                         <div className="increament"><GoPlus /></div>
-                    </div>
+                    </div> */}
 
                   
 

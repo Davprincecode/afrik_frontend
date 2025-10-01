@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { userAuth } from '../context/AuthContext';
 import Pagination from '../../component/Pagination';
+import { toast } from 'react-toastify';
+import ButtonPreloader from '../../component/ButtonPreloader';
+import ProductComponent from '../../component/ProductComponent';
 
 
 interface orderInterface {
@@ -44,10 +47,12 @@ const  UserOrder = () =>  {
     const [loading, setLoading] = useState<boolean>(false);
     const [order, setOrder] = useState<orderInterface[]>([]);
     const [PopOrder, setPopOrder] = useState<orderInterface[]>([]);
+    const [authAction, setAuthAction] = useState<boolean>(false);
+    const [status, setStatus] = useState<string>('');
 
     useEffect(() => {
     getData(page)
-    }, []);
+    }, [page]);
 
     const getData = async (pageNumber : number) => {
     setLoading(true);
@@ -72,16 +77,31 @@ const  UserOrder = () =>  {
     setMeta(result.meta);
     setLoading(false);
     } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
 
     }
     }
-
+ const viewOrder = (id : string, status : string) => {
+   setPopOrder(order.filter(item => item.id == id));
+   setStatus(status);
+   setAuthAction(!authAction);
+   
+  }
   return (
     <div className='userOrder'>
 
                 <div className="user-profile-table">
                 <h1>Order List</h1>
-                <table>
+                {
+                    loading ? (
+                           <ButtonPreloader/>
+                    ) : (
+                            <table>
                 <tr className='table-header'>
                     <th>order Id</th>
                     <th>date</th>
@@ -99,65 +119,16 @@ const  UserOrder = () =>  {
                             <td>{item.paymentMethod}</td>
                             <td>₦{item.total}</td>
                             <td>
-                                <div className="inprogress">{item.orderStatus}</div> 
+                                <div className={item.orderStatus}>{item.orderStatus}</div> 
                             </td>
-                            <td> <div className="track">tracking details</div> </td>
+                            <td> <div className="track"   onClick={() => viewOrder(item.id, item.orderStatus)}>tracking details</div> </td>
                         </tr>
                     ))
                 }
-                <tr>
-                    <td>#cmd7hsh2</td>
-                    <td>1</td>
-                    <td>₦2222</td>
-                    <td>feb 2 2022</td>
-                    <td>
-                        <div className="inprogress">in progress</div> 
-                    </td>
-                    <td> <div className="track">tracking details</div> </td>
-                </tr>
-                <tr>
-                    <td>#cmd7hsh2</td>
-                    <td>1</td>
-                    <td>₦2222</td>
-                    <td>feb 2 2022</td>
-                    <td>
-                        <div className="completed">complete</div> 
-                    </td>
-                    <td> <div className="track">tracking details</div> </td>
-                </tr>
-                <tr>
-                    <td>#cmd7hsh2</td>
-                    <td>1</td>
-                    <td>₦2222</td>
-                    <td>feb 2 2022</td>
-                    <td>
-                        <div className="approved">approved</div> 
-                    </td>
-                    <td> <div className="track">tracking details</div> </td>
-                </tr>
-                <tr>
-                    <td>#cmd7hsh2</td>
-                    <td>1</td>
-                    <td>₦2222</td>
-                    <td>feb 2 2022</td>
-                    <td>
-                        <div className="rejected">reject</div> 
-                    </td>
-                    <td> <div className="track">tracking details</div> </td>
-                </tr>
-                <tr>
-                    <td>#cmd7hsh2</td>
-                    <td>1</td>
-                    <td>₦2222</td>
-                    <td>feb 2 2022</td>
-                    <td>
-                        <div className="pendings">pending</div> 
-                    </td>
-                    <td>
-                        <div className="track">tracking details</div> 
-                    </td>
-                </tr>
+                
                 </table>
+                    )}
+                
                 </div> 
 
 
@@ -165,6 +136,8 @@ const  UserOrder = () =>  {
         {meta && <Pagination meta={meta} onPageChange={setPage} />}
     </div>
 
+
+ <ProductComponent  authAction={authAction} setAuthAction={setAuthAction} PopOrder={PopOrder} status={status}/>
     </div>
   )
 }

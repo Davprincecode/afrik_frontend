@@ -119,6 +119,12 @@ function Shop() {
                         setLoadingProductId(null);
                         toast.success("Product added Successfully");       
                     } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                         setLoading(false); 
                     }
       }
@@ -151,6 +157,12 @@ function Shop() {
                 SetBanner(result.data);
                 setLoading(false);
             } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                 
             }
     }
@@ -179,6 +191,12 @@ function Shop() {
                 }
                 
             } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                 
             }
     }
@@ -202,7 +220,13 @@ function Shop() {
                   const result = await response.json(); 
                    setCategory(result.data);
                    setLoading(false);
-              } catch (error) {   
+              } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }   
               }
       }
     const productSearch = async (search : string) => {
@@ -228,6 +252,12 @@ function Shop() {
                 setMeta(result.meta);     // pagination meta
                 setLoading(false);
             } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                 
             }
     }
@@ -256,6 +286,12 @@ function Shop() {
                 setMeta(result.meta);     // pagination meta
                 setLoading(false);
             } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                 
             }
     }
@@ -285,6 +321,12 @@ function Shop() {
                 setMeta(result.meta);     // pagination meta
                 setLoading(false);
             } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                 
             }
     }

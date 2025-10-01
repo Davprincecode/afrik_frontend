@@ -10,6 +10,7 @@ import ButtonPreloader from '../../../component/ButtonPreloader';
 import AdminPagination from './AdminPagination';
 import { AiOutlineEye } from 'react-icons/ai';
 import OrderDetails from '../../../component/OrderDetails';
+import { toast } from 'react-toastify';
 
 interface orderInterface {
     id : string;
@@ -67,7 +68,7 @@ function PendingOrder() {
 
     useEffect(() => {
       getData(page)
-      }, []);
+      }, [page]);
 
     const getData = async (pageNumber : number) => {
         setLoading(true);
@@ -90,6 +91,12 @@ function PendingOrder() {
                 setMeta(result.meta);
                 setLoading(false);
             } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                 
             }
     }
@@ -113,8 +120,15 @@ function PendingOrder() {
                   const result = await response.json();   
                   setOrder(result.data);
                   setMeta(result.meta);
+                  toast.success("order status updated successfully");
                   setLoading(false);
               } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                   
               }
       setActiveOrderId(null); // Close dropdown
@@ -139,8 +153,15 @@ function PendingOrder() {
                   const result = await response.json();   
                   setOrder(result.data);
                   setMeta(result.meta);
+                  toast.success("order status updated successfully");
                   setLoading(false);
               } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                   
               }
       setActiveOrderId(null); // Close dropdown
@@ -179,6 +200,12 @@ function PendingOrder() {
                 setMeta(result.meta);
                 setLoading(false);
             } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
                 
             }
     }

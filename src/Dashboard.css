@@ -430,6 +430,18 @@ padding: 10px;
 .admin-input textarea{
     background-color: white !important;
 }
+.addmore{
+  color: #1E5EFF;
+  text-transform: capitalize;
+  font-size: 16px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+.createNew{
+  text-decoration: underline;
+  cursor: pointer;
+  text-transform: capitalize;
+}
 .input-header{
   text-transform: capitalize;
   text-align: right;
@@ -1556,6 +1568,27 @@ margin-top: 20px;
 }
 .admin-profile img{
   border-radius: 50%;
+}
+
+.instagramContent{
+  width: 80% !important;
+  height: 90vh !important;
+    overflow-y: auto;
+}
+.instagramContent .vlogCon{
+  width: 100%;
+}
+.youtubeContent{
+ width: 80% !important;
+  height: 90vh !important;
+    overflow-y: auto; 
+}
+.youtubeContent .vlogCon{
+  width: 100% !important;
+}
+.youtubeContent .youtubeImage{
+   height: 90vh !important;
+   width: 100% !important;
 }
 /* ================================= message end ======================================== */
 
