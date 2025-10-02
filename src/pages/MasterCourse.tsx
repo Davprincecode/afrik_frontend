@@ -10,6 +10,7 @@ import { userAuth } from './context/AuthContext'
 import Pagination from '../component/Pagination'
 import ButtonPreloader from '../component/ButtonPreloader'
 import { toast } from 'react-toastify'
+import AuthComponent from '../component/AuthComponent'
 
 
 interface Meta {
@@ -43,14 +44,16 @@ function MasterCourse() {
         const [courses, setCourses] = useState<CourseIntern[]>([]);
         const [page, setPage] = useState<number>(1);
         const [meta, setMeta] = useState<Meta | null>(null);
-        const {baseUrl, token} = userAuth();
+         const [authAction, setAuthAction] = useState<boolean>(false);
+        const [subNav, setSubNav] = useState<boolean>(false);
+        const {baseUrl, signin, token} = userAuth();
         const[loading, setLoading] = useState<boolean>(false);
 
 
         // course
         useEffect(() => {
             getData(page)
-            }, []);
+            }, [page]);
     
       const getData = async (pageNumber : number) => {
           setLoading(true);
@@ -63,7 +66,7 @@ function MasterCourse() {
                   redirect: "follow"
               };
               try {
-                  const response = await fetch(`${baseUrl}/active-course?page=${pageNumber}`, requestOptions);
+                  const response = await fetch(`${baseUrl}/page-active-course?page=${pageNumber}`, requestOptions);
                   if (!response.ok) {
                   const errorResponse = await response.json();
                   throw new Error(errorResponse.message);
@@ -81,8 +84,12 @@ function MasterCourse() {
                         } else {
                         toast.error('An unknown error occurred.');
                         }
-                  
               }
+      }
+
+
+       const authFunction = () => {
+        setAuthAction(true);
       }
 
   return (
@@ -230,11 +237,20 @@ function MasterCourse() {
                                                     }
                                                 })()}
 
-                                          
+                                    {
+                                        signin ? ( 
+                                                        <NavLink to={`/master-course-payment/${item.courseId}`} className="master-btn">
+                                                        enrol now
+                                                        </NavLink>
+                                        ) : (
+                                                    <div className="master-btn" 
+                                                    onClick={authFunction} >
+                                                        enrol now
+                                                    </div>
+                                        )
+                                    }
 
-                                        <NavLink to={`/master-course-payment/${item.courseId}`} className="master-btn">
-                                            enrol now
-                                        </NavLink>
+                                        
 
 
                                     </div>
@@ -348,9 +364,18 @@ function MasterCourse() {
                                                     }
                                                 })()}
                                                 
-                                        <NavLink to={`/master-course-payment/${item.courseId}`} className="master-btn">
-                                            enrol now
-                                        </NavLink>
+                                       {
+                                        signin ? ( 
+                                                        <NavLink to={`/master-course-payment/${item.courseId}`} className="master-btn">
+                                                        enrol now
+                                                        </NavLink>
+                                        ) : (
+                                                    <div className="master-btn" 
+                                                    onClick={authFunction} >
+                                                        enrol now
+                                                    </div>
+                                        )
+                                    }
 
 
                                     </div>
@@ -367,6 +392,13 @@ function MasterCourse() {
             </div>
 
              </div>
+
+
+            {
+                !signin && (
+                    <AuthComponent authAction={authAction} setAuthAction={setAuthAction} setSubNav={setSubNav}/>
+                )
+            } 
 
           </div>
           <Footer />

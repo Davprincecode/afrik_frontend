@@ -27,11 +27,11 @@ import OfflineShop from '../component/OfflineShop'
 
 
 interface categoryInterface {
-"id": string,
+"id": number,
 "categoryName": string
 }
 interface sizeInterface {
-"id": string,
+"id": number,
 "sizeName": string
 }
 
@@ -70,7 +70,7 @@ image : string;
 status : string;
 }
   
-function Shop() {
+function Shops() {
     const [products, setProducts] = useState<Product[]>([]);
     const[category, setCategory] = useState<categoryInterface[]>([]);
     const[size, setSize] = useState<sizeInterface[]>([]);
@@ -83,10 +83,95 @@ function Shop() {
     const [page, setPage] = useState(1);
     const [popAction, setPopAction] = useState<boolean>(false);
      const [loadingProductId, setLoadingProductId] = useState<string | null>(null);
-     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-     const [selectedSize, setSelectedSize] = useState<string | null>(null);
+
+    const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+const [selectedSize, setSelectedSize] = useState<number | null>(null);
+const [selectedPrice, setSelectedPrice] = useState<string | null>(null); // e.g. "20000-50000" or ">100000"
+
 
     const {baseUrl, signin,  token, cart, setCart, loggedIn} = userAuth();
+
+  const handleCategoryChange = (id: number) => {
+  const newValue = selectedCategory === id ? null : id;
+  setSelectedCategory(newValue);
+  applyFilters(1); // 👈 Trigger filter immediately
+};
+
+const handleSizeChange = (id: number) => {
+  const newValue = selectedSize === id ? null : id;
+  setSelectedSize(newValue);
+  applyFilters(1); // 👈 Trigger filter immediately
+};
+
+const handlePriceChange = (range: string) => {
+  const newValue = selectedPrice === range ? null : range;
+  setSelectedPrice(newValue);
+  applyFilters(1); // 👈 Trigger filter immediately
+};
+
+
+const applyFilters = async (page: number) => {
+    
+  const params: Record<string, string | number> = { page };
+
+  if (selectedCategory !== null) {
+    params.category_id = selectedCategory;
+  }
+
+  if (selectedSize !== null) {
+    params.size = selectedSize;
+  }
+
+  if (selectedPrice !== null) {
+    if (selectedPrice.startsWith(">")) {
+      params.min_price = parseInt(selectedPrice.replace(">", ""));
+    } else {
+      const [min, max] = selectedPrice.split("-").map(p => parseInt(p));
+      params.min_price = min;
+      params.max_price = max;
+    }
+  }
+
+  if (
+    selectedCategory === null &&
+    selectedSize === null &&
+    selectedPrice === null
+  ) {
+    getData(page); // fallback
+    return;
+  }
+
+  const queryString = new URLSearchParams(params as any).toString();
+
+  try {
+    const response = await fetch(`${baseUrl}/product-filter?${queryString}`);
+   const results = await response.json(); 
+   console.log(results);
+   
+   if (!response.ok) {
+                const errorResponse = await response.json();
+                throw new Error(errorResponse.message);
+                }
+                const result = await response.json();   
+                
+                             
+               
+                    setProducts(result.data);
+              
+                setLoading(false)
+  } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
+                
+            }
+};
+
+
+
 
       const authFunction = () => {
         setAuthAction(true);
@@ -175,12 +260,7 @@ function Shop() {
     }
 
     const getData = async (pageNumber : number) => {
-       if(selectedCategory){
-            setSelectedCategory('');
-       }
-        if(selectedSize){
-            setSelectedSize('');
-        }
+      
         
         setLoading(true);
             const myHeaders = new Headers();
@@ -307,11 +387,7 @@ function Shop() {
     }
 
     const productFilter = async (key: string, value : string) => {
-        if(key === 'product_size'){
-             setSelectedSize(value);
-        }else{
-         setSelectedCategory(value);   
-        }
+        
         
         
         setLoading(true);
@@ -516,130 +592,57 @@ function Shop() {
 
                     
                     <div className="filter-category">
-                        <div className="filter-header">category</div>
+  <div className="filter-header">Category</div>
+  {category.map((item) => (
+    <div className="filter-list flex-center gap-10" key={item.id}>
+      <input
+        type="checkbox"
+        checked={selectedCategory === item.id}
+        onChange={() => handleCategoryChange(item.id)}
+      />
+      <p>{item.categoryName}</p>
+    </div>
+  ))}
+</div>
 
-                             {
-                                category.map((item, index)=>(
-                                    <div className="filter-list flex-center gap-10" key={index}>
-                            <div className="filter-input">
-                                <input type="checkbox"
-                                 checked={selectedCategory === item.id} 
-                                  />
-                            </div>
-                            <p>{item.categoryName}</p>
-                        </div>
-                                ))
-                             }
-                       
-                        
-                    </div>
+<div className="filter-price">
+  <div className="filter-header">Price Range</div>
+  {[
+    { label: "₦0 - ₦10k", value: "0-10000" },
+    { label: "₦20k - ₦50k", value: "20000-50000" },
+    { label: "₦50k - ₦70k", value: "50000-70000" },
+    { label: "₦70k - ₦90k", value: "70000-90000" },
+    { label: "₦90k - ₦100k", value: "90000-100000" },
+    { label: "> ₦100k", value: ">100000" },
+  ].map((item, index) => (
+    <div className="filter-list flex-center gap-10" key={index}>
+      <input
+        type="checkbox"
+        checked={selectedPrice === item.value}
+        onChange={() => handlePriceChange(item.value)}
+      />
+      <p>{item.label}</p>
+    </div>
+  ))}
+</div>
 
-                    <div className="filter-price">
-                        <div className="filter-header">price range</div>
 
-                        <div className="filter-list flex-center gap-10">
-                            <div className="filter-input">
-                                <input type="checkbox" />
-                            </div>
-                            <p className="flex-center gap-5">
-                                <div className="start-price"><span>₦</span>0</div>
-                                <div className="price-dash">-</div>
-                                <div className="end-price"><span>₦</span>10</div>
-                            </p>
-                        </div>
+<div className="filter-size">
+  <div className="filter-header">Size</div>
+  {size.map((item) => (
+    <div className="filter-list flex-center gap-10" key={item.id}>
+      <input
+        type="checkbox"
+        checked={selectedSize === item.id}
+        onChange={() => handleSizeChange(item.id)}
+      />
+      <p>{item.sizeName}</p>
+    </div>
+  ))}
+</div>
 
-                        <div className="filter-list flex-center gap-10">
-                            <div className="filter-input">
-                                <input type="checkbox"/>
-                                </div>
-                            <p className="flex-center gap-5">
-                                <div className="start-price"><span>₦</span>20k</div>
-                                <div className="price-dash">-</div>
-                                <div className="end-price"><span>₦</span>50k</div>
-                            </p>
-                        </div>
 
-                        <div className="filter-list flex-center gap-10">
-                            <div className="filter-input">
-                                <input type="checkbox"/>
-                                </div>
-                            <p className="flex-center gap-5">
-                                <div className="start-price"><span>₦</span>50k</div>
-                                <div className="price-dash">-</div>
-                                <div className="end-price"><span>₦</span>70k</div>
-                            </p>
-                        </div>
-                        <div className="filter-list flex-center gap-10">
-                            <div className="filter-input"><input type="checkbox"/></div>
-                            <p className="flex-center gap-5">
-                                <div className="start-price"><span>₦</span>70k</div>
-                                <div className="price-dash">-</div>
-                                <div className="end-price"><span>₦</span>90k</div>
-                            </p>
-                        </div>
-                        <div className="filter-list flex-center gap-10">
-                            <div className="filter-input"><input type="checkbox"/></div>
-                            <p className="flex-center gap-5">
-                                <div className="start-price"><span>₦</span>90k</div>
-                                <div className="price-dash">-</div>
-                                <div className="end-price"><span>₦</span>100k</div>
-                            </p>
-                        </div>
-                        <div className="filter-list flex-center gap-10">
-                            <div className="filter-input"><input type="checkbox"/></div>
-                            <p className="flex-center gap-5">
-                               
-                                <div className="price-dash">&gt;</div>
-                                <div className="end-price"><span>₦</span>100k</div>
-                            </p>
-                        </div>
-
-                    </div>
-
-                    
-
-                    <div className="filter-size">
-                        <div className="filter-header">size</div>
-                           {
-                                size.map((item, index)=>(
-                                    <div className="filter-list flex-center gap-10" key={index}>
-                            <div className="filter-input">
-                                <input type="checkbox"
-                                 checked={selectedSize === item.id} 
-                                   />
-                            </div>
-                            <p>{item.sizeName}</p>
-                        </div>
-                                ))
-                             }
-                        {/* <div className="size-item flex-center gap-5">
-
-                        <div className="filter-list flex-center gap-10">
-                            <div className="filter-input"><input type="checkbox"/></div>
-                            <p>S</p>
-                        </div>
-                        <div className="filter-list flex-center gap-10">
-                            <div className="filter-input"><input type="checkbox"/></div>
-                            <p>M</p>
-                        </div>
-                        <div className="filter-list flex-center gap-10">
-                            <div className="filter-input"><input type="checkbox"/></div>
-                            <p>L</p>
-                        </div>
-                        <div className="filter-list flex-center gap-10">
-                            <div className="filter-input"><input type="checkbox"/></div>
-                            <p>XL</p>
-                        </div>
-                        <div className="filter-list flex-center gap-10">
-                            <div className="filter-input"><input type="checkbox"/></div>
-                            <p>XXL</p>
-                        </div>
-                        <div className="filter-list flex-center gap-10">
-                            <div className="filter-input"><input type="checkbox"/></div>
-                            <p>XXXL</p>
-                        </div>
-                        </div> */}
-                    </div>
+                   
 
 
                   </div>
@@ -764,4 +767,4 @@ function Shop() {
   )
 }
 
-export default Shop
+export default Shops

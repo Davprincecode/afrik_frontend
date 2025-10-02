@@ -7,7 +7,7 @@ import { RxCross1 } from 'react-icons/rx';
 
 interface TestimonialInterface {
   id: number;
-  fullName: string;
+  fullname: string;
   position: string;
   testimonial: string;
   rating: number;
@@ -83,7 +83,7 @@ const TestimonialReview : React.FC<Props> = ({
                   ))}
               </div>
 
-              <div className="testimonyPrevTitle font-semibold">{src.fullName}</div>
+              <div className="testimonyPrevTitle font-semibold">{src.fullname}</div>
 
               {src.position && (
                 <div className="testimonyPrevPosition text-xs text-gray-500">{src.position}</div>

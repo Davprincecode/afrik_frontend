@@ -101,9 +101,9 @@ const Banner = () => {
     const { width, height } = image;
 
     const isValid =
-      (galleryType === "desktopHeroBanner" && width === 1260 && height === 1265) ||
-      (galleryType === "desktopSideBanner" && width === 258 && height === 650) ||
-      (galleryType === "mobileHeroBanner" && width === 258 && height === 650);
+      (galleryType === "desktopHeroBanner" && width >= 1260 && height >= 1265) ||
+      (galleryType === "desktopSideBanner" && width >= 258 && height >= 650) ||
+      (galleryType === "mobileHeroBanner" && width >= 258 && height >= 650);
 
     URL.revokeObjectURL(objectUrl);
 

@@ -18,7 +18,7 @@ interface TestimonialForm {
 
 interface TestimonialInterface {
   id: number;
-  fullName: string;
+  fullname: string;
   position: string;
   testimonial: string;
   rating: number;
@@ -145,6 +145,8 @@ const Testimonial = () => {
                     throw new Error(errorResponse.message);
                     }
                     const result = await response.json();
+                    console.log(result);
+                    
                     setTestimonials(result.data);
                     setLoading(false);
                 } catch (error) {
@@ -297,7 +299,7 @@ const Testimonial = () => {
         {testimonials.map((value, index) => (
           <div className="flex-center gap-10" key={value.id}>
             <IoEyeOutline className="eye" onClick={()=> openModal(index)}/>
-            <p>{value.position}</p>
+            <p>{value.fullname}</p>
             <RiDeleteBin6Line
               className="delete"
               onClick={() => handleDeleteClick(value.id)}

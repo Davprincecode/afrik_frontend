@@ -49,6 +49,7 @@ import MasterCourseDetail from "./pages/MasterCourseDetail";
 import MasterCoursePayment from "./pages/MasterCoursePayment";
 import MessageComponent from "./pages/admin/component/MessageComponent";
 import VerifyCoursePayment from "./pages/payment/VerifyCoursePayment";
+import Shops from "./pages/Shops";
 
 
 
@@ -104,7 +105,7 @@ const {baseUrl} = userAuth();
           <Route path="/our-services" element={<OurServices/>} />
           <Route path="/our-blog" element={<BlogList/>} />
           <Route path="/blog-details" element={<BlogDetails/>} />
-          <Route path="/product" element={<Shop/>} />
+          <Route path="/product" element={<Shops/>} />
           {/* <Route path="/product-details" element={<ProductDetails/>} /> */}
           <Route path="/product-details/:productId" element={<ProductDetails/>} />
           <Route path="/cart" element={<Cart/>} />

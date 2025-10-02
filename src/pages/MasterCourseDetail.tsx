@@ -6,6 +6,7 @@ import img from '../assets/images/consultingimages.png'
 import { userAuth } from './context/AuthContext'
 import ButtonPreloader from '../component/ButtonPreloader'
 import { toast } from 'react-toastify'
+import AuthComponent from '../component/AuthComponent'
 
 
 
@@ -24,9 +25,11 @@ function MasterCourseDetail() {
     const[startDate, setStartDate] = useState<string>('');
     const[pin , setPin] = useState<boolean>(false);
     const[status, setStatus] = useState<string>('');
+    const [authAction, setAuthAction] = useState<boolean>(false);
+    const [subNav, setSubNav] = useState<boolean>(false);
 
 
-const {baseUrl, token} = userAuth();
+const {baseUrl, signin,  token} = userAuth();
 const[loading, setLoading] = useState<boolean>(false);
 
 const { id } = useParams<{ id: string }>();
@@ -39,19 +42,23 @@ const { id } = useParams<{ id: string }>();
           setLoading(true);
               const myHeaders = new Headers();
               myHeaders.append("Content-Type", "application/json");
-              myHeaders.append("Authorization", token);
+            //   myHeaders.append("Authorization", token);
               const requestOptions: RequestInit = {
                   method: "GET",
                   headers: myHeaders,
                   redirect: "follow"
               };
               try {
-                  const response = await fetch(`${baseUrl}/course/${id}`, requestOptions);
+                  const response = await fetch(`${baseUrl}/page-course/${id}`, requestOptions);
+               
+                  
                   if (!response.ok) {
                   const errorResponse = await response.json();
                   throw new Error(errorResponse.message);
                   }
-                  const result = await response.json();    
+                  const result = await response.json(); 
+              
+                     
                     setCourseDescription(result.data.courseDescription);
                     setCourseId(result.data.courseId);
                     setCourseImage(result.data.courseImage);
@@ -78,6 +85,11 @@ const { id } = useParams<{ id: string }>();
               }
       }
 
+
+       const authFunction = () => {
+        setAuthAction(true);
+      }
+      
   return (
     <div className='master-con-wrapper pageNav'>
           <Header/>
@@ -202,14 +214,32 @@ const { id } = useParams<{ id: string }>();
                                                     }
                                                 })()}
                 
+                                               
+
+                                            {
+                                            signin ? ( 
                                                 <NavLink to={`/master-course-payment/${courseId}`} className="master-btn">
+                                            enrol now
+                                            </NavLink>
+                                            ) : (
+                                                <div className="master-btn" 
+                                                onClick={authFunction} >
                                                     enrol now
-                                                </NavLink>
-                
+                                                </div>
+                                            )
+                                            }
+
                 
                 </div>
 
             </div>   
+
+            {
+                !signin && (
+                    <AuthComponent authAction={authAction} setAuthAction={setAuthAction} setSubNav={setSubNav}/>
+                )
+            } 
+
 
              </div>
     </div>
