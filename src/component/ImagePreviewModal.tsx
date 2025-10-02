@@ -30,6 +30,15 @@ const ImagePreviewModal: React.FC<Props> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [hasPrev, hasNext]);
 
+
+   const formatImagePath = (fullPath: string): string => {
+        const keyword = "images/";
+        const startIndex = fullPath.indexOf(keyword);
+        if (startIndex === -1) return "Invalid path";
+        const sliceStart = startIndex + keyword.length;
+        const shortSegment = fullPath.slice(sliceStart);
+        return `${shortSegment}`;
+   };
   return (
     <div className="modalOverlay">
       <div className="modalContent">
@@ -51,9 +60,11 @@ const ImagePreviewModal: React.FC<Props> = ({
             </div>
             )}
         </div>
-     
+         
+        
 
         <div className="prevImg">
+           <p>{formatImagePath(src)}</p>
             <img src={src} className="previewImage" />
         </div>
         

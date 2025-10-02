@@ -50,6 +50,7 @@ const handleCategoryPost = async () => {
               };
               try {
                   const response = await fetch(`${baseUrl}/product-category`, requestOptions);
+                
                   if (!response.ok) {
                   const errorResponse = await response.json();
                   throw new Error(errorResponse.message);

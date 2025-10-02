@@ -88,6 +88,7 @@ interface SideNavProps {
         };
         try {
             const response = await fetch(`${baseUrl}/shop-status`, requestOptions);
+           
             if (!response.ok) {
             const errorResponse = await response.json();
             throw new Error(errorResponse.message);
@@ -121,6 +122,7 @@ interface SideNavProps {
         };
         try {
             const response = await fetch(`${baseUrl}/shop/${id}`, requestOptions);
+            
             if (!response.ok) {
             const errorResponse = await response.json();
             throw new Error(errorResponse.message);

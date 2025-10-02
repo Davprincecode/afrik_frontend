@@ -22,10 +22,38 @@ const {baseUrl, token} = userAuth();
 const [courseType, setCourseType] = useState<string>('');
 const [productImage, setProductImage] = useState<File | null>(null);
 
-const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
-    setProductImage(file);
-  };
+// const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//     const file = e.target.files?.[0] || null;
+//     setProductImage(file);
+//   };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+          const file = e.target.files?.[0];
+          if (!file) {
+              toast.error("No image selected");
+              return;
+          }
+  
+          const image = new Image();
+          const objectUrl = URL.createObjectURL(file);
+          image.src = objectUrl;
+  
+          image.onload = () => {
+              if (image.width > 1500 || image.height > 1500) {
+              toast.error(`Image "${file.name}" exceeds 1500x1500`);
+              URL.revokeObjectURL(objectUrl);
+              return;
+              }
+              setProductImage(file); 
+              URL.revokeObjectURL(objectUrl);
+          };
+  
+          image.onerror = () => {
+              toast.error("Failed to load image");
+              URL.revokeObjectURL(objectUrl);
+          };
+          };
+
 
 const validateCourseForm = () => {
   if (!title.trim()) {
@@ -171,6 +199,7 @@ const validateCourseForm = () => {
                     <label htmlFor="file-input">Add Files</label>
                     <input id="file-input" type="file" onChange={handleFileChange} />
                     <p>or drag and drop files</p>
+                    <p className='size'>1500 x 1500px</p>
                     </div>
                     {/* </div> */}
 

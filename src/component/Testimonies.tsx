@@ -75,7 +75,7 @@ function Testimonies() {
                      redirect: "follow"
                  };
                  try {
-                     const response = await fetch(`${baseUrl}/page-brand-logo`, requestOptions);
+                     const response = await fetch(`${baseUrl}/page-testimony`, requestOptions);
                      if (!response.ok) {
                      const errorResponse = await response.json();
                      throw new Error(errorResponse.message);

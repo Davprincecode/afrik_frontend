@@ -86,13 +86,33 @@ function CreateHero() {
             }
         };
 
-         const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-            const file = e.target.files?.[0] || null;
-            setBannerImage(file);
-          };
+        const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) {
+            toast.error("No image selected");
+            return;
+        }
 
+        const image = new Image();
+        const objectUrl = URL.createObjectURL(file);
+        image.src = objectUrl;
 
+        image.onload = () => {
+            if (image.width > 1440 || image.height > 802) {
+            toast.error(`Image "${file.name}" exceeds 1500x1500`);
+            URL.revokeObjectURL(objectUrl);
+            return;
+            }
 
+            setBannerImage(file); 
+            URL.revokeObjectURL(objectUrl);
+        };
+
+        image.onerror = () => {
+            toast.error("Failed to load image");
+            URL.revokeObjectURL(objectUrl);
+        };
+        };
          const handleLinkChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
                     const selected = e.target.value;
                     setButtonLink(selected);
@@ -212,10 +232,10 @@ function CreateHero() {
                     <label >Button Link</label>
                     </div>
                     <select name="" id="" value={buttonLink} onChange={handleLinkChange}>
-                        <option value="">Select Link</option>
-                        <option value="shop">Shop Now</option>
-                        <option value="consultation">Book Consultation</option>
-                        <option value="course">Buy Course</option>
+                         <option value="">Select Link</option>
+                        <option value="product">Shop Now</option>
+                        <option value="consultant">Book Consultation</option>
+                        <option value="master-course">Buy Course</option>
                         <option value="custom">External Link</option>
                     </select>
                 </div>

@@ -33,52 +33,149 @@ const Banner = () => {
      getImage()
    }, [])
    
-   const handleFileChange = async(event: React.ChangeEvent<HTMLInputElement>, galleryType : string) => {
-          setLoading(true);
-        const imagefile = event.target.files?.[0] || null;
-                if (!imagefile) {
-                    console.error("No image selected");
-                    return;
-                }
-            const formdata = new FormData();
-           formdata.append('image', imagefile);
-           formdata.append('galleryType', galleryType);
-            const myHeaders = new Headers();
-            myHeaders.append("Authorization", token);
-            const requestOptions: RequestInit = {
-                method: "POST",
-                headers: myHeaders,
-                body: formdata,
-                redirect: "follow"
-            };
-            try {
-                const response = await fetch(`${baseUrl}/banner`, requestOptions);
-                if (!response.ok) {
-                const errorResponse = await response.json();
-                throw new Error(errorResponse.message);
-                }
-                const result = await response.json();
-                if(galleryType == "desktopHeroBanner"){ 
-                    setGalleryDesktopImg(prev => [...prev, result.data]);
-                }
-                if(galleryType == "desktopSideBanner"){
-                    setGallerydesktopSideImg(prev => [...prev, result.data]);
-                }
-                if(galleryType == "mobileHeroBanner"){
-                  setGalleryMobileImg(prev => [...prev, result.data]);
-                }
-                 setLoading(false); 
-                 toast.success("Data Upload Successfully");       
-            } catch (error) {
-                        setLoading(false);
-                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
-                        toast.error(error.message);
-                        } else {
-                        toast.error('An unknown error occurred.');
-                        }
-                setLoading(false); 
-            }
+  //  const handleFileChange = async(event: React.ChangeEvent<HTMLInputElement>, galleryType : string) => {
+  //         setLoading(true);
+  //       const imagefile = event.target.files?.[0] || null;
+  //               if (!imagefile) {
+  //                   console.error("No image selected");
+  //                   return;
+  //               }
+  //           const formdata = new FormData();
+  //          formdata.append('image', imagefile);
+  //          formdata.append('galleryType', galleryType);
+  //           const myHeaders = new Headers();
+  //           myHeaders.append("Authorization", token);
+  //           const requestOptions: RequestInit = {
+  //               method: "POST",
+  //               headers: myHeaders,
+  //               body: formdata,
+  //               redirect: "follow"
+  //           };
+  //           try {
+  //               const response = await fetch(`${baseUrl}/banner`, requestOptions);
+  //               if (!response.ok) {
+  //               const errorResponse = await response.json();
+  //               throw new Error(errorResponse.message);
+  //               }
+  //               const result = await response.json();
+  //               if(galleryType == "desktopHeroBanner"){ 
+  //                   setGalleryDesktopImg(prev => [...prev, result.data]);
+  //               }
+  //               if(galleryType == "desktopSideBanner"){
+  //                   setGallerydesktopSideImg(prev => [...prev, result.data]);
+  //               }
+  //               if(galleryType == "mobileHeroBanner"){
+  //                 setGalleryMobileImg(prev => [...prev, result.data]);
+  //               }
+  //                setLoading(false); 
+  //                toast.success("Data Upload Successfully");       
+  //           } catch (error) {
+  //                       setLoading(false);
+  //                       if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+  //                       toast.error(error.message);
+  //                       } else {
+  //                       toast.error('An unknown error occurred.');
+  //                       }
+  //               setLoading(false); 
+  //           }
+  // }
+
+  const handleFileChange = async (
+  event: React.ChangeEvent<HTMLInputElement>,
+  galleryType: string
+) => {
+  setLoading(true);
+  const imagefile = event.target.files?.[0] || null;
+
+  if (!imagefile) {
+    toast.error("No image selected");
+    setLoading(false);
+    return;
   }
+
+  const image = new Image();
+  const objectUrl = URL.createObjectURL(imagefile);
+  image.src = objectUrl;
+
+  image.onload = async () => {
+    const { width, height } = image;
+
+    const isValid =
+      (galleryType === "desktopHeroBanner" && width === 1260 && height === 1265) ||
+      (galleryType === "desktopSideBanner" && width === 258 && height === 650) ||
+      (galleryType === "mobileHeroBanner" && width === 258 && height === 650);
+
+    URL.revokeObjectURL(objectUrl);
+
+    if (!isValid) {
+      toast.error(
+        `Invalid dimensions for "${galleryType}". Expected size: ${
+          galleryType === "desktopHeroBanner"
+            ? "1260x1265"
+            : "258x650"
+        }, but got ${width}x${height}`
+      );
+      setLoading(false);
+      return;
+    }
+
+    const formdata = new FormData();
+    formdata.append("image", imagefile);
+    formdata.append("galleryType", galleryType);
+
+    const myHeaders = new Headers();
+    myHeaders.append("Authorization", token);
+
+    const requestOptions: RequestInit = {
+      method: "POST",
+      headers: myHeaders,
+      body: formdata,
+      redirect: "follow",
+    };
+
+    try {
+      const response = await fetch(`${baseUrl}/banner`, requestOptions);
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        throw new Error(errorResponse.message);
+      }
+
+      const result = await response.json();
+
+      if (galleryType === "desktopHeroBanner") {
+        setGalleryDesktopImg((prev) => [...prev, result.data]);
+      }
+      if (galleryType === "desktopSideBanner") {
+        setGallerydesktopSideImg((prev) => [...prev, result.data]);
+      }
+      if (galleryType === "mobileHeroBanner") {
+        setGalleryMobileImg((prev) => [...prev, result.data]);
+      }
+
+      toast.success("Data Upload Successfully");
+    } catch (error) {
+      if (
+        typeof error === "object" &&
+        error !== null &&
+        "message" in error &&
+        typeof error.message === "string"
+      ) {
+        toast.error(error.message);
+      } else {
+        toast.error("An unknown error occurred.");
+      }
+    }
+
+    setLoading(false);
+  };
+
+  image.onerror = () => {
+    toast.error("Failed to load image");
+    URL.revokeObjectURL(objectUrl);
+    setLoading(false);
+  };
+};
+
 
   const getImage = async () => {
           setLoading(true);
@@ -219,6 +316,7 @@ const Banner = () => {
                                     <label htmlFor="file-input">Add Files</label>
                                         <input id="file-input" type="file" onChange={(e) => handleFileChange(e, "desktopHeroBanner")} />
                                     <p>or drag and drop files</p> 
+                                    <p className='size'>1260 x 1265 px</p>
                                     </>
                                 )
                              }
@@ -226,7 +324,7 @@ const Banner = () => {
 
                           <div className="flex-center justification-between">
                              <div className="imgCounter">
-                                0/10
+                                {/* 0/10 */}
                              </div>
                              
                           </div>
@@ -268,14 +366,16 @@ const Banner = () => {
                                             <label htmlFor="file-desktop-side-input">Add Files</label>
                                                 <input id="file-desktop-side-input" type="file" onChange={(e) => handleFileChange(e, "desktopSideBanner")} />
                                             <p>or drag and drop files</p> 
+                                            <p className='size'>258 x 650 px</p>
                                             </>
+                                            
                                         )
                                     }
                                 </div>
 
                                   <div className="flex-center justification-end">
                                     <div className="imgCounter">
-                                        0/10
+                                        {/* 0/10 */}
                                     </div>
                                   </div>
                                </div>
@@ -310,6 +410,7 @@ const Banner = () => {
                                     <label htmlFor="file-mobile-input">Add Files</label>
                                         <input id="file-mobile-input" type="file" onChange={(e) => handleFileChange(e, "mobileHeroBanner")} />
                                     <p>or drag and drop files</p> 
+                                    <p className='size'>330 x 233 px</p>
                                     </>
                                 )
                              }
@@ -317,7 +418,7 @@ const Banner = () => {
 
                           <div className="flex-center justification-between">
                              <div className="imgCounter">
-                                0/10
+                                {/* 0/10 */}
                              </div>
                              
                           </div>

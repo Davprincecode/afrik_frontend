@@ -52,13 +52,17 @@ function Gallery() {
                        throw new Error(errorResponse.message);
                        }
                        const result = await response.json(); 
-                            const updatedImages = [...allImages];
-                          result.data.forEach((item: { image: string }, index: number) => {
-                          if (item.image && index < updatedImages.length) {
-                          updatedImages[index] = item.image;
-                          }
-                          });
+                     
+                       
+                          const updatedImages = [...allImages];
 
+                          result.data.forEach((item: { image: string }, index: number) => {
+                          // if (item.image && index < updatedImages.length) {
+                          updatedImages[index] = item.image;
+                          // }
+                          });
+                        //  console.log(updatedImages);
+                         
                           setImages(updatedImages);
                        setLoading(false);
                    } catch (error) {

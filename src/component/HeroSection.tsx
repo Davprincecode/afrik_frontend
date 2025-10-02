@@ -76,9 +76,19 @@ const responsive = {
               <div className="heroBody">{item.subheadingText}</div>
              {
                item.buttonExternalLink ? (
-                 <div className="heroBtn"><a href={item.buttonExternalLink}>{item.buttonText}</a></div>
+                 <div className="heroBtn">
+<a href={`https://${item.buttonExternalLink}`} target="_blank" rel="noopener noreferrer">
+  {item.buttonText}
+</a>
+
+
+</div>
+
                ) : (
-                  <div className="heroBtn"><NavLink to={item.buttonLink}>{item.buttonText}</NavLink></div>
+                  <div className="heroBtn">
+                  <NavLink to={`/${item.buttonLink}`}>{item.buttonText}</NavLink>
+                  </div>
+
                )
              }
               

@@ -2306,6 +2306,11 @@ flex: 1;
     .prevImg img{
 
     }
+    .prevImg p{
+      color: white;
+      margin-bottom: 10px;
+      text-align: center;
+    }
     .previewImage {
       max-width: 100%;
       max-height: 100%;

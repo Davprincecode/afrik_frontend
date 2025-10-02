@@ -50,7 +50,6 @@ function ContactUs() {
 
     try {
       const response = await fetch(`${baseUrl}/page-contact-us`, requestOptions);
-      
       if (!response.ok) {
         const errorResponse = await response.json();
         throw new Error(errorResponse.message);
@@ -152,11 +151,11 @@ function ContactUs() {
                     <label >Message Type</label>
                     <select onChange={(e) => setSubject(e.target.value)}>
                       <option value="">Select Type</option>
-                      <option value="inquiry">inquiry</option>
-                      <option value="support">support</option>
-                      <option value="purchase">purchase</option>
-                      <option value="consultation">consultation</option>
-                      <option value="other">other</option>
+                      <option value="inquiry">Inquiry</option>
+                      <option value="support">Support</option>
+                      <option value="purchase">Purchase</option>
+                      <option value="consultation">Consultation</option>
+                      <option value="other">Other</option>
                     </select>
                   </div>
 

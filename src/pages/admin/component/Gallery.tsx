@@ -30,44 +30,118 @@ const Gallery = () => {
      getImage()
    }, [])
    
-   const handleFileChange = async(event: React.ChangeEvent<HTMLInputElement>) => {
-          setLoading(true);
-        const imagefile = event.target.files?.[0] || null;
-                if (!imagefile) {
-                    console.error("No image selected");
-                    return;
-                }
-            const formdata = new FormData();
-            formdata.append('image', imagefile);
+  //  const handleFileChange = async(event: React.ChangeEvent<HTMLInputElement>) => {
+  //         setLoading(true);
+  //       const imagefile = event.target.files?.[0] || null;
+  //               if (!imagefile) {
+  //                   console.error("No image selected");
+  //                   return;
+  //               }
+  //           const formdata = new FormData();
+  //           formdata.append('image', imagefile);
 
-            const myHeaders = new Headers();
-            myHeaders.append("Authorization", token);
-            const requestOptions: RequestInit = {
-                method: "POST",
-                headers: myHeaders,
-                body: formdata,
-                redirect: "follow"
-            };
-            try {
-                const response = await fetch(`${baseUrl}/gallery`, requestOptions);
-                if (!response.ok) {
-                const errorResponse = await response.json();
-                throw new Error(errorResponse.message);
-                }
-                const result = await response.json();    
-                  setGalleryImg(prev => [...prev, result.data]);
-                 setLoading(false); 
-                 toast.success("Data Upload Successfully");       
-            } catch (error) {
-                        setLoading(false);
-                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
-                        toast.error(error.message);
-                        } else {
-                        toast.error('An unknown error occurred.');
-                        }
-                setLoading(false); 
-            }
+  //           const myHeaders = new Headers();
+  //           myHeaders.append("Authorization", token);
+  //           const requestOptions: RequestInit = {
+  //               method: "POST",
+  //               headers: myHeaders,
+  //               body: formdata,
+  //               redirect: "follow"
+  //           };
+  //           try {
+  //               const response = await fetch(`${baseUrl}/gallery`, requestOptions);
+  //               if (!response.ok) {
+  //               const errorResponse = await response.json();
+  //               throw new Error(errorResponse.message);
+  //               }
+  //               const result = await response.json();    
+  //                 setGalleryImg(prev => [...prev, result.data]);
+  //                setLoading(false); 
+  //                toast.success("Data Upload Successfully");       
+  //           } catch (error) {
+  //                       setLoading(false);
+  //                       if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+  //                       toast.error(error.message);
+  //                       } else {
+  //                       toast.error('An unknown error occurred.');
+  //                       }
+  //               setLoading(false); 
+  //           }
+  // }
+
+
+const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+setLoading(true);
+const files = event.target.files;
+
+if (!files || files.length === 0) {
+  toast.error("No images selected");
+  setLoading(false);
+  return;
+}
+
+const validImages: File[] = [];
+
+for (const file of Array.from(files)) {
+  const image = new Image();
+  const objectUrl = URL.createObjectURL(file);
+
+  image.src = objectUrl;
+
+  await new Promise<void>((resolve) => {
+    image.onload = () => {
+      if (image.width > 1500 || image.height > 1500) {
+        // toast.error(`Image "${file.name}" exceeds 1500x1500`);
+        validImages.push(file);
+      } else {
+        validImages.push(file);
+      }
+      URL.revokeObjectURL(objectUrl);
+      resolve();
+    };
+  });
+}
+
+for (const imageFile of validImages) {
+  const formData = new FormData();
+  formData.append("image", imageFile);
+
+  const myHeaders = new Headers();
+  myHeaders.append("Authorization", token);
+
+  const requestOptions: RequestInit = {
+    method: "POST",
+    headers: myHeaders,
+    body: formData,
+    redirect: "follow",
+  };
+
+  try {
+    const response = await fetch(`${baseUrl}/gallery`, requestOptions);
+    if (!response.ok) {
+      const errorResponse = await response.json();
+      throw new Error(errorResponse.message);
+    }
+    const result = await response.json();
+    setGalleryImg((prev) => [...prev, result.data]);
+    toast.success(`"${imageFile.name}" uploaded successfully`);
+  } catch (error) {
+    if (
+      typeof error === "object" &&
+      error !== null &&
+      "message" in error &&
+      typeof error.message === "string"
+    ) {
+      toast.error(error.message);
+    } else {
+      toast.error("An unknown error occurred.");
+    }
   }
+}
+
+setLoading(false);
+};
+
 
   const getImage = async () => {
           setLoading(true);
@@ -185,7 +259,15 @@ const Gallery = () => {
                                 ) : (
                                     <>
                                     <label htmlFor="file-input">Add Files</label>
-                                        <input id="file-input" type="file" onChange={handleFileChange} />
+                                        {/* <input id="file-input" type="file" onChange={handleFileChange} /> */}
+                                        <input
+                                            id="file-input"
+                                            type="file"
+                                            multiple
+                                            accept="image/*"
+                                            onChange={handleFileChange}
+                                          />
+
                                     <p>or drag and drop files</p> 
                                     </>
                                 )
@@ -194,9 +276,9 @@ const Gallery = () => {
 
                           <div className="flex-center justification-between">
                              <div className="imgCounter">
-                                50/100
+                                {/* 50/100 */}
                              </div>
-                             <NavLink to="#" className='view'>view all</NavLink>
+                             <div className='view' onClick={() => openModal(0)}>view all</div>
                           </div>
                       </div>
 

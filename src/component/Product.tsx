@@ -89,8 +89,12 @@ const [popAction, setPopAction] = useState<boolean>(false);
                   const errorResponse = await response.json();
                   throw new Error(errorResponse.message);
                   }
-                  const result = await response.json();
-                   setProduct(result.data); 
+                 const result = await response.json(); 
+                   if (result.status === true) {
+                    setProduct(result.data);
+                }else{
+                    // setPopAction(true);
+                }
                    
               } catch (error) {
                         setLoading(false);

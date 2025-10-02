@@ -2,10 +2,60 @@ import { NavLink } from "react-router-dom";
 import whiteLogo from "../assets/images/logo-scroll.png";
 import { TiSocialFacebook } from "react-icons/ti";
 import { FaFacebookF, FaInstagram, FaLinkedin } from "react-icons/fa";
+import ButtonPreloader from "./ButtonPreloader";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import { userAuth } from "../pages/context/AuthContext";
 
 
 
 function Footer() {
+
+  const[waitEmail, setWaitEmail] = useState<string>('');
+  const[loading, setLoading] = useState<boolean>(false);
+  const{baseUrl} = userAuth();
+
+  const handleWait = async() =>{
+   setLoading(true)
+   if(waitEmail == ''){
+    toast.error('fill email')
+    return;
+   }
+    const raw = {
+      "email" : waitEmail
+    };
+    const requestOptions: RequestInit = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(raw),
+    };
+  
+    try {
+      const response = await fetch(`${baseUrl}/news-letter`, requestOptions);     
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        throw new Error(errorResponse.message);
+      }
+      const result = await response.json();
+      setWaitEmail('');
+      toast.success("Subscription Successful")
+      setLoading(false);
+
+    } catch (error) {
+      setLoading(false);
+      if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+        toast.error(error.message);
+      } else {
+        toast.error('An unknown error occurred.');
+      }
+    }
+  
+
+  }
+
+
   return (
     <div className="footer">
      <div className="footerLogo">
@@ -26,10 +76,19 @@ function Footer() {
       <div className="footerNewsList footerNews">
         <p>Join our newsletter</p>
         <div className="footerInput flex-center">
-          <input type="text" placeholder="Enter your email"/>
-          <div className="footerBtn">
-            subscribe
-          </div>
+          <input type="email" placeholder="Enter your email" value={waitEmail} onChange={(e) => setWaitEmail(e.target.value)}/>
+          {
+            loading ? (
+              <div className="footerBtn">
+                <ButtonPreloader/>
+              </div>
+            ) : (
+            <div className="footerBtn" onClick={handleWait}>
+                subscribe
+            </div>
+            )
+          }
+          
         </div>
       </div>
 
@@ -39,10 +98,18 @@ function Footer() {
 <div className="footerNewsList footerNewsMobile">
         <p>Join our newsletter</p>
         <div className="footerInput flex-center">
-          <input type="text" placeholder="Enter your email"/>
-          <div className="footerBtn">
-            subscribe
-          </div>
+          <input type="email" placeholder="Enter your email" value={waitEmail} onChange={(e) => setWaitEmail(e.target.value)}/>
+          {
+            loading ? (
+              <div className="footerBtn">
+                <ButtonPreloader/>
+              </div>
+            ) : (
+            <div className="footerBtn" onClick={handleWait}>
+                subscribe
+            </div>
+            )
+          }
         </div>
       </div>
      {/* ------------------ */}
