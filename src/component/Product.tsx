@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { FaChevronLeft, FaChevronRight, FaPlus } from 'react-icons/fa'
 import { FiShoppingCart } from 'react-icons/fi'
-import product1 from '../assets/images/product1.png'
-import product2 from '../assets/images/product2.png'
-import product3 from '../assets/images/product3.jpg'
-import product4 from '../assets/images/product4.png'
-import product5 from '../assets/images/product5.png'
-import product6 from '../assets/images/product6.png'
-import product7 from '../assets/images/product7.png'
 import { NavLink } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import ComingSoon from './ComingSoon'
@@ -84,17 +77,13 @@ const [popAction, setPopAction] = useState<boolean>(false);
                   redirect: "follow"
               };
               try {
-                  const response = await fetch(`${baseUrl}/active-product?page=${pageNumber}`, requestOptions);
+                  const response = await fetch(`${baseUrl}/pin-product?page=${pageNumber}`, requestOptions);
                   if (!response.ok) {
                   const errorResponse = await response.json();
                   throw new Error(errorResponse.message);
                   }
-                 const result = await response.json(); 
-                   if (result.status === true) {
-                    setProduct(result.data);
-                }else{
-                    // setPopAction(true);
-                }
+                 const result = await response.json();   
+                  setProduct(result.data);
                    
               } catch (error) {
                         setLoading(false);

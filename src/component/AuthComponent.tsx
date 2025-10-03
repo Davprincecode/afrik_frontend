@@ -8,6 +8,7 @@ import { IoMdCheckmark } from 'react-icons/io';
 import { FcGoogle } from 'react-icons/fc';
 import ButtonPreloader from './ButtonPreloader';
 import { address } from 'framer-motion/client';
+import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 
 
 interface authComponentInterface {
@@ -24,6 +25,8 @@ const AuthComponent: React.FC<authComponentInterface> = ({authAction, setAuthAct
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState<boolean>(false);
   const [switchPassword, setSwitchPassword] = useState<boolean>(false);
+  const [switchLoginPassword, setSwitchLoginPassword] = useState<boolean>(false);
+  const [switchConfirmPassword, setSwitchConfirmPassword] = useState<boolean>(false);
   const [userEmail, setUserEmail] = useState<string>('');
   const [loginEmail, setLoginEmail] = useState<string>('');
   const [address1, setAddress1] = useState<string>('');
@@ -36,35 +39,7 @@ const AuthComponent: React.FC<authComponentInterface> = ({authAction, setAuthAct
   
    const [errors, setErrors] = useState<string[]>([]);
 
-  const validatePassword = (pwd: string) => {
-    const issues: string[] = [];
-    if (pwd.length < 8) {
-      issues.push('Password must be at least 8 characters.');
-    }
-    const lowerPwd = pwd.toLowerCase();
-    if(userName !== ''){
-        if (lowerPwd.includes(userName.toLowerCase())) {
-              issues.push('Password cannot contain your name.');
-          }
-    }
-    
-    if (lowerPwd.includes(userEmail.toLowerCase())) {
-      issues.push('Password cannot contain your email.');
-    }
-    if (!/[0-9!@#$%^&*(),.?":{}|<>]/.test(pwd)) {
-      issues.push('Password must include at least one number or symbol.');
-    }
-    setErrors(issues);
-  };
 
-   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newPwd = e.target.value;
-    setPassword(newPwd);
-    validatePassword(newPwd);
-  };
-
-
-   
 
    const { pathname } = useLocation();
   
@@ -80,6 +55,53 @@ const AuthComponent: React.FC<authComponentInterface> = ({authAction, setAuthAct
       setErrors(issues);
     } 
   }, [password, confirmPassword]);
+
+  useEffect(() => {
+  validateAll(password, confirmPassword);
+}, [password, confirmPassword, userName, userEmail]);
+
+
+const validateAll = (pwd: string, confirmPwd: string) => {
+  const issues: string[] = [];
+
+  // Password length
+  if (pwd.length < 8) {
+    issues.push('Password must be at least 8 characters.');
+  }
+
+  const lowerPwd = pwd.toLowerCase();
+
+  // Name check
+  if (userName && lowerPwd.includes(userName.toLowerCase())) {
+    issues.push('Password cannot contain your name.');
+  }
+
+  // Email check
+  if (userEmail && lowerPwd.includes(userEmail.toLowerCase())) {
+    issues.push('Password cannot contain your email.');
+  }
+
+  // Symbol or number check
+  if (!/[0-9!@#$%^&*(),.?":{}|<>]/.test(pwd)) {
+    issues.push('Password must include at least one number or symbol.');
+  }
+
+  // Match check
+  if (confirmPwd && pwd !== confirmPwd) {
+    issues.push('Password and confirm password do not match.');
+  }
+
+  setErrors(issues);
+};
+
+
+   
+
+   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newPwd = e.target.value;
+    setPassword(newPwd);
+    // validatePassword(newPwd);
+  };
 
   
   const switchHandle = (param : string) => {
@@ -119,10 +141,10 @@ const AuthComponent: React.FC<authComponentInterface> = ({authAction, setAuthAct
       loginAuth(result.data.userId, result.data.name, result.data.email,  result.data.address1, result.data.address2, result.data.phoneNumber1, result.data.phoneNumber2, result.data.city, result.data.city, result.data.postalCode,  result.data.profileImage, 0, 0, result.data.role,  result.token);
       setSubNav(false);
       toast.success("Signup in successfully!");
-        if(result.data.role == "admin"){
-             navigate("/admin/admin-dashboard");
-              logInUser();
-          }
+        // if(result.data.role == "admin"){
+        //      navigate("/admin/admin-dashboard");
+        //       logInUser();
+        //   }
       logInUser();
       setLoading(false);
     } catch (error) {
@@ -165,10 +187,10 @@ const AuthComponent: React.FC<authComponentInterface> = ({authAction, setAuthAct
        loginAuth(result.data.userId, result.data.name, result.data.email,  result.data.address1, result.data.address2, result.data.phoneNumber1, result.data.phoneNumber2, result.data.city, result.data.city, result.data.postalCode, result.data.profileImage, result.cart, result.notification, result.data.role,  result.token);
        setSubNav(false);
        toast.success("Logged in successfully!");
-        if(result.data.role == "admin"){
-             navigate("/admin/admin-dashboard");
-              logInUser();
-          }
+        // if(result.data.role == "admin"){
+        //      navigate("/admin/admin-dashboard");
+        //       logInUser();
+        //   }
         logInUser();
         setLoading(false);
     } catch (error) {
@@ -222,7 +244,7 @@ const AuthComponent: React.FC<authComponentInterface> = ({authAction, setAuthAct
 
                             <div className="form-group">
                                 <label htmlFor="username">Email Id</label>
-                                <input type="text"  placeholder="Email" className="form--control"  value={userEmail} onChange={(e) => setUserEmail(e.target.value)}/>
+                                <input type="email"  placeholder="Email" className="form--control"  value={userEmail} onChange={(e) => setUserEmail(e.target.value)}/>
                             </div>
                                
                                <div className="form-group">
@@ -235,29 +257,57 @@ const AuthComponent: React.FC<authComponentInterface> = ({authAction, setAuthAct
                                 <input type="number"  placeholder="Phone Number" className="form--control"  value={phoneNumber1} onChange={(e) => setPhoneNumber1(e.target.value)}/>
                             </div>
               
-                            <div className="form-group" style={{ position : "relative" }}>
+                            {/* <div className="form-group" style={{ position : "relative" }}>
                                 <label htmlFor="password">Password </label>
                                 <input id="passwordInput" type= {switchPassword ? "text" : "password"} placeholder="Enter Password" className="form--control" value={password} onChange={handleChange}/>
-                            </div>
+                            </div> */}
+
+                            <div className="form-group" style={{ position: "relative" }}>
+                                  <label htmlFor="password">Password</label>
+                                  <input
+                                    // id="password"
+                                    type={switchPassword ? "text" : "password"}
+                                    placeholder="Enter Password"
+                                    className="form--control"
+                                    value={password}
+                                    onChange={handleChange}
+                                  />
+                                      <span
+                                      className='password-eyes'
+                                        style={{ position: "absolute"}}
+                                        onClick={() => setSwitchPassword(prev => !prev)}
+                                      >
+                                        {switchPassword ? <FaRegEyeSlash /> : <FaRegEye />}
+                                      </span>
+                                    </div>
+
 
                             <div className="form-group" style={{ position : "relative" }}>
                                 <label htmlFor="password">Confirm Password </label>
-                                <input id="passwordInput" type= {switchPassword ? "text" : "password"} placeholder="Enter Password" className="form--control" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}/>
-                            </div>
+                                <input 
+                                // id="passwordInput" 
+                                type= {switchConfirmPassword ? "text" : "password"}
+                                 placeholder="Enter Password" 
+                                 className="form--control" 
+                                 value={confirmPassword} 
+                                 onChange={(e) => setConfirmPassword(e.target.value)}/>
 
-                            {/* <div className="error-message">
-                                <div className="error-icon flex-center gap-10"><IoMdCheckmark /><p>password strength weak</p></div>
-                                <div className="error-icon flex-center gap-10"><IoMdCheckmark /><p>at least 8 characters</p></div>
-                                <div className="error-icon flex-center gap-10"><IoMdCheckmark /><p>cannot contain your name or email address</p>
-                                </div>
-                                <div className="error-icon flex-center gap-10"><IoMdCheckmark /><p>contains a number of symbol</p></div>
-                            </div> */}
+                                      <span
+                                      className='password-eyes'
+                                    style={{ position: "absolute"}}
+                                    onClick={() => setSwitchConfirmPassword(prev => !prev)}
+                                    >
+                                    {switchConfirmPassword ?  <FaRegEyeSlash /> : <FaRegEye />}
+                                    </span>
 
-                            <ul>
-        {errors.map((err, idx) => (
-          <li key={idx} style={{ color: 'red' }}>{err}</li>
-        ))}
-      </ul>
+                                    </div>
+
+                          
+                              <ul>
+                              {errors.map((err, idx) => (
+                              <li key={idx} style={{ color: 'red' }}>{err}</li>
+                              ))}
+                              </ul>
 
                         {/* ============= */}
                         <div className="btnFlex">
@@ -319,7 +369,21 @@ const AuthComponent: React.FC<authComponentInterface> = ({authAction, setAuthAct
               
                             <div className="form-group" style={{ position : "relative" }}>
                                 <label htmlFor="password">Password </label>
-                                <input id="passwordInput" type= {switchPassword ? "text" : "password"} placeholder="Enter Password" className="form--control" value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)}/>
+                                <input 
+                                id="passwordInput" 
+                                type= {switchLoginPassword ? "text" : "password"} 
+                                placeholder="Enter Password" 
+                                className="form--control"
+                                 value={loginPassword} 
+                                 onChange={(e) => setLoginPassword(e.target.value)}
+                                 />
+                                  <span
+                                      className='password-eyes'
+                                        style={{ position: "absolute"}}
+                                        onClick={() => setSwitchLoginPassword(prev => !prev)}
+                                      >
+                                        {switchLoginPassword ? <FaRegEyeSlash /> : <FaRegEye />}
+                                      </span>
                             </div>
 
                         {/* ============= */}

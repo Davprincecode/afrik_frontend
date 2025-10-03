@@ -35,6 +35,8 @@ interface CourseIntern {
       earlyBirdStartDate: string;
       endDate: string;
       startDate: string;
+      endDateRaw : string;
+      startDateRaw : string;
       pin : boolean;
       status: string;
 }
@@ -73,7 +75,6 @@ function MasterCourse() {
                   }
                   const result = await response.json();  
                  
-                 
                  setCourses(result.data);
                   setMeta(result.meta);
                   setLoading(false);
@@ -110,10 +111,6 @@ function MasterCourse() {
                 </div>
 
                 <div className="ourServiceHeaderDetails">
-                     {/* <p>
-                     Explore tailored solutions crafted to elevate your style, image, and lifestyle. <span className="desktop-break"></span>
-                     Our services are designed to meet your unique needs with precision and creativity.
-                    </p>  */}
 
                     <p>
                         Unlock your potential with interactive courses and masterclasses designed to refine your style, image, and lifestyle. Learn from expert guidance, gain practical skills, and transform your vision into reality.
@@ -237,18 +234,25 @@ function MasterCourse() {
                                                     }
                                                 })()}
 
-                                    {
-                                        signin ? ( 
-                                                        <NavLink to={`/master-course-payment/${item.courseId}`} className="master-btn">
-                                                        enrol now
-                                                        </NavLink>
-                                        ) : (
-                                                    <div className="master-btn" 
-                                                    onClick={authFunction} >
-                                                        enrol now
-                                                    </div>
-                                        )
-                                    }
+
+
+
+
+                            {
+                            new Date(item.endDateRaw) > new Date() && (
+                                signin ? (
+                                <NavLink to={`/master-course-payment/${item.courseId}`} className="master-btn">
+                                    enrol now
+                                </NavLink>
+                                ) : (
+                                <div className="master-btn" onClick={authFunction}>
+                                    enrol now
+                                </div>
+                                )
+                            )
+                            }
+
+
 
                                         
 
@@ -364,18 +368,19 @@ function MasterCourse() {
                                                     }
                                                 })()}
                                                 
-                                       {
-                                        signin ? ( 
-                                                        <NavLink to={`/master-course-payment/${item.courseId}`} className="master-btn">
-                                                        enrol now
-                                                        </NavLink>
-                                        ) : (
-                                                    <div className="master-btn" 
-                                                    onClick={authFunction} >
-                                                        enrol now
-                                                    </div>
-                                        )
-                                    }
+                            {
+                            new Date(item.endDateRaw) > new Date() && (
+                                signin ? (
+                                <NavLink to={`/master-course-payment/${item.courseId}`} className="master-btn">
+                                    enrol now
+                                </NavLink>
+                                ) : (
+                                <div className="master-btn" onClick={authFunction}>
+                                    enrol now
+                                </div>
+                                )
+                            )
+                            }
 
 
                                     </div>

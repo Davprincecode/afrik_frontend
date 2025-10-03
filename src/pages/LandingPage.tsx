@@ -124,7 +124,7 @@ return(
   <BookingSection/>
   <Blog/>
   <Vlog/>
-  <Youtube />
+  {/* <Youtube /> */}
   <Footer/>
 </div>
 )}

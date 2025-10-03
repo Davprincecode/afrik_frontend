@@ -134,13 +134,13 @@ function ContactUs() {
 
                     <div className="socialMedia flex-center gap-20">
                             <div className="social">
-                                <a href=""><FaFacebookF /></a>
+                                <a href="https://www.facebook.com/share/1ALwzAMkS5/?mibextid=wwXIfr" target='_blank'><FaFacebookF /></a>
                             </div>
                             <div className="social">
-                                <a href="" className='insta'><FaInstagram /></a>
+                                <a href="https://www.instagram.com/temiloveafrik?igsh=d2dsY2k2eTVhdWxz" target='_blank' className='insta'><FaInstagram /></a>
                             </div>
                             <div className="social">
-                                <a href=""><FaLinkedin /></a>
+                                <a href="https://www.linkedin.com/company/loveafrik-mgt-ltd/" target='_blank'><FaLinkedin /></a>
                             </div>
                     </div>
                 </div>
@@ -149,7 +149,7 @@ function ContactUs() {
 
                   <div className="input inputCon">
                     <label >Message Type</label>
-                    <select onChange={(e) => setSubject(e.target.value)}>
+                    <select value={subject} onChange={(e) => setSubject(e.target.value)}>
                       <option value="">Select Type</option>
                       <option value="inquiry">Inquiry</option>
                       <option value="support">Support</option>
@@ -163,28 +163,28 @@ function ContactUs() {
                     <div className='input'>
                        <label>Name <span>(First Name & Last Name)</span>
                     </label>
-                    <input type="text" onChange={(e) => setName(e.target.value)}/></div>
+                    <input type="text" value={name} onChange={(e) => setName(e.target.value)}/></div>
                     <div className='input'> 
                       <label>Email</label>
-                    <input type="email" onChange={(e) => setEmail(e.target.value)}/>
+                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
                     </div>
                   </div>  
 
                   <div className="inputFlex flex-center gap-10">
                     <div className='input'> 
                       <label>City/State</label>
-                      <input type="text" onChange={(e) => setAddress(e.target.value)}/>
+                      <input type="text" value={address} onChange={(e) => setAddress(e.target.value)}/>
                       </div>
                     <div className='input'>
                        <label>Phone Number</label>
-                       <input type="number" onChange={(e) => setPhoneNumber(e.target.value)}/>
+                       <input type="number" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)}/>
                        </div>
                   </div>  
 
                   <div className="text-area">
                     <div className="input">
                        <label >message</label>
-                     <textarea  cols={20} rows={8} onChange={(e) => setMessage(e.target.value)}></textarea>
+                     <textarea  cols={20} rows={8} value={message} onChange={(e) => setMessage(e.target.value)}></textarea>
                     </div>   
                     </div>
                      

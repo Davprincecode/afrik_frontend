@@ -10,7 +10,7 @@ import mission from '../assets/images/mission.png'
 import core from '../assets/images/core.png'
 import aboutHeader from '../assets/images/aboutus.png'
 import abtHeader from '../assets/images/foundersign.png'
-import founder from '../assets/images/founder.jpg'
+import founder from '../assets/images/founder.png'
 import founderDesk from '../assets/images/founderNamedesk.png'
 import aboutfooter2 from '../assets/images/aboutfooter2.jpg'
 import aboutfooter3 from '../assets/images/aboutfooter3.jpg'
@@ -113,7 +113,7 @@ function AboutUs() {
                      </p>
                 </div>
 
-                <div className="visionCon coreCon">
+                <div className="visionCon coreCon special">
                     <div className="circle"></div>
                     <div className="innerCircle">
                         <div className="visionHeader"><img src={core} /></div>

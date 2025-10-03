@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react'
 import Header from '../component/Header'
 import Footer from '../component/Footer'
 import { IoIosStar, IoIosStarOutline } from 'react-icons/io'
-import { GoPlus } from 'react-icons/go'
+import { GoDash, GoPlus } from 'react-icons/go'
 import { HiOutlineMinusSmall } from 'react-icons/hi2'
 import { CiHeart } from 'react-icons/ci'
 import { FaFacebookF, FaLinkedinIn, FaPlus, FaTwitter } from 'react-icons/fa'
 import { AiFillInstagram } from 'react-icons/ai'
 import { FiShoppingCart } from 'react-icons/fi'
 import { NavLink, useLocation, useNavigate, useParams } from 'react-router-dom'
+import img from '../assets/images/shopImageMobile.png'
 import { userAuth } from './context/AuthContext'
 import { toast } from 'react-toastify'
 import ButtonPreloader from '../component/ButtonPreloader'
@@ -45,15 +46,14 @@ function ProductDetails() {
     const [stock, setStock] =  useState<string>('');
     const [availableQty, setAvailableQty] =  useState<number>(0);
     const [availableStockUnlimited, setAvailableStockUnlimited] =  useState<boolean>(false);
-
     const [quantity, setQuantity] = useState<number>(1);
-
     const [similarProducts, setSimilarProducts] = useState<ProductInterface[]>([]);
     const [subProducts, setSubProducts] = useState<ProductInterface[]>([]);
-    
     const [loading, setLoading] = useState<boolean>(false);
     const [loadingProductId, setLoadingProductId] = useState<string | null>(null);
-
+    const [details, setSetDetails] = useState<boolean>(true);
+    const [measurement, setMeasurement] = useState<boolean>(false);
+    const [review, setReview] = useState<boolean>(false);
     const { pathname } = useLocation();
     const {baseUrl, signin,  cart, setCart, token} = userAuth();
 
@@ -538,21 +538,174 @@ function ProductDetails() {
                 </div>
                 <div className="details top">
                     <div className="flex-center justification-between">
-                        <div className="item">details</div>
-                        <div className="item-icon"><GoPlus /></div>
+                        <div className="item">product description</div>
+                        <div className="item-icon" onClick={()=>setSetDetails(!details)}>
+                            {
+                                details ? (
+                                <GoDash />
+                                ) : (
+                                <GoPlus />
+                                )
+                            }
+                        </div>
+                    </div>
+                    <div className="prdDetails" style={{display : details ? "block" : "none", marginTop : "20px", marginBottom :" 40px"}}>
+                        {productDescription}
                     </div>
                 </div>
                 <div className="details">
                     <div className="flex-center justification-between">
                         <div className="item">size/measurement</div>
-                        <div className="item-icon"><GoPlus /></div>
+                        <div className="item-icon" onClick={()=>setMeasurement(!measurement)}>
+                             {
+                                measurement ? (
+                                <GoDash />
+                                ) : (
+                                <GoPlus />
+                                )
+                            }
+                        </div>
                     </div>
+
+                     <div className="measurement" style={{display : measurement ? "block" : "none"}}>
+                            <img src={img} alt="" />
+                        </div>
                 </div>
                 <div className="details">
                     <div className="flex-center justification-between">
                         <div className="item">reviews</div>
-                        <div className="item-icon"><GoPlus /></div>
+                        <div className="item-icon" onClick={()=>setReview(!review)}>
+                             {
+                                review ? (
+                                <GoDash />
+                                ) : (
+                                <GoPlus />
+                                )
+                            }</div>
                     </div>
+
+                    <div className="review-details-con" style={{display :  review ? "block" : "none"}}>
+
+                        <div className="review-details">
+
+                            <div className="review-details-header flex gap-10">
+                                <div className="details-img">p</div>
+
+                                <div className="review-details-name">
+                                    <p>precious olugbala</p>
+                                    <div className="reviews-details-num-con reviews-num-con flex-center gap-10">
+                                        <IoIosStar className="starFilled" />
+                                        <IoIosStar className="starFilled" />
+                                        <IoIosStar className="starFilled" />
+                                        <IoIosStar className="star" />
+                                        <IoIosStar className="star" />
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div className="reviews-content">
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum, praesentium. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea, et?</p>
+                            </div>
+
+                        </div>
+                        <div className="review-details">
+
+                            <div className="review-details-header flex gap-10">
+                                <div className="details-img">p</div>
+
+                                <div className="review-details-name">
+                                    <p>precious olugbala</p>
+                                    <div className="reviews-details-num-con reviews-num-con flex-center gap-10">
+                                        <IoIosStar className="starFilled" />
+                                        <IoIosStar className="starFilled" />
+                                        <IoIosStar className="starFilled" />
+                                        <IoIosStar className="star" />
+                                        <IoIosStar className="star" />
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div className="reviews-content">
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum, praesentium. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea, et?</p>
+                            </div>
+
+                        </div>
+
+                        <div className="review-details">
+
+                            <div className="review-details-header flex gap-10">
+                                <div className="details-img">p</div>
+
+                                <div className="review-details-name">
+                                    <p>precious olugbala</p>
+                                    <div className="reviews-details-num-con reviews-num-con flex-center gap-10">
+                                        <IoIosStar className="starFilled" />
+                                        <IoIosStar className="starFilled" />
+                                        <IoIosStar className="starFilled" />
+                                        <IoIosStar className="star" />
+                                        <IoIosStar className="star" />
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div className="reviews-content">
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum, praesentium. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea, et?</p>
+                            </div>
+
+                        </div>
+                        <div className="review-details">
+
+                            <div className="review-details-header flex gap-10">
+                                <div className="details-img">p</div>
+
+                                <div className="review-details-name">
+                                    <p>precious olugbala</p>
+                                    <div className="reviews-details-num-con reviews-num-con flex-center gap-10">
+                                        <IoIosStar className="starFilled" />
+                                        <IoIosStar className="starFilled" />
+                                        <IoIosStar className="starFilled" />
+                                        <IoIosStar className="star" />
+                                        <IoIosStar className="star" />
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div className="reviews-content">
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum, praesentium. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea, et?</p>
+                            </div>
+
+                        </div>
+                        <div className="review-details">
+
+                            <div className="review-details-header flex gap-10">
+                                <div className="details-img">p</div>
+
+                                <div className="review-details-name">
+                                    <p>precious olugbala</p>
+                                    <div className="reviews-details-num-con reviews-num-con flex-center gap-10">
+                                        <IoIosStar className="starFilled" />
+                                        <IoIosStar className="starFilled" />
+                                        <IoIosStar className="starFilled" />
+                                        <IoIosStar className="star" />
+                                        <IoIosStar className="star" />
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div className="reviews-content">
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum, praesentium. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea, et?</p>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
                 </div>
 
                 
@@ -669,24 +822,33 @@ function ProductDetails() {
                                 { similarProducts.map((item, index) => (
 
                                    <div className="shopProduct"  key={index}>
+                                        <NavLink to={`/product-details/${item.productId}`}>
                                         <div className="shopProductImage">
                                         <img src={item.productImage} />
                                         </div>
+                                        </NavLink>
+
                                         <div className="shopProductDetails">
+                                        <NavLink to={`/product-details/${item.productId}`}>
                                         <div className="shopProductTitle">
                                             <h2>{item.productName}</h2>
                                             <div className="shopPrice">
                                                 <span>₦</span> {item.productPrice.toLocaleString()}
                                             </div>
                                         </div>
+                                        </NavLink>
+
                                         <div className="shopProductDetail">
                                             <NavLink to={`/product-details/${item.productId}`}>
                                             <div className="shopProductDescription">
                                             {item.productDescription}
                                             </div>
                                             </NavLink>
+
                                             <div className="shopProductIconWrap">
+
                                                  {
+                                                    signin ? (
                                                         loadingProductId === item.productId ? (
                                                               <ButtonPreloader/>
                                                         ) : (
@@ -695,6 +857,12 @@ function ProductDetails() {
                                                                 <div className="shopPlusIcon"><FaPlus /></div>
                                                             </div>
                                                         )
+                                                    ) : (
+                                                            <div className="shopProductIcon" onClick={authFunction}>
+                                                                <FiShoppingCart />
+                                                                <div className="shopPlusIcon"><FaPlus /></div>
+                                                            </div>  
+                                                    )
                                                  }
                                                
 

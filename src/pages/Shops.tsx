@@ -82,36 +82,35 @@ function Shops() {
     const [subNav, setSubNav] = useState<boolean>(false);
     const [page, setPage] = useState(1);
     const [popAction, setPopAction] = useState<boolean>(false);
-     const [loadingProductId, setLoadingProductId] = useState<string | null>(null);
-
+    const [loadingProductId, setLoadingProductId] = useState<string | null>(null);
     const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
-const [selectedSize, setSelectedSize] = useState<number | null>(null);
-const [selectedPrice, setSelectedPrice] = useState<string | null>(null); // e.g. "20000-50000" or ">100000"
-
-
+    const [selectedSize, setSelectedSize] = useState<number | null>(null);
+    const [selectedPrice, setSelectedPrice] = useState<string | null>(null); 
     const {baseUrl, signin,  token, cart, setCart, loggedIn} = userAuth();
+useEffect(() => {
+  applyFilters(1);
+}, [selectedCategory, selectedSize, selectedPrice]);
 
   const handleCategoryChange = (id: number) => {
   const newValue = selectedCategory === id ? null : id;
   setSelectedCategory(newValue);
-  applyFilters(1); // 👈 Trigger filter immediately
+  
 };
 
 const handleSizeChange = (id: number) => {
   const newValue = selectedSize === id ? null : id;
   setSelectedSize(newValue);
-  applyFilters(1); // 👈 Trigger filter immediately
+
 };
 
 const handlePriceChange = (range: string) => {
   const newValue = selectedPrice === range ? null : range;
   setSelectedPrice(newValue);
-  applyFilters(1); // 👈 Trigger filter immediately
 };
 
 
 const applyFilters = async (page: number) => {
-    
+   setLoading(true);
   const params: Record<string, string | number> = { page };
 
   if (selectedCategory !== null) {
@@ -137,23 +136,25 @@ const applyFilters = async (page: number) => {
     selectedSize === null &&
     selectedPrice === null
   ) {
-    getData(page); // fallback
-    return;
+    getData(page); 
   }
 
+  
+   
   const queryString = new URLSearchParams(params as any).toString();
 
   try {
     const response = await fetch(`${baseUrl}/product-filter?${queryString}`);
-   const results = await response.json(); 
-   console.log(results);
+  //  const results = await response.text(); 
+  //  console.log(results);
    
-   if (!response.ok) {
-                const errorResponse = await response.json();
-                throw new Error(errorResponse.message);
-                }
+                                  if (!response.ok) {
+                                    const errorResponse = await response.json();
+                                    throw new Error(errorResponse.message);
+                                    }
                 const result = await response.json();   
                 
+                          //  console.log(result);
                              
                
                     setProducts(result.data);
@@ -261,7 +262,6 @@ const applyFilters = async (page: number) => {
 
     const getData = async (pageNumber : number) => {
       
-        
         setLoading(true);
             const myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
@@ -386,77 +386,7 @@ const applyFilters = async (page: number) => {
             }
     }
 
-    const productFilter = async (key: string, value : string) => {
-        
-        
-        
-        setLoading(true);
-            const myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
-            const requestOptions: RequestInit = {
-                method: "POST",
-                headers: myHeaders,
-                body: JSON.stringify({
-                    [key]: value
-                }),
-                redirect: "follow"
-            };
-            try {
-                const response = await fetch(`${baseUrl}/product-filter`, requestOptions);
-                if (!response.ok) {
-                const errorResponse = await response.json();
-                throw new Error(errorResponse.message);
-                }
-                const result = await response.json();
-                setProducts(result.data); // products come under "data"
-                setMeta(result.meta);     // pagination meta
-                setLoading(false);
-            } catch (error) {
-                        setLoading(false);
-                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
-                        toast.error(error.message);
-                        } else {
-                        toast.error('An unknown error occurred.');
-                        }
-                
-            }
-    }
-
-    const productPriceRangeFilter = async (minValue : string, maxValue : string) => {
-        // setSelectedCategory(values); 
-        setLoading(true);
-            const myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
-            const requestOptions: RequestInit = {
-                method: "POST",
-                headers: myHeaders,
-                body: JSON.stringify({
-                   'min_price' : minValue,
-                   'max_price' : maxValue
-                }),
-                redirect: "follow"
-            };
-            try {
-                const response = await fetch(`${baseUrl}/product-filter`, requestOptions);
-                if (!response.ok) {
-                const errorResponse = await response.json();
-                throw new Error(errorResponse.message);
-                }
-                const result = await response.json();
-                setProducts(result.data); // products come under "data"
-                setMeta(result.meta);     // pagination meta
-                setLoading(false);
-            } catch (error) {
-                        setLoading(false);
-                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
-                        toast.error(error.message);
-                        } else {
-                        toast.error('An unknown error occurred.');
-                        }
-                
-            }
-    }
-
+  
 
     const responsive = {
     superLargeDesktop: {
@@ -593,6 +523,7 @@ const applyFilters = async (page: number) => {
                     
                     <div className="filter-category">
   <div className="filter-header">Category</div>
+  
   {category.map((item) => (
     <div className="filter-list flex-center gap-10" key={item.id}>
       <input

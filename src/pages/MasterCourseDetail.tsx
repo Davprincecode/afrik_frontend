@@ -23,6 +23,8 @@ function MasterCourseDetail() {
     const[earlyBirdStartDate, setEarlyBirdStartDate] = useState<string>('');
     const[endDate, setEndDate] = useState<string>('');
     const[startDate, setStartDate] = useState<string>('');
+    const [endDateRaw, setEndDateRaw] = useState<string>('');
+     const [startDateRaw, setStartDateRaw] = useState<string>('');
     const[pin , setPin] = useState<boolean>(false);
     const[status, setStatus] = useState<string>('');
     const [authAction, setAuthAction] = useState<boolean>(false);
@@ -57,7 +59,8 @@ const { id } = useParams<{ id: string }>();
                   throw new Error(errorResponse.message);
                   }
                   const result = await response.json(); 
-              
+                console.log(result);
+                
                      
                     setCourseDescription(result.data.courseDescription);
                     setCourseId(result.data.courseId);
@@ -73,6 +76,8 @@ const { id } = useParams<{ id: string }>();
                     setStartDate(result.data.startDate);
                     setPin(result.data.pin);
                     setStatus(result.data.status);
+                    setEndDateRaw(result.data.endDateRaw);
+                    setStartDateRaw(result.data.startDateRaw);
                   setLoading(false);
               } catch (error) {
                         setLoading(false);
@@ -214,20 +219,21 @@ const { id } = useParams<{ id: string }>();
                                                     }
                                                 })()}
                 
-                                               
+                                            
 
-                                            {
-                                            signin ? ( 
-                                                <NavLink to={`/master-course-payment/${courseId}`} className="master-btn">
-                                            enrol now
-                                            </NavLink>
-                                            ) : (
-                                                <div className="master-btn" 
-                                                onClick={authFunction} >
-                                                    enrol now
-                                                </div>
-                                            )
-                                            }
+                                                {
+                                                new Date(endDateRaw) > new Date() && (
+                                                    signin ? (
+                                                    <NavLink to={`/master-course-payment/${courseId}`} className="master-btn">
+                                                        enrol now
+                                                    </NavLink>
+                                                    ) : (
+                                                    <div className="master-btn" onClick={authFunction}>
+                                                        enrol now
+                                                    </div>
+                                                    )
+                                                )
+                                                }
 
                 
                 </div>
