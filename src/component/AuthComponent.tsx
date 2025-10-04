@@ -42,7 +42,6 @@ const AuthComponent: React.FC<authComponentInterface> = ({authAction, setAuthAct
 
 
    const { pathname } = useLocation();
-  
   useEffect(() => {
       window.scrollTo(0, 0);
     }, [pathname]);

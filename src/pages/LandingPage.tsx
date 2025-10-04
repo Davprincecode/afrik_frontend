@@ -46,33 +46,25 @@ import ButtonPreloader from '../component/ButtonPreloader'
  }
 
 const LandingPage  = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const[hero, setHero] = useState<heroIntern[]>([]);
   const[course, setCourse] = useState<courseIntern[]>([]);
-  const {baseUrl, loginAuth, setToken, logInUser}  = userAuth(); 
+  const {baseUrl, fetchData, setGoogleIn, loginAuth, setToken, logInUser}  = userAuth(); 
   const [loading, setLoading] = useState<boolean>(false);
-  
+  const queryParams = new URLSearchParams(location.search);
+    const token = queryParams.get('token');
 
   useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const token = queryParams.get('token');
-    // console.log(token);
-    
     if (token) {
-        handleLogin(token);
+        
     }else{
       const error = queryParams.get('error');
       toast.error(error);
     }
-
-  });
+  }, [token]);
       
-const handleLogin = async (token : string) => {
-localStorage.setItem('myToken', token);
-setToken(token);
-logInUser();
-toast.success("Logged in successfully!");
-}
+
 
 useEffect(() => {
   getData()

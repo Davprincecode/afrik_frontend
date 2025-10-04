@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode, MouseEventHandler } from 'react';
 import {useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
   interface AuthProviderProps {
     children: ReactNode;
@@ -16,6 +17,7 @@ import {useLocation, useNavigate } from 'react-router-dom';
   interface AuthContextType {
       loggedIn: boolean;
       googleIn: boolean;
+      fetchData : Function;
       loginAuth: Function;
       logInUser: Function;
       logout: Function;
@@ -65,6 +67,7 @@ import {useLocation, useNavigate } from 'react-router-dom';
   const AuthContext = createContext<AuthContextType>({
       loggedIn: false,
       googleIn: false,
+      fetchData : () => {},
       loginAuth: () => {},
       logInUser: () => {},
       logout: () => {},
@@ -226,10 +229,7 @@ import {useLocation, useNavigate } from 'react-router-dom';
       }
   };
 
-
-   useEffect(() => {
-  
-    const exemptedPaths = [
+ const exemptedPaths = [
   /^\/register$/,                     // /register
   /^\/register\/[^\/]+$/,            // /register/:referralId
   /^\/forgetpassword$/,              // /forgetpassword
@@ -240,10 +240,31 @@ import {useLocation, useNavigate } from 'react-router-dom';
   /^\/verifyotp$/,                   // /verifyotp
   /^\/login$/                        // /login
 ];
- const fetchData = async () => {
+
+   useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+     const tokenId = queryParams.get('token');
+    
+    
+      if(tokenId){
+        localStorage.getItem('myState');
+                //  logInUser();
+                localStorage.setItem('myToken', tokenId); 
+                setToken(tokenId);
+        fetchData(tokenId);
+        toast.success("Logged in successfully!");
+      } else{
+        fetchData('');
+      }
+  }, [loggedIn]);
+
+   const fetchData = async (userToken : string) => {
+      //  console.log(googleIn);
+       
       const isExempted = exemptedPaths.some((pattern) => pattern.test(location.pathname));
-      if (loggedIn) {
-        const storedToken: string | null = localStorage.getItem('myToken');
+
+      if (loggedIn || userToken) {  
+        const storedToken: string | null = userToken == '' ? localStorage.getItem('myToken') : userToken;
          const tokens: string = storedToken || '';
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -254,26 +275,27 @@ import {useLocation, useNavigate } from 'react-router-dom';
           redirect: 'follow'
         };
         try {
-          const response = await fetch(`${baseUrl}/auth/getuser`, requestOptions);    
+          const response = await fetch(`${baseUrl}/auth/getuser`, requestOptions);  
+          // console.log(tokens);
+             
+               
           if (!response.ok) {
             const errorResponse = await response.json();
             throw new Error(errorResponse.message);
           }
             const result = await response.json();
+            //  console.log(result);
              
             loginAuth(result.data.userId, result.data.name, result.data.email,  result.data.address1, result.data.address2, result.data.phoneNumber1, result.data.phoneNumber2, result.data.city, result.data.city, result.data.postalCode, result.data.profileImage, result.cart, result.notification, result.data.role,  result.token);
-
-            // if(result.data.role == "admin"){
-            //  navigate("/admin/admin-dashboard");
-            //   logInUser();
-            // }
-
             logInUser();
-             
+            
+            if(userToken){
+              navigate("/");
+            }
         } catch (error) {          
           if (!isExempted) {
             logout();
-          }
+          }   
         }
       } else {       
         if (!isExempted) {
@@ -281,12 +303,16 @@ import {useLocation, useNavigate } from 'react-router-dom';
           }
       }
     };
-         fetchData();
-  }, [loggedIn]);
-
     return (
       <AuthContext.Provider value={{
-        loggedIn, googleIn, loginAuth, logInUser, logout, setLoggedIn, setGoogleIn, 
+        loggedIn, 
+        googleIn, 
+        fetchData,
+        loginAuth,
+          logInUser, 
+          logout, 
+          setLoggedIn, 
+          setGoogleIn, 
       setUserId,
       setName,
       setEmail,
