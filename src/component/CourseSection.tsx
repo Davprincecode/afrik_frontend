@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import bookingText from '../assets/images/booktexture.png'
 import courseImg from '../assets/images/courseImg.jpg'
 import course2 from '../assets/images/blogpic2.png'
 import { NavLink } from 'react-router-dom'
 import ComingSoon from './ComingSoon';
 import Carousel from 'react-multi-carousel';
+import { userAuth } from '../pages/context/AuthContext'
 
 
 interface courseIntern {
@@ -23,11 +24,9 @@ interface courseIntern {
     status : string;
  }
 
- interface dataProp {
-  course : courseIntern[]
- }
+ 
 
-const CourseSection : React.FC<dataProp> = ({course}) => {
+const CourseSection  = () => {
 
 
     const responsive = {
@@ -49,6 +48,40 @@ const CourseSection : React.FC<dataProp> = ({course}) => {
     }
   }
 
+
+  const[course, setCourse] = useState<courseIntern[]>([]);
+  const {baseUrl}  = userAuth(); 
+  const [loading, setLoading] = useState<boolean>(false);
+  const queryParams = new URLSearchParams(location.search);
+    const token = queryParams.get('token');
+
+  useEffect(() => {
+    getData()
+    }, []);
+  
+  const getData = async () => {
+      setLoading(true);
+          const myHeaders = new Headers();
+          myHeaders.append("Content-Type", "application/json");
+          const requestOptions: RequestInit = {
+              method: "GET",
+              headers: myHeaders,
+              redirect: "follow"
+          };
+          try {
+              const response = await fetch(`${baseUrl}/page-course`, requestOptions);
+              if (!response.ok) {
+              const errorResponse = await response.json();
+              throw new Error(errorResponse.message);
+              }
+              const result = await response.json(); 
+             
+              setCourse(result.data.courseSection);
+              setLoading(false);
+          } catch (error) {
+              
+          }
+  }
   return (
     <div className="courseSection">
             <div className="courseHeader">
@@ -66,66 +99,6 @@ const CourseSection : React.FC<dataProp> = ({course}) => {
                   customTransition="all .5"
                   transitionDuration={500}
                  >
-
-        {/* <div className='bookingSection'>
-            <div className="rightBooking">
-                <img src={courseImg} />
-            </div>
-        
-            <div className="leftBooking" style={{backgroundImage :  `url(${bookingText})`}}>
-                <div className="bookingHeader">
-                    <h1> <span className='bookSpace'>Style & Colour Masterclass </span></h1>
-                </div>
-                <div className="bookingBody">
-                <h4>Transform Your Style with Expert Guidance</h4>
-                    <p>
-                    Book a personalized consultation and get tailored advice on fashion,
-                    lifestyle, and image enhancement. Whether you need a wardrobe revamp, 
-                    personal styling tips, or a complete image makeover, 
-                    we’ll help you define a look that reflects confidence,
-                    sophistication, and your unique personality. 
-                    </p>
-                </div>
-                <div className="schedule">
-                    <NavLink to="/consultant">enroll now</NavLink>  
-                </div>
-                <div className="allCourses">
-                  <NavLink to="#">all courses/masterclasses</NavLink>  
-                </div>
-            </div>
-
-        
-        </div>
-
-        <div className='bookingSection'>
-            <div className="rightBooking">
-                <img src={course2} />
-            </div>
-        
-            <div className="leftBooking" style={{backgroundImage :  `url(${bookingText})`}}>
-                <div className="bookingHeader">
-                    <h1> <span className='bookSpace'>Style & Colour Masterclass </span></h1>
-                </div>
-                <div className="bookingBody">
-                <h4>Transform Your Style with Expert Guidance</h4>
-                    <p>
-                    Book a personalized consultation and get tailored advice on fashion,
-                    lifestyle, and image enhancement. Whether you need a wardrobe revamp, 
-                    personal styling tips, or a complete image makeover, 
-                    we’ll help you define a look that reflects confidence,
-                    sophistication, and your unique personality. 
-                    </p>
-                </div>
-                <div className="schedule">
-                    <NavLink to="/consultant">enroll now</NavLink>  
-                </div>
-                <div className="allCourses">
-                  <NavLink to="#">all courses/masterclasses</NavLink>  
-                </div>
-            </div>
-
-        
-        </div> */}
 
         {
           course.map((item, index)=>(

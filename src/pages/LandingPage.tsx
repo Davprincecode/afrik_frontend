@@ -19,21 +19,6 @@ import CourseSection from '../component/CourseSection'
 import ButtonPreloader from '../component/ButtonPreloader'
 
 
- interface courseIntern {
-    courseDescription : string;
-    courseId : string;
-    courseImage : string;
-    coursePrice : string;
-    courseTitle : string;
-    courseType : string;
-    discountPrice : string;
-    earlyBirdEndDate : string;
-    earlyBirdPrice : string;
-    earlyBirdStartDate : string;
-    endDate : string;
-    startDate : string;
-    status : string;
- }
  interface heroIntern {
       buttonExternalLink : string;
       buttonLink : string;
@@ -49,7 +34,6 @@ const LandingPage  = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const[hero, setHero] = useState<heroIntern[]>([]);
-  const[course, setCourse] = useState<courseIntern[]>([]);
   const {baseUrl, fetchData, setGoogleIn, loginAuth, setToken, logInUser}  = userAuth(); 
   const [loading, setLoading] = useState<boolean>(false);
   const queryParams = new URLSearchParams(location.search);
@@ -80,14 +64,13 @@ const getData = async () => {
             redirect: "follow"
         };
         try {
-            const response = await fetch(`${baseUrl}/page-api`, requestOptions);
+            const response = await fetch(`${baseUrl}/page-hero`, requestOptions);
             if (!response.ok) {
             const errorResponse = await response.json();
             throw new Error(errorResponse.message);
             }
             const result = await response.json(); 
             setHero(result.data.heroSection);
-            setCourse(result.data.courseSection);
             setLoading(false);
         } catch (error) {
             
@@ -108,7 +91,7 @@ return(
   <HeroSection hero={hero}/>
   <HeroContext/>
   <Services/>
-  <CourseSection course={course}/>
+  <CourseSection/>
   <Product/>
   <Gallery/>
   <Partner/>
@@ -116,7 +99,7 @@ return(
   <BookingSection/>
   <Blog/>
   <Vlog/>
-  {/* <Youtube /> */}
+  <Youtube />
   <Footer/>
 </div>
 )}

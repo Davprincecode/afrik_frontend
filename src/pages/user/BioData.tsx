@@ -5,17 +5,90 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import imgProfile from '../../assets/images/commentImage.jpg'
 import { userAuth } from '../context/AuthContext';
+import ButtonPreloader from '../../component/ButtonPreloader';
 
  interface bioIntern{
   bioFunction : () => void;
  }
 
  const  BioData : React.FC<bioIntern> = ({bioFunction}) => {
-    const [loading, setLoading] = useState<boolean>(false);
-    
 
-      const {baseUrl, token, name, email, phoneNumber1, phoneNumber2, address1, address2, state, city, postalCode, image} = userAuth();
+    const [loading, setLoading] = useState<boolean>(false);
+    const [profileImage, setProfileImage] = useState<File | null>(null);
+//     /auth/profile-image
+
+      const {baseUrl, token, name, email, phoneNumber1, phoneNumber2, address1, address2, state, city, postalCode, image, setImage} = userAuth();
+    
+       const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+          const file = e.target.files?.[0];
+          if (!file) {
+              toast.error("No image selected");
+              return;
+          }
+  
+          const image = new Image();
+          const objectUrl = URL.createObjectURL(file);
+          image.src = objectUrl;
+  
+          image.onload = () => {
+            //   if (image.width > 1080 || image.height > 1080) {
+            //   toast.error(`Image "${file.name}" exceeds 1500x1500`);
+            //   URL.revokeObjectURL(objectUrl);
+            //   return;
+            //   }
+              setProfileImage(file); 
+              handleProduct(file);
+              URL.revokeObjectURL(objectUrl);
+          };
+  
+          image.onerror = () => {
+              toast.error("Failed to load image");
+              URL.revokeObjectURL(objectUrl);
+          };
+          };
+    
       
+
+  const handleProduct =  async(profileImage : File) => {
+   
+      setLoading(true);
+       if (!profileImage) {
+          toast.error("No profile image");
+          setLoading(false);
+          return;
+      }
+          const formdata = new FormData();
+            formdata.append("profileImg", profileImage);
+          const myHeaders = new Headers();
+          myHeaders.append("Authorization", token);
+          const requestOptions: RequestInit = {
+              method: "POST",
+              headers: myHeaders,
+              body: formdata,
+              redirect: "follow"
+          };
+          try {
+              const response = await fetch(`${baseUrl}/auth/profile-image`, requestOptions);
+              if (!response.ok) {
+              const errorResponse = await response.json();
+              throw new Error(errorResponse.message);
+              }
+              const result = await response.json();    
+              setProfileImage(null);
+              setImage(result.data);
+              toast.success(result.message); 
+               setLoading(false);       
+          } catch (error) {
+                        setLoading(false);
+                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                        toast.error(error.message);
+                        } else {
+                        toast.error('An unknown error occurred.');
+                        }
+              setLoading(false); 
+          }
+        
+    }
   
   return (
     <div>
@@ -25,19 +98,54 @@ import { userAuth } from '../context/AuthContext';
                     <div className="profile-image-con">
                         <div className="profile-image-form">
                             <div className="profile-image">
-                                <img src={mark} alt="" />
+                              {
+                                    image ? (
+                                          <img src={image} alt="" />
+                                    ) : (
+                                          <img src={imgProfile} alt="" />
+                                    )
+                              }
                             </div>
+
                             <div className="profile-btn-flex">
-                                <div className="profile-btn">upload picture</div>
+                              {
+                                    loading ? (
+                                          <ButtonPreloader/>
+                                    ) : (
+                                          <>
+                                          <label htmlFor="file-input" className="profile-btn">Upload Picture</label>
+                                          <input id="file-input" type="file" onChange={handleFileChange} style={{display : "none"}}/>
+                                           </>
+                                    )
+                              }
+                             
                             </div>
                         </div>
                     </div>
+
+                    {/* <div className="previewImage">
+                              {profileImage && (
+                              <img
+                              src={URL.createObjectURL(profileImage)}
+                              alt="Preview"
+                              style={{ width: '150px', height: 'auto', marginTop: '10px' }}
+                              />
+                              )}
+                      </div> */}
 
                 <div className="profile-form form-con">
                     <div className="form-title">Basic Info</div>
 
                      <div className="profileImageCon flex-center gap-10">
-                          <div className="profileImage"><img src={imgProfile} alt="" /></div>
+                          <div className="profileImage">
+                              {
+                                    image ? (
+                                          <img src={image} alt="" />
+                                    ) : (
+                                          <img src={imgProfile} alt="" />
+                                    )
+                              }
+                              </div>
                           <div className="profileName">
                             <div className="name flex-center gap-5">
                               <p>{name}</p>

@@ -21,7 +21,7 @@ import Pagination from '../component/Pagination'
 import ButtonPreloader from '../component/ButtonPreloader'
 import AuthComponent from '../component/AuthComponent'
 import { toast } from 'react-toastify'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import Carousel from 'react-multi-carousel'
 import OfflineShop from '../component/OfflineShop'
 
@@ -71,6 +71,7 @@ status : string;
 }
   
 function Shops() {
+     const navigate = useNavigate();
     const [products, setProducts] = useState<Product[]>([]);
     const[category, setCategory] = useState<categoryInterface[]>([]);
     const[size, setSize] = useState<sizeInterface[]>([]);
@@ -87,6 +88,7 @@ function Shops() {
     const [selectedSize, setSelectedSize] = useState<number | null>(null);
     const [selectedPrice, setSelectedPrice] = useState<string | null>(null); 
     const {baseUrl, signin,  token, cart, setCart, loggedIn} = userAuth();
+
 useEffect(() => {
   applyFilters(1);
 }, [selectedCategory, selectedSize, selectedPrice]);
@@ -178,7 +180,7 @@ const applyFilters = async (page: number) => {
         setAuthAction(true);
       }
 
-      const AddToCart = async (productId : string, productName : string, productColor : string, productPrice : number, quantity : number,  productImage : string, productSize : string) => {
+      const AddToCart = async (productId : string, productName : string, productColor : string, productPrice : number, quantity : number,  productImage : string, productSize : string, currency : string) => {
                       setLoadingProductId(productId);
                     const myHeaders = new Headers();
                     myHeaders.append("Authorization", token);
@@ -189,6 +191,7 @@ const applyFilters = async (page: number) => {
                         'product_size' : productSize,
                         'product_name' : productName,
                         'product_color' : productColor,
+                        'currency' : currency,
                         'product_price' : productPrice,
                         'quantity' : quantity
                        
@@ -279,21 +282,24 @@ const applyFilters = async (page: number) => {
                 const result = await response.json();                
                 if (result.status === true) {
                     setProducts(result.data);
+                    setMeta(result.meta);
                 }else{
                     setPopAction(true);
                 }
                 
             } catch (error) {
-                        setLoading(false);
-                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
-                        toast.error(error.message);
-                        } else {
-                        toast.error('An unknown error occurred.');
-                        }
-                
+              setLoading(false);
+              if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+              toast.error(error.message);
+              } else {
+              toast.error('An unknown error occurred.');
+              }  
             }
     }
-
+    const cancelPopUp = () => {
+      setPopAction(!popAction);
+      navigate("/");
+    }
      const handleCategory = async () => {
             setLoading(true);
               const myHeaders = new Headers();
@@ -613,6 +619,7 @@ const applyFilters = async (page: number) => {
                     </div>
                     
                 ) : (
+                      !popAction && (
 
                     products.map((item, index) => (
                         
@@ -651,7 +658,7 @@ const applyFilters = async (page: number) => {
                                     loadingProductId === item.productId ? (
                                        <ButtonPreloader/>
                                     ) : (
-                                      <div className="shopProductIcon" onClick={() => AddToCart(item.productId, item.productName, item.productColor, item.discountPrice, 1, item.productImage, item.productSize)}>
+                                      <div className="shopProductIcon" onClick={() => AddToCart(item.productId, item.productName, item.productColor, item.discountPrice, 1, item.productImage, item.productSize, "NGN")}>
                                         <FiShoppingCart />
                                         <div className="shopPlusIcon"><FaPlus /></div>
                                     </div>   
@@ -672,6 +679,8 @@ const applyFilters = async (page: number) => {
                         </div>
                     ))
 
+                  )
+
                 )
              
 
@@ -687,7 +696,7 @@ const applyFilters = async (page: number) => {
         {meta && <Pagination meta={meta} onPageChange={setPage} />}
     </div>
 
-    <OfflineShop popAction={popAction} setPopAction={setPopAction}/>
+    <OfflineShop popAction={popAction} setPopAction={setPopAction} cancelPopUp={cancelPopUp}/>
     {
     !signin && (
         <AuthComponent authAction={authAction} setAuthAction={setAuthAction} setSubNav={setSubNav}/>

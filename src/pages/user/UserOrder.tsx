@@ -16,6 +16,7 @@ interface orderInterface {
     orderDate:  string;
     orderId:  string;
     orderStatus:  string;
+    review: boolean;
     total:  string;
     paymentMethod: string;
     products : products[]
@@ -26,6 +27,7 @@ productColor : string;
 productId : string;
 productImage : string;
 productName : string;
+productSize : string;
 quantity : number;
 unitPrice : string;
 total : string; 
@@ -55,42 +57,39 @@ const  UserOrder = () =>  {
     }, [page]);
 
     const getData = async (pageNumber : number) => {
-    setLoading(true);
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Authorization", token);
-    const requestOptions: RequestInit = {
-    method: "GET",
-    headers: myHeaders,
-    redirect: "follow"
-    };
-    try {
-    const response = await fetch(`${baseUrl}/get-user-order?page=${pageNumber}`, requestOptions);
-    if (!response.ok) {
-    const errorResponse = await response.json();
-    throw new Error(errorResponse.message);
-    }
-    const result = await response.json(); 
-    console.log(result);
-
-    setOrder(result.data);
-    setMeta(result.meta);
-    setLoading(false);
+        setLoading(true);
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Authorization", token);
+        const requestOptions: RequestInit = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow"
+        };
+        try {
+        const response = await fetch(`${baseUrl}/get-user-order?page=${pageNumber}`, requestOptions);
+        if (!response.ok) {
+        const errorResponse = await response.json();
+        throw new Error(errorResponse.message);
+        }
+        const result = await response.json();
+        setOrder(result.data);
+        setMeta(result.meta);
+        setLoading(false);
     } catch (error) {
-                        setLoading(false);
-                        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
-                        toast.error(error.message);
-                        } else {
-                        toast.error('An unknown error occurred.');
-                        }
-
+        setLoading(false);
+        if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+        toast.error(error.message);
+        } else {
+        toast.error('An unknown error occurred.');
+        }
     }
+
     }
  const viewOrder = (id : string, status : string) => {
    setPopOrder(order.filter(item => item.id == id));
    setStatus(status);
    setAuthAction(!authAction);
-   
   }
   return (
     <div className='userOrder'>

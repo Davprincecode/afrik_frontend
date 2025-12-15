@@ -3,32 +3,25 @@ import { userAuth } from '../context/AuthContext';
 import Pagination from '../../component/Pagination';
 import { toast } from 'react-toastify';
 import ButtonPreloader from '../../component/ButtonPreloader';
+import CourseDetails from '../../component/CourseDetails';
 
 
 interface orderInterface {
-    id : string;
+     id : string;
+    courseId :  string;
+    courseName : string;
     customerAddress:  string;
     customerId:  string;
     customerName:  string;
     customerEmail : string;
-   customerPhoneNumber : string;
+    customerPhoneNumber : string;
+    customerOrderNote : string;
     orderDate:  string;
     orderId:  string;
     orderStatus:  string;
     total:  string;
-    paymentMethod: string;
-    products : products[]
 }
-interface products {
-orderId : string;
-productColor : string;
-productId : string;
-productImage : string;
-productName : string;
-quantity : number;
-unitPrice : string;
-total : string; 
-}
+
 interface Meta {
   current_page: number;
   per_page: number;
@@ -45,8 +38,13 @@ function UserCourse() {
         const [meta, setMeta] = useState<Meta | null>(null);
         const [loading, setLoading] = useState<boolean>(false);
         const [order, setOrder] = useState<orderInterface[]>([]);
-        const [PopOrder, setPopOrder] = useState<orderInterface[]>([]);
-    
+        const [popOrder, setPopOrder] = useState<orderInterface[]>([]);
+        const [authAction, setAuthAction] = useState<boolean>(false);
+           
+        const viewOrder = (id : string) => {
+                    setPopOrder(order.filter(item => item.id == id));
+                    setAuthAction(!authAction)
+                }
         useEffect(() => {
         getData(page)
         }, [page]);
@@ -98,7 +96,7 @@ function UserCourse() {
                 <tr className='table-header'>
                     <th>order Id</th>
                     <th>date</th>
-                    <th>payment method</th>
+                    <th>course name</th>
                     <th>amount</th>
                     <th>status</th>
                     <th>tracking</th>
@@ -109,12 +107,12 @@ function UserCourse() {
                         <tr>
                             <td>{item.orderId}</td>
                             <td>{item.orderDate}</td>
-                            <td>{item.paymentMethod}</td>
+                            <td>{item.courseName}</td>
                             <td>₦{item.total}</td>
                             <td>
                                 <div className={item.orderStatus}>{item.orderStatus}</div> 
                             </td>
-                            <td> <div className="track">tracking details</div> </td>
+                            <td> <div className="track"   onClick={() => viewOrder(item.id)}>tracking details</div> </td>
                         </tr>
                     ))
                 }
@@ -125,11 +123,12 @@ function UserCourse() {
                     )}
 
                 </div> 
+                
+            <CourseDetails authAction={authAction} setAuthAction={setAuthAction} popOrder={popOrder}/>
 
-
-    <div className="shop-pagination">
-        {meta && <Pagination meta={meta} onPageChange={setPage} />}
-    </div>
+                <div className="shop-pagination">
+                    {meta && <Pagination meta={meta} onPageChange={setPage} />}
+                </div>
 
     </div>
   )

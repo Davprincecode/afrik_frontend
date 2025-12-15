@@ -13,6 +13,7 @@ interface cartInterface {
    product_color :  string;
    product_id :  string;
    product_name :  string;
+   currency : string;
    product_price :  number;
    quantity :  number;
    total :  number;
@@ -29,6 +30,7 @@ const [total, setTotal] =useState<number>(0);
  const [name, setName] = useState<string>('');
  const [email, setEmail] = useState<string>('');
  const [address, setAddress] = useState<string>('');
+ const [currency, setCurrency] = useState<string>('NGN');
  const [phoneNumber, setPhoneNumber] = useState<number>(0);
  const [orderNote, setOrderNote] = useState<string>('');
 
@@ -86,6 +88,7 @@ const [total, setTotal] =useState<number>(0);
              "phoneNumber" : phoneNumber,
              "orderNote" : orderNote,
              "service_type" : "product",
+             "currency" : currency,
              "amount" : total,
              "callBackUrl" : `${url}/payment/callback` 
          });

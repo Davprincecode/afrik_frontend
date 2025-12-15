@@ -27,7 +27,7 @@ function BookingSection() {
                 </p>
             </div>
         </div>
-        <div className="rightBooking">
+        <div className="rightBooking bookingRight">
             <img src={consultingImg} />
         </div>
     </div>

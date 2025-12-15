@@ -70,20 +70,21 @@ const navSub = () =>{
               </NavLink>
               <div className="itemscontainer flex-center">
                   <ul className={navOpen ? "openNavBar" : "closeNavBar"}>
-                       { signin && (<li className='auth-profile'> <NavLink to="/"> Profile </NavLink> </li>)}
-                      <li> <NavLink to="/" className={({ isActive }) =>
-    `${isActive ? 'active-top-nav' : ''}`
-  }> Home </NavLink> </li>
-                      <li><NavLink to="/about-us" className={({ isActive }) =>
-    `${isActive ? 'active-top-nav' : ''}`
-  }>about us</NavLink></li>
-                      <li><NavLink to="/our-services" className={({ isActive }) =>
-    `${isActive ? 'active-top-nav' : ''}`
-  }>services</NavLink></li>
-                      <li ><NavLink to="/product" className={({ isActive }) =>
-    `${isActive ? 'active-top-nav' : ''}`
-  }>shop</NavLink></li>
-                      <li className='parent-nav' onClick={childNavFunction}>
+                       
+                            <li> <NavLink to="/" className={({ isActive }) =>
+                            `${isActive ? 'active-top-nav' : ''}`
+                            }> Home </NavLink> </li>
+                            { signin && (<li className='auth-profile'> <NavLink to="/profile"> Profile </NavLink> </li>)}
+                            <li><NavLink to="/about-us" className={({ isActive }) =>
+                            `${isActive ? 'active-top-nav' : ''}`
+                            }>about us</NavLink></li>
+                            <li><NavLink to="/our-services" className={({ isActive }) =>
+                            `${isActive ? 'active-top-nav' : ''}`
+                            }>services</NavLink></li>
+                            <li ><NavLink to="/product" className={({ isActive }) =>
+                            `${isActive ? 'active-top-nav' : ''}`
+                            }>shop</NavLink></li>
+                           <li className='parent-nav' onClick={childNavFunction}>
 
        {/* className={`${childNav ? 'active-top-nav' : ''}`}                  */}
 

@@ -173,20 +173,32 @@ const [popAction, setPopAction] = useState<boolean>(false);
                                 transition={{ duration: 0.4 }}
                                 className="product"
                                 >
-                            <div className="productImage">
-                                <img src={item.productImage} />
-                            </div>
+                             <NavLink to={`/product-details/${item.productId}`}>
+                                <div className="productImage">
+                                    <img src={item.productImage} />
+                                </div>
+                            </NavLink>
+
                             <div className="productDetails">
+                                
+                                <NavLink to={`/product-details/${item.productId}`}>
                                 <div className="productTitle flex-center">
                                     <h2>{item.productName}</h2>
                                     <div className="price">
                                         <span>₦</span>{item.productPrice.toLocaleString()}
                                     </div>
                                 </div>
+                                </NavLink>
+
                                 <div className="productDetail">
                                     <NavLink to={`/product-details/${item.productId}`}>
                                         <div className="productDescription">
-                                        {item.productDescription}
+                                        {
+                                        (item.productDescription || "")
+                                            .split(/\s+/)
+                                            .slice(0, 6)
+                                            .join(" ") + (item.productDescription?.split(/\s+/).length > 6 ? " ..." : "")
+                                        }
                                         </div>
                                     </NavLink>
 

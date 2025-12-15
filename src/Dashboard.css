@@ -685,12 +685,14 @@ color: #28C76F;
 font-weight: 600;
 font-size: 15px;
 } 
-.delivered{
-  font-family: Inter;
-color: #28C76F;
-text-transform: capitalize;
-font-weight: 600;
-font-size: 15px;
+.user-profile-table .delivered{
+ background: #28C76F;
+    cursor: pointer;
+    padding: 5px;
+    color: white;
+    text-align: center;
+    text-transform: capitalize;
+    border-radius: 5px;
 } 
 
 .cancelled, .refunded{
@@ -1010,13 +1012,7 @@ position: relative;
      .customer-container-wrapper{
      margin: 20px 0px;
      }
-     .customer-flex{
-       display: flex;
-      align-items: center;
-      justify-content: center;
-       gap: 20px;
-
-     }
+    
        .customer-details-con{
           border: 0.59px solid #E7E7E3;
           border-radius: 10px;

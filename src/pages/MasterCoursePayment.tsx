@@ -31,9 +31,9 @@ const [total, setTotal] =useState<number>(0);
  const [phoneNumber, setPhoneNumber] = useState<number>(0);
  const [orderNote, setOrderNote] = useState<string>('');
 
- const[courseDescription, setCourseDescription] = useState<string>('');
+    const[courseDescription, setCourseDescription] = useState<string>('');
     const[courseId, setCourseId] = useState<string>('');
- const[courseImage, setCourseImage] = useState<string>('');
+    const[courseImage, setCourseImage] = useState<string>('');
      const[coursePrice, setCoursePrice] = useState<number>(0);
      const[courseTitle, setCourseTitle] = useState<string>('');
      const[courseType, setCourseType] = useState<string>('');
@@ -44,6 +44,7 @@ const [total, setTotal] =useState<number>(0);
      const[endDate, setEndDate] = useState<string>('');
      const[startDate, setStartDate] = useState<string>('');
      const[pin , setPin] = useState<boolean>(false);
+     const[currency, setCurrency] = useState<string>('');
      const[status, setStatus] = useState<string>('');
 
 
@@ -95,6 +96,7 @@ const { id } = useParams<{ id: string }>();
 
                     setCourseTitle(result.data.courseTitle);
                     setCourseType(result.data.courseType);
+                    setCurrency(result.data.currency);
                     setDiscountPrice(result.data.discountPrice);
                     setEarlyBirdEndDate(result.data.earlyBirdEndDate);
                     setEarlyBirdPrice(result.data.earlyBirdPrice);
@@ -116,8 +118,7 @@ const { id } = useParams<{ id: string }>();
       }
 
     const url = window.location.origin;
-   
-    
+
      const fetchData = async () => {
        setLoading(true);
         const myHeaders = new Headers();
@@ -129,6 +130,7 @@ const { id } = useParams<{ id: string }>();
              "address" : address,
              "phoneNumber" : phoneNumber,
              "orderNote" : orderNote,
+             "currency" : currency,
              "service_type" : "course",
              "amount" : coursePrice,
              "courseId" : courseId,
@@ -169,7 +171,7 @@ const { id } = useParams<{ id: string }>();
                }
         }
      
-    };
+     };
 
   return (
     <div className='payment-con-wrapper pageNav'>
@@ -229,7 +231,7 @@ const { id } = useParams<{ id: string }>();
                                     <p>{courseTitle}
                                          {/* ({size}) */}
                                          </p>
-                                    <p>₦{coursePrice}</p>
+                                    <p>{currency}{coursePrice}</p>
                             </div>
                             
 
@@ -239,17 +241,17 @@ const { id } = useParams<{ id: string }>();
                      <div className="billing-total">
                         <div className="billing-sub flex-center justification-between">
                           <h2>subtotal</h2>
-                          <h2>₦{coursePrice.toLocaleString()}</h2>
+                          <h2>{currency}{coursePrice.toLocaleString()}</h2>
                         </div>
                         {/* <div className="billing-sub-total flex-center justification-between">
                           <h2>shipping</h2>
-                          <h2>₦100</h2>
+                          <h2>{currency}100</h2>
                         </div> */}
                      </div>
 
                      <div className="billing-ground-total flex-center justification-between">
                         <h1>total</h1>
-                        <h1>₦{coursePrice.toLocaleString()}</h1>
+                        <h1>{currency}{coursePrice.toLocaleString()}</h1>
                      </div>
 
                 </div>

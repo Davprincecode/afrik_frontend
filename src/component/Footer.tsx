@@ -19,6 +19,7 @@ function Footer() {
    setLoading(true)
    if(waitEmail == ''){
     toast.error('fill email')
+    setLoading(false)
     return;
    }
     const raw = {
@@ -135,17 +136,17 @@ function Footer() {
       </div> */}
 
       <div className="socialMedia flex-center gap-20">
-                                  <div className="social">
-                                      <a href="https://www.facebook.com/share/1ALwzAMkS5/?mibextid=wwXIfr" target="_blank"><FaFacebookF /></a>
-                                  </div>
+              <div className="social">
+                  <a href="https://www.facebook.com/share/1ALwzAMkS5/?mibextid=wwXIfr" target="_blank"><FaFacebookF /></a>
+              </div>
 
-                                  <div className="social">
-                                      <a href="https://www.instagram.com/temiloveafrik?igsh=d2dsY2k2eTVhdWxz" className='insta' target="_blank"><FaInstagram /></a>
-                                  </div>
+              <div className="social">
+                  <a href="https://www.instagram.com/temiloveafrik?igsh=d2dsY2k2eTVhdWxz" className='insta' target="_blank"><FaInstagram /></a>
+              </div>
 
-                                  <div className="social">
-                                      <a href="https://www.linkedin.com/company/loveafrik-mgt-ltd/"  target="_blank"><FaLinkedin /></a>
-                                  </div>
+              <div className="social">
+                  <a href="https://www.linkedin.com/company/loveafrik-mgt-ltd/"  target="_blank"><FaLinkedin /></a>
+              </div>
           </div>
 
      </div>

@@ -230,15 +230,17 @@ import { toast } from 'react-toastify';
   };
 
  const exemptedPaths = [
-  /^\/register$/,                     // /register
-  /^\/register\/[^\/]+$/,            // /register/:referralId
-  /^\/forgetpassword$/,              // /forgetpassword
-  /^\/changepassword\/[^\/]+$/,     // /changepassword/:token
+  /^\/register$/,                     
+  /^\/register\/[^\/]+$/,            
+  /^\/forgetpassword$/, 
+  /^\/blog$/,  
+  /^\/blog-details\/[^\/]+$/,         
+  /^\/changepassword\/[^\/]+$/,     // registerangepassword/:token
   /^\/emailconfirm\/[^\/]+$/,       // /emailconfirm/:token
   /^\/[^\/]+$/,       // /:token
-  /^\/redirectform$/,                // /redirectform
-  /^\/verifyotp$/,                   // /verifyotp
-  /^\/login$/                        // /login
+  /^\/redirectform$/,                
+  /^\/verifyotp$/,                  
+  /^\/login$/                        
 ];
 
    useEffect(() => {

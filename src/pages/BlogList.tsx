@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef, useState} from 'react'
 import { LuArrowUpRight } from 'react-icons/lu'
 import { NavLink, useLocation } from 'react-router-dom'
 import blogHeader from '../assets/images/blogHeader.png'
@@ -14,13 +14,120 @@ import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
 import { CiSearch } from 'react-icons/ci'
 import { IoSearchOutline } from 'react-icons/io5'
 import Footer from '../component/Footer'
+import { userAuth } from './context/AuthContext'
+import Pagination from '../component/Pagination'
+import ButtonPreloader from '../component/ButtonPreloader'
+
+interface blogInterface {
+blogImage: string
+blogText: string
+blogTitle: string
+created_at : string
+id: string
+status: string
+}
+
+interface Meta {
+  current_page: number;
+  per_page: number;
+  total: number;
+  last_page: number;
+  next_page_url: string | null;
+  prev_page_url: string | null;
+}
 
 function BlogList() {
     const { pathname } = useLocation();
-      
+  const [blogPin, setBlogPin] = useState<blogInterface[]>([]);
+  const [lastedBlog, setLastedBlog] = useState<blogInterface[]>([]);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [pageLoading, setPageLoading] = useState<boolean>(false);
+   const [meta, setMeta] = useState<Meta | null>(null);  
+
+const {baseUrl} = userAuth();
       useEffect(() => {
           window.scrollTo(0, 0);
         }, [pathname]);
+     
+        useEffect(() => { 
+           getData(page)
+          }, [page]);
+        
+        const getData = async (pageNumber : number) => {
+            setLoading(true);
+                const myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+                const requestOptions: RequestInit = {
+                    method: "GET",
+                    headers: myHeaders,
+                    redirect: "follow"
+                };
+                try {
+                    const response = await fetch(`${baseUrl}/blog?page=${pageNumber}`, requestOptions);
+                
+                    if (!response.ok) {
+                    const errorResponse = await response.json();
+                    throw new Error(errorResponse.message);
+                    }
+                    const result = await response.json();
+                    setBlogPin(result.data.blogPin);
+                    setLastedBlog(result.data.lastedBlog); 
+                    setMeta(result.meta);
+                    setPageLoading(false);
+                    setLoading(false);
+                } catch (error) {
+                    
+                }
+        }
+
+ 
+
+const truncateRichHtml = (
+    html: string,
+    maxLength: number = 150
+  ): { html: string; isTruncated: boolean } => {
+    const tempDiv = document.createElement('div');
+    // tempDiv.className = 'flex';
+    tempDiv.innerHTML = html;
+
+    const fullText = tempDiv.textContent?.trim() || '';
+
+    if (fullText.length <= maxLength) {
+      return { html, isTruncated: false }; 
+    }
+
+    let charCount = 0;
+
+    const walk = (node: Node): string => {
+      if (charCount >= maxLength) return '';
+
+      if (node.nodeType === Node.TEXT_NODE) {
+        const text = node.textContent || '';
+        const remaining = maxLength - charCount;
+        const slice = text.slice(0, remaining);
+        charCount += slice.length;
+        return slice;
+      }
+
+      if (node.nodeType === Node.ELEMENT_NODE) {
+        const el = node as HTMLElement;
+        const tag = el.tagName.toLowerCase();
+        const attrs = Array.from(el.attributes)
+          .map(attr => `${attr.name}="${attr.value}"`)
+          .join(' ');
+        const children = Array.from(el.childNodes).map(walk).join('');
+        return `<${tag}${attrs ? ' ' + attrs : ''}>${children}</${tag}>`;
+      }
+      return '';
+    };
+
+    const truncatedHtml = walk(tempDiv) + "...";
+
+    return { html: truncatedHtml, isTruncated: true };
+  };
+
+
   return (
     <div className="our-blog pageNav">
         <Header />
@@ -46,57 +153,101 @@ function BlogList() {
                 <div className="our-blog-top-header flex-center justification-between">
                     <div className="our-blog-top-title">
                         <h1>our <span>articles</span> </h1>
+                      
                     </div>
-                    <div className="our-blog-search">
+                    {/* <div className="our-blog-search">
                         <IoSearchOutline />
                         <input type="text" placeholder='Search Blog'/>
                         <div className="search-blog">search</div>
-                    </div>  
+                    </div>   */}
                 </div>
                 
+           {
+                loading ? (
+                <ButtonPreloader/>
+                ) : (
+                    <div className="our-blog-top flex">
 
-            <div className="our-blog-top flex">
 
-                    <div className="our-blog-main-con">
-                        <div className="our-blog-main-image">
-                        <img src={blog1} />
-                        </div>
-                        <div className="our-blog-content">
-                            <div className="our-blog-time"><p>10 Min</p></div>
-                            <div className="our-blog-title"><h1>Top Trends Shaping Real Estate in 2024</h1></div>
-                            <div className="our-blog-body"><p>Stay ahead of the curve! Explore the latest trends influencing the real estate market this year.</p></div>
-                            <div className="our-blog-button"><NavLink to="#">Read more <LuArrowUpRight /> </NavLink></div>
-                        </div>
-                    </div>
-
-                    <div className="our-blog-sub-flex">
-
-                        <div className="our-blog-sub-con flex gap-20">
-                            <div className="our-blog-sub-image">
-                                <img src={blog2} />
+                    {  blogPin.length <= 2 && (blogPin.map((value, index) => {
+                            const { html, isTruncated } = truncateRichHtml(value.blogText, 60);
+                                
+                                    return(
+                                    <div className="our-blog-main-con" style={{width: "100%"}}>
+                                        <div className="our-blog-main-image">
+                                        <img src={value.blogImage} />
+                                        </div>
+                                        <div className="our-blog-content">
+                                            <div className="our-blog-time"><p>{value.created_at}</p></div>
+                                            <div className="our-blog-title"><h1>{value.blogTitle}</h1></div>
+                                            <div className="our-blog-body"><p><div className='flex-wrap gap-2' dangerouslySetInnerHTML={{ __html:  html}} /></p>
+                                        </div>
+                                            <div className="our-blog-button">
+                                                <NavLink to={`/blog-details/${value.id}`}>Read more <LuArrowUpRight /> </NavLink>
+                                            </div>
+                                        </div>
+                                    </div>
+                            )    
+                            }))
+                            
+                        }
+                        
+                    {     blogPin.length === 3 && (() => {
+                            const { html, isTruncated} = truncateRichHtml(blogPin[0].blogText, 60);
+                            return (
+                                <>
+                            <div className="our-blog-main-con">
+                                    <div className="our-blog-main-image">
+                                    <img src={blogPin[0].blogImage} />
+                                    </div>
+                                    <div className="our-blog-content">
+                                    <div className="our-blog-time"><p>{blogPin[0].created_at}</p></div>
+                                    <div className="our-blog-title"><h1>{blogPin[0].blogTitle}</h1></div>
+                                    <div className="our-blog-body">
+                                    <p><div className='flex-wrap gap-2' dangerouslySetInnerHTML={{ __html: html }} /></p>
+                                    </div>
+                                    <div className="our-blog-button">
+                                    <NavLink to={`/blog-details/${blogPin[0].id}`}>Read more <LuArrowUpRight /></NavLink>
+                                    </div>
+                                    </div>
                             </div>
-                            <div className="our-blog-content">
-                                <div className="our-blog-time"><p>8 Min</p></div>
-                                <div className="our-blog-title"><h1>Top Trends Shaping Real Estate in 2024</h1></div>
-                                <div className="our-blog-body"><p>Stay ahead of the curve! Explore the latest trends influencing the real estate market this year.</p></div>
-                                <div className="our-blog-button"><NavLink to="#">Read More <LuArrowUpRight /> </NavLink></div>
-                            </div>
-                        </div>
 
-                        <div className="our-blog-sub-con flex gap-20">
-                            <div className="our-blog-sub-image">
-                                <img src={blog3} />
+                            <div className="our-blog-sub-flex">
+                                {[blogPin[1], blogPin[2]].map((value, index) => {
+                                const { html } = truncateRichHtml(value.blogText, 60);
+                                return (
+                                    <div className="our-blog-sub-con flex gap-20" key={value.id}>
+                                    <div className="our-blog-sub-image">
+                                        <img src={value.blogImage} />
+                                    </div>
+                                    <div className="our-blog-content">
+                                        <div className="our-blog-time"><p>{value.created_at}</p></div>
+                                        <div className="our-blog-title"><h1>{value.blogTitle}</h1></div>
+                                        <div className="our-blog-body">
+                                        <p><div className='flex-wrap gap-2' dangerouslySetInnerHTML={{ __html: html }} /></p>
+                                        </div>
+                                        <div className="our-blog-button">
+                                        <NavLink to={`/blog-details/${value.id}`}>Read more <LuArrowUpRight /></NavLink>
+                                        </div>
+                                    </div>
+                                    </div>
+                                );
+                                })}
                             </div>
-                            <div className="our-blog-content">
-                                <div className="our-blog-time"><p>8 Min</p></div>
-                                <div className="our-blog-title"><h1>Top Trends Shaping Real Estate in 2024</h1></div>
-                                <div className="our-blog-body"><p>Stay ahead of the curve! Explore the latest trends influencing the real estate market this year.</p></div>
-                                <div className="our-blog-button"><NavLink to="#">Read More <LuArrowUpRight /> </NavLink></div>
-                            </div>
-                        </div>
 
-                    </div>
-            </div>  
+                            </>
+
+                            );
+
+                            })()}
+
+                        
+                    </div>    
+                )
+           }
+            
+
+
             </div>
 
             
@@ -107,81 +258,54 @@ function BlogList() {
                             <h1>latest <span>blog</span> </h1>
                         </div>
                         <div className="our-latest-arrow flex-center gap-20">
-                            <div className="latest-left-arrow">
+                            <div className="latest-left-arrow"  onClick={() => meta?.prev_page_url && setPage(meta.current_page - 1)}>
                                 <IoIosArrowBack />
                             </div>
-                            <div className="latest-right-arrow">
+                            <div className="latest-right-arrow" onClick={() => meta?.next_page_url && setPage(meta.current_page + 1)}>
                                 <IoIosArrowForward />
                             </div>
                         </div> 
                 </div>
 
+           {
+            loading ? (
+              <ButtonPreloader/>
+            ) : (
                 <div className="our-latest-blog-containers flex gap-20">
-
-                    <div className="our-latest-blog-con">
+                   
+                   {
+                    lastedBlog.map((value, index)=>{
+                       const { html, isTruncated } = truncateRichHtml(value.blogText, 60);
+                        return (
+                        <div className="our-latest-blog-con" key={index}>
                         <div className="our-latest-blog-image">
-                            <img src={latestblog1} />
+                            <img src={value.blogImage} />
                         </div>
                         <div className="our-blog-content">
-                            <div className="our-blog-time"><p>10 Min</p></div>
-                            <div className="our-blog-title"><h1>Top Trends Shaping Real Estate in 2024</h1></div>
-                            <div className="our-blog-body"><p>Stay ahead of the curve! Explore the latest trends influencing the real estate market this year.</p></div>
-                            <div className="our-blog-button"><NavLink to="#">Read more <LuArrowUpRight /> </NavLink></div>
+                            <div className="our-blog-time"><p>{value.created_at}</p></div>
+                            <div className="our-blog-title"><h1>{value.blogTitle}</h1></div>
+                            <div className="our-blog-body"><p><div className='flex-wrap gap-2' dangerouslySetInnerHTML={{ __html:  html}} /></p></div>
+                            <div className="our-blog-button">
+                                <NavLink to={`/blog-details/${value.id}`}>Read more <LuArrowUpRight /> 
+                                </NavLink>
+                            </div>
                         </div>
                     </div>
-                    <div className="our-latest-blog-con">
-                        <div className="our-latest-blog-image">
-                            <img src={latestblog2} />
-                        </div>
-                        <div className="our-blog-content">
-                            <div className="our-blog-time"><p>10 Min</p></div>
-                            <div className="our-blog-title"><h1>Top Trends Shaping Real Estate in 2024</h1></div>
-                            <div className="our-blog-body"><p>Stay ahead of the curve! Explore the latest trends influencing the real estate market this year.</p></div>
-                            <div className="our-blog-button"><NavLink to="#">Read more <LuArrowUpRight /> </NavLink></div>
-                        </div>
-                    </div>
-                    <div className="our-latest-blog-con">
-                        <div className="our-latest-blog-image">
-                            <img src={latestblog3} />
-                        </div>
-                        <div className="our-blog-content">
-                            <div className="our-blog-time"><p>10 Min</p></div>
-                            <div className="our-blog-title"><h1>Top Trends Shaping Real Estate in 2024</h1></div>
-                            <div className="our-blog-body"><p>Stay ahead of the curve! Explore the latest trends influencing the real estate market this year.</p></div>
-                            <div className="our-blog-button"><NavLink to="#">Read more <LuArrowUpRight /> </NavLink></div>
-                        </div>
-                    </div>
-
+                       )})
+                   }
+                    
+                    
                 </div>
+            )}
 
             </div>
             </div>
 
 
-            <div className="paginationCon">
-                <div className="paginationFlex flex-center gap-10">
-                    <div className="paginationArrow">
-                        <IoIosArrowBack />
-                    </div>
-                    <div className="paginationNumber flex-center gap-10">
-                        <div className="paginationActive pagination">
-                            1
-                        </div>
-                        <div className="paginationNext pagination">
-                            2
-                        </div>
-                        <div className="pagination">
-                            3
-                        </div>
-                        <div className="pagination">
-                            4
-                        </div>
-                    </div>
-                    <div className="paginationArrow">
-                        <IoIosArrowForward />
-                    </div>
-                </div>
-            </div>
+           <div className="shop-pagination">
+        {meta && <Pagination meta={meta} onPageChange={setPage} />}
+    </div>
+
         </div>
         <Footer/>
     </div>

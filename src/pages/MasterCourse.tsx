@@ -26,6 +26,7 @@ interface CourseIntern {
       courseDescription: string;
       courseId: string;
       courseImage: string;
+      currency: string;
       coursePrice: number;
       courseTitle: string;
       courseType: string;
@@ -197,11 +198,11 @@ function MasterCourse() {
                                                                     early bird : 
                                                                     <div className="day-left">{daysLeftText}</div>  
                                                                     </h1>
-                                                                    <h1>₦{earlyBird.toLocaleString()}</h1>
+                                                                    <h1>{item.currency}{earlyBird.toLocaleString()}</h1>
                                                                     </div>
                                                                     <div className="course-price">
-                                                                    <p>course price</p>
-                                                                    <h1>₦{course.toLocaleString()}</h1>
+                                                                    <h1>course price</h1>
+                                                                    <h1>{item.currency}{course.toLocaleString()}</h1>
                                                                     </div>
                                                                 </div>
                                                     );
@@ -212,11 +213,11 @@ function MasterCourse() {
                                                             <p>
                                                             discount offer
                                                             </p>
-                                                            <h1>₦{discount.toLocaleString()}</h1>
+                                                            <h1>{item.currency}{discount.toLocaleString()}</h1>
                                                             </div>
-                                                            <div className="course-price line-through">
-                                                            <p>course price</p>
-                                                            <h1>₦{course.toLocaleString()}</h1>
+                                                            <div className="course-price ">
+                                                            <h1>course price</h1>
+                                                            <h1 className='line-through'>{item.currency}{course.toLocaleString()}</h1>
                                                             </div>
                                                         </div>
                                                     );
@@ -225,8 +226,8 @@ function MasterCourse() {
                                                     return (
                                                         <div className="master-body-date date-data flex-center">
                                                             <div className="normal-course-price">
-                                                            <p>course price</p>
-                                                            <h1>₦{course.toLocaleString()}</h1>
+                                                            <h1>course price</h1>
+                                                            <h1>{item.currency}{course.toLocaleString()}</h1>
                                                             </div>
                                                         </div>
                                                     );
@@ -331,11 +332,11 @@ function MasterCourse() {
                                                                     early bird : 
                                                                     <div className="day-left">{daysLeftText}</div>  
                                                                     </h1>
-                                                                    <h1>₦{earlyBird.toLocaleString()}</h1>
+                                                                    <h1>{item.currency}{earlyBird.toLocaleString()}</h1>
                                                                     </div>
                                                                     <div className="course-price">
-                                                                    <p>course price</p>
-                                                                    <h1>₦{course.toLocaleString()}</h1>
+                                                                    <h1>course price</h1>
+                                                                    <h1>{item.currency}{course.toLocaleString()}</h1>
                                                                     </div>
                                                                 </div>
                                                     );
@@ -346,11 +347,11 @@ function MasterCourse() {
                                                             <p>
                                                             discount offer
                                                             </p>
-                                                            <h1>₦{discount.toLocaleString()}</h1>
+                                                            <h1>{item.currency}{discount.toLocaleString()}</h1>
                                                             </div>
-                                                            <div className="course-price line-through">
-                                                            <p>course price</p>
-                                                            <h1>₦{course.toLocaleString()}</h1>
+                                                            <div className="course-price">
+                                                            <h1>course price</h1>
+                                                            <h1 className='line-through'>{item.currency}{course.toLocaleString()}</h1>
                                                             </div>
                                                         </div>
                                                     );
@@ -359,8 +360,8 @@ function MasterCourse() {
                                                     return (
                                                         <div className="master-body-date date-data flex-center">
                                                             <div className="normal-course-price">
-                                                            <p>course price</p>
-                                                            <h1>₦{course.toLocaleString()}</h1>
+                                                            <h1>course price</h1>
+                                                            <h1>{item.currency}{course.toLocaleString()}</h1>
                                                             </div>
                                                         </div>
                                                     );

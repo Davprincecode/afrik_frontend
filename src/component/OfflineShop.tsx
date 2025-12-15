@@ -9,9 +9,10 @@ import ButtonPreloader from './ButtonPreloader';
 interface comingSoonInterface {
     popAction : boolean,
     setPopAction: React.Dispatch<React.SetStateAction<boolean>>;
+    cancelPopUp : () => void;
 }
 
-const OfflineShop : React.FC<comingSoonInterface> = ({popAction, setPopAction}) => {
+const OfflineShop : React.FC<comingSoonInterface> = ({popAction, setPopAction, cancelPopUp}) => {
 
     const[waitEmail, setWaitEmail] = useState<string>('');
     const[loading, setLoading] = useState<boolean>(false);
@@ -62,7 +63,7 @@ const OfflineShop : React.FC<comingSoonInterface> = ({popAction, setPopAction}) 
        <div className="comingWrapper" style={{display : popAction ? "flex" : "none"}}>
         <div className="comingCon">
             <div className="comingSoonHeader">
-                <div className="comingIcon" onClick={() => setPopAction(!popAction)}>
+                <div className="comingIcon" onClick={cancelPopUp}>
                     <RxCross2 />
                 </div>
             </div>

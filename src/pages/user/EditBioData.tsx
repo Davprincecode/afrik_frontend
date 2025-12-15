@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import imgProfile from '../../assets/images/commentImage.jpg'
 import { FaLocationDot } from 'react-icons/fa6'
 import mark  from '../../assets/images/mark.png'
 import axios from 'axios';
@@ -12,10 +13,86 @@ interface bioIntern{
  }
 const EditBioData : React.FC<bioIntern> = ({bioFunction}) => {
     const [loading, setLoading] = useState<boolean>(false);
+     const [profileImage, setProfileImage] = useState<File | null>(null);
 
  const {baseUrl, userId, token, name, setName, email, setEmail, phoneNumber1, setPhoneNumber1, phoneNumber2, setPhoneNumber2,
    address1, setAddress1,  address2, setAddress2, state, setState,  city, setCity,  postalCode, setPostalCode, image, setImage} = userAuth();
      
+        
+
+         
+            const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+               const file = e.target.files?.[0];
+               if (!file) {
+                   toast.error("No image selected");
+                   return;
+               }
+       
+               const image = new Image();
+               const objectUrl = URL.createObjectURL(file);
+               image.src = objectUrl;
+       
+               image.onload = () => {
+                 //   if (image.width > 1080 || image.height > 1080) {
+                 //   toast.error(`Image "${file.name}" exceeds 1500x1500`);
+                 //   URL.revokeObjectURL(objectUrl);
+                 //   return;
+                 //   }
+                   setProfileImage(file); 
+                   handleProduct(file);
+                   URL.revokeObjectURL(objectUrl);
+               };
+       
+               image.onerror = () => {
+                   toast.error("Failed to load image");
+                   URL.revokeObjectURL(objectUrl);
+               };
+               };
+         
+           
+     
+     
+       const handleProduct =  async(profileImage : File) => {
+        
+           setLoading(true);
+            if (!profileImage) {
+               toast.error("No profile image");
+               setLoading(false);
+               return;
+           }
+               const formdata = new FormData();
+                 formdata.append("profileImg", profileImage);
+               const myHeaders = new Headers();
+               myHeaders.append("Authorization", token);
+               const requestOptions: RequestInit = {
+                   method: "POST",
+                   headers: myHeaders,
+                   body: formdata,
+                   redirect: "follow"
+               };
+               try {
+                   const response = await fetch(`${baseUrl}/auth/profile-image`, requestOptions);
+                   if (!response.ok) {
+                   const errorResponse = await response.json();
+                   throw new Error(errorResponse.message);
+                   }
+                   const result = await response.json();    
+                   setProfileImage(null);
+                   setImage(result.data);
+                   toast.success(result.message); 
+                    setLoading(false);       
+               } catch (error) {
+                             setLoading(false);
+                             if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                             toast.error(error.message);
+                             } else {
+                             toast.error('An unknown error occurred.');
+                             }
+                   setLoading(false); 
+               }
+             
+         }
+       
           const fetchUserData = async () => {
              setLoading(true);
              const myHeaders = new Headers();
@@ -73,10 +150,26 @@ const EditBioData : React.FC<bioIntern> = ({bioFunction}) => {
                     <div className="profile-image-con">
                         <div className="profile-image-form">
                             <div className="profile-image">
-                                <img src={mark} alt="" />
+                                {
+                                    image ? (
+                                          <img src={image} alt="" />
+                                    ) : (
+                                          <img src={imgProfile} alt="" />
+                                    )
+                              }
                             </div>
-                            <div className="profile-btn-flex">
-                                <div className="profile-btn">upload picture</div>
+                             <div className="profile-btn-flex">
+                              {
+                                    loading ? (
+                                          <ButtonPreloader/>
+                                    ) : (
+                                          <>
+                                          <label htmlFor="file-input" className="profile-btn">Upload Picture</label>
+                                          <input id="file-input" type="file" onChange={handleFileChange} style={{display : "none"}}/>
+                                           </>
+                                    )
+                              }
+                             
                             </div>
                         </div>
                     </div>

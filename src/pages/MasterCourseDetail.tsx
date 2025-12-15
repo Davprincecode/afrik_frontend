@@ -21,6 +21,7 @@ function MasterCourseDetail() {
     const[earlyBirdEndDate, setEarlyBirdEndDate] = useState<string>('');
     const[earlyBirdPrice, setEarlyBirdPrice] = useState<string>('');
     const[earlyBirdStartDate, setEarlyBirdStartDate] = useState<string>('');
+    const[currency, setCurrency] = useState<string>('');
     const[endDate, setEndDate] = useState<string>('');
     const[startDate, setStartDate] = useState<string>('');
     const [endDateRaw, setEndDateRaw] = useState<string>('');
@@ -59,12 +60,13 @@ const { id } = useParams<{ id: string }>();
                   throw new Error(errorResponse.message);
                   }
                   const result = await response.json(); 
-                console.log(result);
+               
                 
                      
                     setCourseDescription(result.data.courseDescription);
                     setCourseId(result.data.courseId);
                     setCourseImage(result.data.courseImage);
+                    setCurrency(result.data.currency);
                     setCoursePrice(result.data.coursePrice);
                     setCourseTitle(result.data.courseTitle);
                     setCourseType(result.data.courseType);
@@ -182,11 +184,11 @@ const { id } = useParams<{ id: string }>();
                                                                     early bird : 
                                                                     <div className="day-left">{daysLeftText}</div>  
                                                                     </h1>
-                                                                    <h1>₦{earlyBird.toLocaleString()}</h1>
+                                                                    <h1>{currency}{earlyBird.toLocaleString()}</h1>
                                                                     </div>
                                                                     <div className="course-price">
                                                                     <p>course price</p>
-                                                                    <h1>₦{course.toLocaleString()}</h1>
+                                                                    <h1>{currency}{course.toLocaleString()}</h1>
                                                                     </div>
                                                                 </div>
                                                     );
@@ -197,11 +199,11 @@ const { id } = useParams<{ id: string }>();
                                                             <p>
                                                             discount offer
                                                             </p>
-                                                            <h1>₦{discount.toLocaleString()}</h1>
+                                                            <h1>{currency}{discount.toLocaleString()}</h1>
                                                             </div>
                                                             <div className="course-price line-through">
                                                             <p>course price</p>
-                                                            <h1>₦{course.toLocaleString()}</h1>
+                                                            <h1>{currency}{course.toLocaleString()}</h1>
                                                             </div>
                                                         </div>
                                                     );
@@ -211,7 +213,7 @@ const { id } = useParams<{ id: string }>();
                                                         <div className="master-body-date date-data flex-center">
                                                             <div className="normal-course-price">
                                                             <p>course price</p>
-                                                            <h1>₦{course.toLocaleString()}</h1>
+                                                            <h1>{currency}{course.toLocaleString()}</h1>
                                                             </div>
                                                         </div>
                                                     );

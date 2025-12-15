@@ -27,9 +27,7 @@ import ComingSoon from "./component/ComingSoon";
 import Shop from "./pages/Shop";
 import ProductDetails from "./pages/ProductDetails";
 import Cart from "./pages/Cart";
-import BookingCalendar from "./pages/BookingCalendar";
-import Booking from "./pages/Booking";
-import BookingCalendarrs from "./pages/BookingCalendarrs";
+// import Booking from "./pages/Booking";
 import Payment from "./pages/Payment";
 import Consultant from "./pages/Consultant";
 import ConsultantDetails from "./pages/ConsultantDetails";
@@ -43,13 +41,14 @@ import AdminBlog from "./pages/admin/AdminBlog";
 import BlogEditor from "./pages/admin/component/BlogEditor";
 import Message from "./pages/admin/Message";
 import AdminConsultant from "./pages/admin/AdminConsultant";
-import BookingCalendars from "./pages/BookingCalendars";
 import MasterCourse from "./pages/MasterCourse";
 import MasterCourseDetail from "./pages/MasterCourseDetail";
 import MasterCoursePayment from "./pages/MasterCoursePayment";
 import MessageComponent from "./pages/admin/component/MessageComponent";
 import VerifyCoursePayment from "./pages/payment/VerifyCoursePayment";
 import Shops from "./pages/Shops";
+import VerifyBookingPayment from "./pages/payment/VerifyBookingPayment";
+
 
 
 
@@ -93,49 +92,39 @@ const {baseUrl} = userAuth();
          
           <Route path="/payment/callback" element={<VerifyPayment />} />
           <Route path="/payment/course/callback" element={<VerifyCoursePayment />} />
+          <Route path="/payment/booking/callback" element={<VerifyBookingPayment />} />
 
           {/* <Route path="/coming-soon" element={<ComingSoon />} /> */}
 
           <Route path="/shuffle" element={<AnimatedShuffleList />} />
 
        {/* ============================================== */}
+
+          
           <Route path="/profile" element={<Profile />} />
           <Route path="/contact-us" element={<ContactUs />} />
           <Route path="/about-us" element={<AboutUs/>} />
           <Route path="/our-services" element={<OurServices/>} />
           <Route path="/our-blog" element={<BlogList/>} />
-          <Route path="/blog-details" element={<BlogDetails/>} />
+          <Route path="/blog-details/:blogId" element={<BlogDetails/>} />
           <Route path="/product" element={<Shops/>} />
           {/* <Route path="/product-details" element={<ProductDetails/>} /> */}
           <Route path="/product-details/:productId" element={<ProductDetails/>} />
           <Route path="/cart" element={<Cart/>} />
           <Route path="/payment" element={<Payment/>} />
-          <Route path="/booking" element={<Booking/>} />
+          {/* <Route path="/booking" element={<Booking/>} /> */}
           <Route path="/consultant" element={<Consultant/>} />
-          <Route path="/consultant-details" element={<ConsultantDetails/>} />
+          {/* <Route path="/consultant-details" element={<ConsultantDetails/>} /> */}
            <Route path="/master-course" element={<MasterCourse/>} />
           <Route path="/master-course-details/:id" element={<MasterCourseDetail/>} />
           <Route path="/master-course-payment/:id" element={<MasterCoursePayment/>} />
-          <Route path="/booking-calendar" element={<BookingCalendars/>} />
+         
 
 
        {/* =============================================== */}
 
 
-      {/* ====================== admin ================== */}
-      
-      <Route path="/admin">
-         <Route path="admin-dashboard" element={<AdminDashboard/>} />
-         <Route path="home-page" element={<Homepage/>} />
-         <Route path="vlog-page" element={<Vlog/>} />
-         <Route path="admin-shop" element={<AdminShop />} />
-         <Route path="admin-shop/:param" element={<AdminShop />} />
-         <Route path="admin-blog" element={< AdminBlog />} />
-         {/* <Route path="admin-blogs" element={< BlogEditor />} /> */}
-         <Route path="admin-message" element={< MessageComponent />} />
-         <Route path="admin-consult" element={< AdminConsultant />} />
-      </Route>
-      {/* ===================== admin end =================== */}
+
 
 
 
