@@ -19,6 +19,11 @@ interface cartInterface {
    total :  number;
 }
 
+type StateIntern = {
+  state: string;
+  area: string;
+  amount: number;
+};
 
 function Payment() {
 
@@ -26,7 +31,7 @@ const {baseUrl, token} = userAuth();
  const [loading, setLoading] = useState<boolean>(false);
 const [cart, setCart] = useState<cartInterface[]>([]);
 const [total, setTotal] =useState<number>(0);
-
+const [states, setStates] = useState<StateIntern[]>([]);
  const [name, setName] = useState<string>('');
  const [email, setEmail] = useState<string>('');
  const [address, setAddress] = useState<string>('');
@@ -34,6 +39,8 @@ const [total, setTotal] =useState<number>(0);
  const [phoneNumber, setPhoneNumber] = useState<number>(0);
  const [orderNote, setOrderNote] = useState<string>('');
 
+ const [state, setState] = useState<string>('');
+ const [deliveryFee, setDeliveryFee] = useState<number>(0);
  
 
     useEffect(() => {
@@ -75,6 +82,35 @@ const [total, setTotal] =useState<number>(0);
     
            }, []);
 
+    useEffect(() => {
+     const fetchDelivery = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(`${baseUrl}/delivery-fees`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+        });
+
+        if (!response.ok) {
+          const errorResponse = await response.json();
+          throw new Error(errorResponse.message);
+        }
+
+        const result = await response.json();
+        setStates(result.data);
+        setLoading(false);
+      } catch (error: any) {
+        setLoading(false);
+        toast.error(error?.message || "An unknown error occurred.");
+      }
+    };
+
+    fetchDelivery();
+  }, []);
+
  const url = window.location.origin;
      const fetchData = async () => {
        setLoading(true);
@@ -84,11 +120,13 @@ const [total, setTotal] =useState<number>(0);
         const raw = JSON.stringify({
              "email" : email,
              "name" : name,
+             "area" : state,
              "address" : address,
              "phoneNumber" : phoneNumber,
              "orderNote" : orderNote,
              "service_type" : "product",
              "currency" : currency,
+             "deliveryfee" : deliveryFee,
              "amount" : total,
              "callBackUrl" : `${url}/payment/callback` 
          });
@@ -124,6 +162,14 @@ const [total, setTotal] =useState<number>(0);
      
     };
 
+   const getDeliveryFee = (data : string) => {
+      const s = states.find(item => item.area == data);
+      const sumTotal = total + (s?.amount ?? 0);
+      setDeliveryFee(s?.amount ?? 0);
+      setState(data); 
+      setTotal(sumTotal);  
+   }
+
   return (
     <div className='payment-con-wrapper pageNav'>
       <Header/>
@@ -152,15 +198,29 @@ const [total, setTotal] =useState<number>(0);
             
                 <div className="formInputFlex">
                        <div className="formInputItem">
+                        <label >Location</label>
+                        <select onChange={(e) => getDeliveryFee(e.target.value)}>
+                          <option value="">select location</option>
+                           
+                           {
+                             states.map((item, index)=> (
+                             <option value={item.area} key={index} > {item.state} - {item.area} </option>
+                             ))
+                           }
+                          
+                        </select>
+                       </div>
+
+                       <div className="formInputItem">
                         <label >full address</label>
                         <input type="text" placeholder='address' value ={address} onChange={(e) => setAddress(e.target.value)}/>
                         </div>
-                       <div className="formInputItem">
-                        <label >Mobile Number</label>
-                        <input type="number"  value ={phoneNumber} onChange={(e) => setPhoneNumber(parseInt(e.target.value))}/>
-                        </div>
                 </div>
 
+                    <div className="formInputItem">
+                        <label >Mobile Number</label>
+                        <input type="number"  value ={phoneNumber} onChange={(e) => setPhoneNumber(parseInt(e.target.value))}/>
+                    </div>
                 <div className="formInput textAreaInput">
                     <label >order note</label>
                     <textarea  cols={30} rows={10} placeholder='order note' value={orderNote} onChange={(e) => setOrderNote(e.target.value)}></textarea>
@@ -194,6 +254,10 @@ const [total, setTotal] =useState<number>(0);
                         <div className="billing-sub flex-center justification-between">
                           <h2>subtotal</h2>
                           <h2>₦{total.toLocaleString()}</h2>
+                        </div>
+                        <div className="billing-sub flex-center justification-between">
+                          <h2>Delivery fee</h2>
+                          <h2>₦{deliveryFee.toLocaleString()}</h2>
                         </div>
                         {/* <div className="billing-sub-total flex-center justification-between">
                           <h2>shipping</h2>
@@ -239,7 +303,7 @@ const [total, setTotal] =useState<number>(0);
                             ) : (
 
                                 
-                            name !== '' && email !=='' && address !=='' && phoneNumber > 0  ? (
+                            name !== '' && email !=='' && address !=='' && phoneNumber > 0 && state && deliveryFee >= 0 ? (
                             <div className="paymentBtn" onClick={fetchData}>
                                 place order
                             </div>

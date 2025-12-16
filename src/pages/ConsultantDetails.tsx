@@ -9,6 +9,7 @@ import { toast } from 'react-toastify'
 import { userAuth } from './context/AuthContext'
 import { button } from 'framer-motion/client'
 import ButtonPreloader from '../component/ButtonPreloader'
+import { useNavigate } from 'react-router-dom'
 
   type TimeSlot = {
     bookingId: string;
@@ -38,6 +39,7 @@ const ConsultantDetails  = ({bookTime,  scheduleFunction }: consultantInterface)
   const [name, setName] = useState<string>('');
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [orderNote, setOrderNote] = useState<string>('');
+  const navigate = useNavigate();
   const singleBooking = bookTime[0];
 
   const url = window.location.origin;
@@ -75,6 +77,56 @@ const ConsultantDetails  = ({bookTime,  scheduleFunction }: consultantInterface)
               const result = await response.json();  
               setLoading(false);
               window.location.href = result.authorization_url;
+          } catch (error) {
+              setLoading(false);
+                if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                  toast.error(error.message);
+                } else {
+                  toast.error('An unknown error occurred.');
+                }          
+              setLoading(false);
+                if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                  toast.error(error.message);
+                } else {
+                  toast.error('An unknown error occurred.');
+                }
+          }
+      
+      };
+
+  const freeBooking = async () => {
+        setLoading(true);
+          const myHeaders = new Headers();
+          myHeaders.append("Content-Type", "application/json");
+          myHeaders.append("Authorization", token);
+          const raw = JSON.stringify({
+              "email" : email,
+              "name" : name,
+              "phoneNumber" : phoneNumber,
+              "orderNote" : orderNote,
+              "currency" : singleBooking?.currency,
+              "amount" : singleBooking?.price,
+              "bookingId" : singleBooking?.bookingId,
+              "bookingDate" : singleBooking?.date,
+              "bookingStartTime" : singleBooking?.startTime,
+              "bookingEndTime" : singleBooking?.endTime
+          });
+          const requestOptions: RequestInit = {
+              method: "POST",
+              headers: myHeaders,
+              body: raw,
+              redirect: "follow"
+          };
+          try {
+            const response = await fetch(`${baseUrl}/freebooking`, requestOptions); 
+            if (!response.ok) {
+              const errorResponse = await response.json();  
+              throw new Error(errorResponse.message);
+            }
+              const result = await response.json();  
+              setLoading(false);
+              toast.success(result.message);
+              navigate("/");
           } catch (error) {
               setLoading(false);
                 if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
@@ -146,9 +198,17 @@ const ConsultantDetails  = ({bookTime,  scheduleFunction }: consultantInterface)
                         loading ? (
                           <ButtonPreloader/>
                         ) : (
-                          <button onClick={fetchData}>
-                           Confirm
-                          </button>
+                          
+                            bookTime[0]?.price === 0 ? (
+                              <button onClick={freeBooking}>
+                              Confirm
+                              </button>
+                            ) : (
+                                  <button onClick={fetchData}>
+                                    Confirm
+                                  </button>
+                            )
+                          
                         )
                       }
                         

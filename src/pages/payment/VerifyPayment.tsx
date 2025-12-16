@@ -27,8 +27,7 @@ function VerifyPayment() {
             redirect: "follow"
         };
         try {
-          const response = await fetch(`${baseUrl}/payment/${reference}`, requestOptions);
-          
+          const response = await fetch(`${baseUrl}/payment/${reference}`, requestOptions);  
           if (!response.ok) {
             const errorResponse = await response.json();
             throw new Error(errorResponse.message);

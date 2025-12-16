@@ -73,7 +73,7 @@ const errorFunction = () => {
                           next
                         </div>
                       ) : (
-                          <div className="nextBook"  onClick={errorFunction}>
+                          <div className="nextBook nextEmpty"  onClick={errorFunction}>
                           next
                         </div>
                       )

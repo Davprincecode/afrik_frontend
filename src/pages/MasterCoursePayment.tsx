@@ -4,7 +4,7 @@ import Footer from '../component/Footer'
 import { userAuth } from './context/AuthContext';
 import ButtonPreloader from '../component/ButtonPreloader';
 import { toast } from 'react-toastify';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 interface cartInterface {
    id :  number;
@@ -19,7 +19,7 @@ interface cartInterface {
 }
 
 function  MasterCoursePayment() {
-
+ const navigate = useNavigate();
 const {baseUrl, token} = userAuth();
  const [loading, setLoading] = useState<boolean>(false);
 const [cart, setCart] = useState<cartInterface[]>([]);
@@ -50,9 +50,9 @@ const [total, setTotal] =useState<number>(0);
 
 const { id } = useParams<{ id: string }>();
 
- useEffect(() => {
-            getData()
-            }, [id]);
+    useEffect(() => {
+     getData()
+    }, [id]);
     
       const getData = async () => {
           setLoading(true);
@@ -173,6 +173,57 @@ const { id } = useParams<{ id: string }>();
      
      };
 
+     const freeCourse = async () => {
+       setLoading(true);
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Authorization", token);
+        const raw = JSON.stringify({
+             "email" : email,
+             "name" : name,
+             "address" : address,
+             "phoneNumber" : phoneNumber,
+             "orderNote" : orderNote,
+             "currency" : currency,
+             "amount" : coursePrice,
+             "courseId" : courseId,
+             "courseName" : courseTitle,
+             "startDate" : startDate,
+             "endDate" : endDate
+         });
+        const requestOptions: RequestInit = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow"
+        };
+        try {
+          const response = await fetch(`${baseUrl}/freecourse`, requestOptions);     
+          if (!response.ok) {
+            const errorResponse = await response.json();  
+            throw new Error(errorResponse.message);
+          }
+            const result = await response.json();  
+            setLoading(false);
+            toast.success(result.message);
+            navigate("/");
+        } catch (error) {
+            setLoading(false);
+            if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+            toast.error(error.message);
+            } else {
+            toast.error('An unknown error occurred.');
+            }          
+            setLoading(false);
+            if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+            toast.error(error.message);
+            } else {
+            toast.error('An unknown error occurred.');
+            }
+        }
+     
+     };
+
   return (
     <div className='payment-con-wrapper pageNav'>
       <Header/>
@@ -285,12 +336,16 @@ const { id } = useParams<{ id: string }>();
                             loading ? (
                               <ButtonPreloader/>
                             ) : (
-
-                                
                             name !== '' && email !=='' && address !=='' && phoneNumber > 0  ? (
-                            <div className="paymentBtn" onClick={fetchData}>
-                                place order
-                            </div>
+                                coursePrice == 0 ? (
+                                    <div className="paymentBtn" onClick={freeCourse}>
+                                         place order
+                                    </div>
+                                ) : (
+                                    <div className="paymentBtn" onClick={fetchData}>
+                                        place order
+                                    </div>
+                               )
                             ) : (
                             <div className="paymentBtn inActive" >
                                 place order

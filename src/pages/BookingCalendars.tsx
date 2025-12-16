@@ -51,8 +51,9 @@ const BookingCalendars = ({bookTime, SetBookTime, setBookingDescription, setInte
     }, [currentMonth, currentYear])
 
   const handleDateClick = async (date: string, isPass : boolean, status : string) => {
-
-    if(isPass == false && status == "available"){
+    SetBookTime([]);
+    setBookingId('');
+    if(isPass == false && status == "available" || isPass == false && status == "full"){
       const clickedDate = new Date(date);
       if (clickedDate < new Date(today.getFullYear(), today.getMonth(), today.getDate())) return;
       setSelectedDate(date);
