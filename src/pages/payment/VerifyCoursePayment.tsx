@@ -26,8 +26,6 @@ function VerifyCoursePayment() {
         };
         try {
           const response = await fetch(`${baseUrl}/payment/${reference}`, requestOptions);
-        //   const results = await response.text();  
-        //   console.log(results);
           if (!response.ok) {
             const errorResponse = await response.json();
             throw new Error(errorResponse.message);

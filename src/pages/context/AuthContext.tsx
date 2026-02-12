@@ -246,15 +246,14 @@ import { toast } from 'react-toastify';
    useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
      const tokenId = queryParams.get('token');
-    
-    
       if(tokenId){
         localStorage.getItem('myState');
                 //  logInUser();
                 localStorage.setItem('myToken', tokenId); 
                 setToken(tokenId);
-        fetchData(tokenId);
-        toast.success("Logged in successfully!");
+                fetchData(tokenId);
+                toast.success("Logged in successfully!");
+                // console.log("hello token");
       } else{
         fetchData('');
       }
@@ -278,9 +277,7 @@ import { toast } from 'react-toastify';
         };
         try {
           const response = await fetch(`${baseUrl}/auth/getuser`, requestOptions);  
-          // console.log(tokens);
-             
-               
+          // console.log(tokens);           
           if (!response.ok) {
             const errorResponse = await response.json();
             throw new Error(errorResponse.message);
@@ -290,7 +287,6 @@ import { toast } from 'react-toastify';
              
             loginAuth(result.data.userId, result.data.name, result.data.email,  result.data.address1, result.data.address2, result.data.phoneNumber1, result.data.phoneNumber2, result.data.city, result.data.city, result.data.postalCode, result.data.profileImage, result.cart, result.notification, result.data.role,  result.token);
             logInUser();
-            
             if(userToken){
               navigate("/");
             }

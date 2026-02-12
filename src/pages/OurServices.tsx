@@ -59,7 +59,7 @@ function OurServices() {
                     <img src={service1} alt="" />
                   </div>
                   <div className="ourServicesTitle">
-                    color & style consultation
+                    colour & style consultation
                   </div>
                   <div className="ourServicesDetails">
                     <p>

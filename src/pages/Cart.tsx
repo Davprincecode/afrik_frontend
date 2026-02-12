@@ -6,12 +6,12 @@ import { RxCross2 } from 'react-icons/rx'
 import { AiOutlineDelete } from 'react-icons/ai'
 import { VscDash } from 'react-icons/vsc'
 import { FiPlus } from 'react-icons/fi'
-import { FaMinus, FaPlus } from 'react-icons/fa'
+import { FaArrowLeft, FaMinus, FaPlus } from 'react-icons/fa'
 import { TiMinus, TiPlus } from 'react-icons/ti'
 import { GoPlus } from 'react-icons/go'
 import { PiMinusThin } from 'react-icons/pi'
 import { userAuth } from './context/AuthContext'
-import { useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import ButtonPreloader from '../component/ButtonPreloader'
 import { toast } from 'react-toastify'
 
@@ -39,7 +39,6 @@ function Cart() {
     const navigate = useNavigate();
 
      useEffect(() => {
-      
       const fetchData = async () => {
             setLoading(true);
              const myHeaders = new Headers();
@@ -109,6 +108,7 @@ function Cart() {
           
          ;
        }
+       
        const increament = async (cartId : string) => {
             setLoading(true);
              const myHeaders = new Headers();
@@ -196,9 +196,10 @@ function Cart() {
          }
            
 
-         <div className="page-title">
-               <span> Cart </span> /
-            </div>
+            <div className="page-title flex justification-between">
+                          <p><span> Cart </span> / </p> 
+                          <div className='cursor' onClick={() => navigate(-1)}><FaArrowLeft /></div>
+                    </div>
 
          <div className="cart-body-con">
              <div className="tableCount-header">
@@ -210,7 +211,7 @@ function Cart() {
                               <th><AiOutlineDelete /></th>
                               <th>PHOTO</th>
                               <th>PRODUCT</th>
-                              <th>COLOR/SIZE</th>
+                              <th>SIZE</th>
                               <th>UNIT PRICE</th>
                               <th>QUANTITY</th>
                               <th>SUB TOTAL</th>
@@ -224,7 +225,7 @@ function Cart() {
                               <td><div className="cart-name">{item.product_name}</div></td>
                               <td>
                                  <div className="cart-size-con">
-                                    <div className="cart-color" style={{ color:"black"}}></div>
+                                    {/* <div className="cart-color" style={{ color:"black"}}></div> */}
                                     <div className="cart-size">{item.product_size}</div>
                                  </div>
                               </td>

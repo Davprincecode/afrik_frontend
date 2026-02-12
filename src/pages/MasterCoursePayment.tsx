@@ -20,15 +20,15 @@ interface cartInterface {
 
 function  MasterCoursePayment() {
  const navigate = useNavigate();
-const {baseUrl, token} = userAuth();
+const {baseUrl, token, name, email, address1, phoneNumber1} = userAuth();
  const [loading, setLoading] = useState<boolean>(false);
 const [cart, setCart] = useState<cartInterface[]>([]);
 const [total, setTotal] =useState<number>(0);
 
- const [name, setName] = useState<string>('');
- const [email, setEmail] = useState<string>('');
- const [address, setAddress] = useState<string>('');
- const [phoneNumber, setPhoneNumber] = useState<number>(0);
+ const [userName, setName] = useState<string>(name);
+ const [userEmail, setEmail] = useState<string>(email);
+ const [address, setAddress] = useState<string>(address1);
+ const [phoneNumber, setPhoneNumber] = useState<number>( parseInt(phoneNumber1));
  const [orderNote, setOrderNote] = useState<string>('');
 
     const[courseDescription, setCourseDescription] = useState<string>('');
@@ -116,17 +116,32 @@ const { id } = useParams<{ id: string }>();
                   
               }
       }
-
+  const validateProductForm = () => {
+      if (!userName.trim()) {
+        toast.error("Name is required");
+        return false;
+      }
+      if (!userEmail.trim()) {
+        toast.error("Email is required");
+        return false;
+      }
+      if (!phoneNumber || isNaN(phoneNumber)) {
+        toast.error("Phone number is required");
+        return false;
+      }
+      return true;
+  }
     const url = window.location.origin;
 
      const fetchData = async () => {
+       
        setLoading(true);
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         myHeaders.append("Authorization", token);
         const raw = JSON.stringify({
-             "email" : email,
-             "name" : name,
+             "email" : userEmail,
+             "name" : userName,
              "address" : address,
              "phoneNumber" : phoneNumber,
              "orderNote" : orderNote,
@@ -147,8 +162,6 @@ const { id } = useParams<{ id: string }>();
         };
         try {
           const response = await fetch(`${baseUrl}/payment`, requestOptions);  
-          
-          
           if (!response.ok) {
             const errorResponse = await response.json();  
             throw new Error(errorResponse.message);
@@ -179,8 +192,8 @@ const { id } = useParams<{ id: string }>();
         myHeaders.append("Content-Type", "application/json");
         myHeaders.append("Authorization", token);
         const raw = JSON.stringify({
-             "email" : email,
-             "name" : name,
+             "email" : userEmail,
+             "name" : userName,
              "address" : address,
              "phoneNumber" : phoneNumber,
              "orderNote" : orderNote,
@@ -242,11 +255,11 @@ const { id } = useParams<{ id: string }>();
 
                 <div className="formInput">
                     <label >name <span>(First name and Last name)</span>  *</label>
-                    <input type="text" value={name}  placeholder='full name' onChange={(e) => setName(e.target.value)}/>
+                    <input type="text" value={userName}  placeholder='full name' onChange={(e) => setName(e.target.value)}/>
                 </div>
                 <div className="formInput">
                     <label >email</label>
-                    <input type="text" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                    <input type="text" value={userEmail} onChange={(e) => setEmail(e.target.value)}/>
                 </div>
 
             

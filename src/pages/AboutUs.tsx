@@ -52,7 +52,7 @@ function AboutUs() {
                     </div>
                     <p>
                         <div className="loveIntro">
-                            <h4>Loveafrik</h4>
+                            {/* <h4>Loveafrik</h4> */}
                             <p>
                                Loveafrik is not just a fashion, lifestyle and image consulting company, it’s a movement of elegance, confidence, and cultural pride.
                             </p>   

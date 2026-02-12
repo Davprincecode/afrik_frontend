@@ -78,11 +78,12 @@ const [popAction, setPopAction] = useState<boolean>(false);
               };
               try {
                   const response = await fetch(`${baseUrl}/pin-product?page=${pageNumber}`, requestOptions);
+
                   if (!response.ok) {
                   const errorResponse = await response.json();
                   throw new Error(errorResponse.message);
                   }
-                 const result = await response.json();   
+                 const result = await response.json();
                   setProduct(result.data);
                    
               } catch (error) {
@@ -155,7 +156,9 @@ const [popAction, setPopAction] = useState<boolean>(false);
                 </div>
             </div>
 
-            <div className="productList flex-center gap-20">
+           {
+            product.length > 0 && (
+                <div className="productList flex-center gap-20">
                 <div className="arrowLeft" onClick={shuffleLeft}>
                     <FaChevronLeft />
                 </div>
@@ -237,6 +240,10 @@ const [popAction, setPopAction] = useState<boolean>(false);
                     <FaChevronRight />
                 </div>
             </div>
+            )
+           }
+            
+
          </div>
 
 

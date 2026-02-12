@@ -13,6 +13,7 @@ import ButtonPreloader from '../component/ButtonPreloader'
 
 function ContactUs() {
   const { pathname } = useLocation();
+  
   const [loading, setLoading] = useState<boolean>(false);
   const [subject, setSubject] = useState<string>('');
   const [name, setName] = useState<string>('');
@@ -47,9 +48,8 @@ function ContactUs() {
       body: raw,
       redirect: "follow",
     };
-
     try {
-      const response = await fetch(`${baseUrl}/page-contact-us`, requestOptions);
+      const response = await fetch(`${baseUrl}/page-contact-us`, requestOptions);     
       if (!response.ok) {
         const errorResponse = await response.json();
         throw new Error(errorResponse.message);

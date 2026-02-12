@@ -6,6 +6,7 @@ import { NavLink } from 'react-router-dom'
 import ComingSoon from './ComingSoon';
 import Carousel from 'react-multi-carousel';
 import { userAuth } from '../pages/context/AuthContext'
+import AuthComponent from './AuthComponent'
 
 
 interface courseIntern {
@@ -19,6 +20,7 @@ interface courseIntern {
     earlyBirdEndDate : string;
     earlyBirdPrice : string;
     earlyBirdStartDate : string;
+    endDateRaw : string;
     endDate : string;
     startDate : string;
     status : string;
@@ -28,32 +30,31 @@ interface courseIntern {
 
 const CourseSection  = () => {
 
-
-    const responsive = {
-    superLargeDesktop: {
-      breakpoint: { max: 4000, min: 3000 },
-      items: 1
-    },
-    desktop: {
-      breakpoint: { max: 3000, min: 1024 },
-      items: 1
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 464 },
-      items: 1
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 1
-    }
-  }
-
-
-  const[course, setCourse] = useState<courseIntern[]>([]);
-  const {baseUrl}  = userAuth(); 
-  const [loading, setLoading] = useState<boolean>(false);
-  const queryParams = new URLSearchParams(location.search);
-    const token = queryParams.get('token');
+      const responsive = {
+      superLargeDesktop: {
+        breakpoint: { max: 4000, min: 3000 },
+        items: 1
+      },
+      desktop: {
+        breakpoint: { max: 3000, min: 1024 },
+        items: 1
+      },
+      tablet: {
+        breakpoint: { max: 1024, min: 464 },
+        items: 1
+      },
+      mobile: {
+        breakpoint: { max: 464, min: 0 },
+        items: 1
+      }
+      }
+    const [authAction, setAuthAction] = useState<boolean>(false);
+    const [subNav, setSubNav] = useState<boolean>(false);
+    const[course, setCourse] = useState<courseIntern[]>([]);
+    const {baseUrl, signin}  = userAuth(); 
+    const [loading, setLoading] = useState<boolean>(false);
+    const queryParams = new URLSearchParams(location.search);
+      const token = queryParams.get('token');
 
   useEffect(() => {
     getData()
@@ -75,13 +76,17 @@ const CourseSection  = () => {
               throw new Error(errorResponse.message);
               }
               const result = await response.json(); 
-             
               setCourse(result.data.courseSection);
               setLoading(false);
           } catch (error) {
               
           }
   }
+
+  const authFunction = () => {
+        setAuthAction(true);
+      }
+
   return (
     <div className="courseSection">
             <div className="courseHeader">
@@ -123,21 +128,43 @@ const CourseSection  = () => {
                         </NavLink>
                     </p>
                 </div>
-                <div className="schedule">
-                    <NavLink to={`/master-course-payment/${item.courseId}`}>enroll now</NavLink>  
-                </div>
+
+                 
+                        {
+                        new Date(item.endDateRaw) > new Date() && (
+                        signin ? (
+                            <div className="schedule">
+                            <NavLink to={`/master-course-payment/${item.courseId}`} className="master-btn">
+                            enrol now
+                            </NavLink>
+                            </div>
+                        ) : (
+                            <div className="schedule">
+                            <div className="master-btn" onClick={authFunction}>
+                            enrol now
+                            </div>
+                            </div>
+                        )
+                        )
+                        }
+
+
                 <div className="allCourses">
                   <NavLink to="/master-course">all courses/masterclasses</NavLink>  
                 </div>
             </div>
 
-        
         </div>
           ))
         }
         
         </Carousel>
 
+           {
+                !signin && (
+                    <AuthComponent authAction={authAction} setAuthAction={setAuthAction} setSubNav={setSubNav}/>
+                )
+            } 
     </div>
   )
 }

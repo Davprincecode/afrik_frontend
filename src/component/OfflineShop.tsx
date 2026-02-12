@@ -22,6 +22,7 @@ const OfflineShop : React.FC<comingSoonInterface> = ({popAction, setPopAction, c
      setLoading(true)
      if(waitEmail == ''){
       toast.error('fill email')
+      setLoading(false)
       return;
      }
       const raw = {
@@ -45,7 +46,7 @@ const OfflineShop : React.FC<comingSoonInterface> = ({popAction, setPopAction, c
         setWaitEmail('');
         toast.success("Subscription Successful")
         setLoading(false);
-  
+        cancelPopUp();
       } catch (error) {
         setLoading(false);
         if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {

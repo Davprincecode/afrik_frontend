@@ -17,6 +17,7 @@ function Register() {
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState <boolean>(false);
+
   const [loading, setLoading] = useState<boolean>(false);
   const [switchPassword, setSwitchPassword] = useState<boolean>(false);
   const [auth, setAuth] = useState<string>('signup');
@@ -26,6 +27,7 @@ const { pathname } = useLocation();
   useEffect(() => {
       window.scrollTo(0, 0);
     }, [pathname]);
+
   useEffect(() => {
     if (confirmPassword && confirmPassword !== password) {
       setError(false);

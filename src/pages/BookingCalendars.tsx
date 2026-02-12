@@ -77,15 +77,12 @@ const BookingCalendars = ({bookTime, SetBookTime, setBookingDescription, setInte
         headers: { "Content-Type": "application/json" },
         redirect: "follow"
       });
-      //  const results = await response.text();
-      //  console.log(results);
       if (!response.ok) {
         const errorResponse = await response.json();
         throw new Error(errorResponse.message);
       }
         const result = await response.json();
-        
-        
+         
         setBookingDescription(result.data.lenghth > 0 && result.data[0].bookingDescription);
         setInterval(result.data.lenghth > 0 && result.data[0].interval);
         setTimeSlots(result.data);
@@ -122,33 +119,41 @@ today.setHours(0, 0, 0, 0);
 
 const maxDayBeforeBooking = parseInt(bookingtime.maxDayBeforeBooking);
 
-// Calculate difference in days
-const diffInMs = bookingDate.getTime() - today.getTime();
-const diffInDays = Math.round(diffInMs / (1000 * 60 * 60 * 24));
-  
-  if (diffInDays > maxDayBeforeBooking) {
-    toast.error(`You can only book up to ${maxDayBeforeBooking} days before the booking date.`);
-    return;
+
+ const formatDate = (date : Date) => { const year = date.getFullYear(); const month = String(date.getMonth() + 1).padStart(2, "0"); const day = String(date.getDate()).padStart(2, "0"); return `${year}-${month}-${day}`; }; 
+  if(bookingtime.maxDayBeforeBooking !== null){
+        if(formatDate(new Date(bookingDate)) > formatDate(new Date(calculateDate(maxDayBeforeBooking)))) {
+        toast.error(`You can only make a booking up to ${maxDayBeforeBooking} days ahead from today’s date.`);
+        return;
+      }
   }
+  
 
   // Check maxTimeBeforeBooking
-  const maxTimeBeforeBooking = parseInt(bookingtime.maxTimeBeforeBooking); // e.g. 60 minutes
-  const bookingStartTime = new Date(`${bookingtime.date} ${bookingtime.startTime}`);
-  const now = new Date();
+  // const maxTimeBeforeBooking = parseInt(bookingtime.maxTimeBeforeBooking); 
+  // const bookingStartTime = new Date(`${bookingtime.date} ${bookingtime.startTime}`);
+  // const now = new Date();
 
-  const diffInMinutes = Math.floor((bookingStartTime.getTime() - now.getTime()) / (1000 * 60));
+  
+  // const diffInMinutes = Math.floor((bookingStartTime.getTime() - now.getTime()) / (1000 * 60));
 
-  if (diffInMinutes < maxTimeBeforeBooking) {
-    toast.error(`You must book at least ${maxTimeBeforeBooking} minutes before the start time.`);
-    return;
-  }
+  // if (diffInMinutes < maxTimeBeforeBooking) {
+  //   toast.error(`You must book at least ${maxTimeBeforeBooking} hour before the start time.`);
+  //   return;
+  // }
    
   // If all checks pass
   setBookingId(bookingId); 
   SetBookTime([bookingtime]);
- 
-  
   }
+
+
+  const calculateDate = (days : number) => { 
+    const today = new Date(); 
+    const result = new Date(today); 
+    result.setDate(result.getDate() + days); 
+    return result;
+  };
 
   const changeMonth = (delta: number) => {
     let newMonth = currentMonth + delta;
@@ -204,8 +209,11 @@ const diffInDays = Math.round(diffInMs / (1000 * 60 * 60 * 24));
           {[...Array(daysInMonth)].map((_, i) => {
             const day = i + 1;
             const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+
             const dateObj = new Date(dateStr);
+            // bookingtime.maxTimeBeforeBooking
             const isPast = dateObj < new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
             const slotsForDay = timeSlots.filter(slot => slot.date === dateStr);
             const allBooked = slotsForDay.length > 0 && slotsForDay.every(slot => slot.bookingStatus === "booked");
             const anyAvailable = slotsForDay.some(slot => slot.bookingStatus === "available");

@@ -48,9 +48,10 @@ const responsive = {
   }
 
   return (
-    <div className='hero'>
 
-<Carousel 
+<div className='hero'>
+
+   <Carousel 
       responsive={responsive}
       autoPlay={true}
       swipeable={true}
@@ -58,10 +59,10 @@ const responsive = {
       showDots={true}
       infinite={true}
       partialVisible={false}
-      autoPlaySpeed={10000}
+      autoPlaySpeed={6000}
       customTransition="all .5"
       transitionDuration={500}
-     >
+   >
      
      {
          hero.map((item, index)=>(

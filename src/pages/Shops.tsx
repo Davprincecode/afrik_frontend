@@ -9,6 +9,8 @@ import product4 from '../assets/images/product4.png'
 import product5 from '../assets/images/product5.png'
 import product6 from '../assets/images/product6.png'
 import product7 from '../assets/images/product7.png'
+import sub1 from '../assets/images/product3sub1.png'
+import sub2r from '../assets/images/productrem1.png'
 import ads from '../assets/images/discount.png'
 import { FiShoppingCart } from 'react-icons/fi'
 import { IoSearchOutline } from 'react-icons/io5'
@@ -45,7 +47,7 @@ interface Product {
     productName: string;
     productColor: string;
     productDescription: string;
-    productImage: string;
+    productImage: string[];
     discountPrice: number;
     productPrice: number;
     productSize: string;
@@ -393,25 +395,31 @@ const applyFilters = async (page: number) => {
     }
 
   
+function truncateText(text : string, wordLimit = 60) { 
+  if (!text) return ""; 
+  const words = text.split(" "); 
+  if (words.length <= wordLimit) return text; 
+  return words.slice(0, wordLimit).join(" ") + "..."; 
+}
 
-    const responsive = {
-    superLargeDesktop: {
-      breakpoint: { max: 4000, min: 3000 },
-      items: 1
-    },
-    desktop: {
-      breakpoint: { max: 3000, min: 1024 },
-      items: 1
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 464 },
-      items: 1
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 1
-    }
-  }
+const responsive = {
+superLargeDesktop: {
+  breakpoint: { max: 4000, min: 3000 },
+  items: 1
+},
+desktop: {
+  breakpoint: { max: 3000, min: 1024 },
+  items: 1
+},
+tablet: {
+  breakpoint: { max: 1024, min: 464 },
+  items: 1
+},
+mobile: {
+  breakpoint: { max: 464, min: 0 },
+  items: 1
+}
+}
   return (
     <div className="shop-con pageNav">
     <Header />
@@ -431,12 +439,25 @@ const applyFilters = async (page: number) => {
             </div>
 
              <div className="flex-center gap-20 sort-cart-wrapper">
-              <div className="flex-center shop-cart-con">
-                <div className="shop-cart-icon"><FiShoppingCart /></div>
-               <p className="shop-cart">cart</p>
-               <div className="cartNum">{ cart }</div>
-              </div>
-
+              {
+                              signin ? (
+                              <NavLink to="/cart">
+                                    <div className="flex-center shop-cart-con">
+                                    <div className="shop-cart-icon"><FiShoppingCart /></div>
+                                    <p className="shop-cart">cart</p>
+                                    <div className="cartNum">{ cart }</div>
+                                    </div>
+                             </NavLink>
+                              ) : (
+                              <div className="flex-center shop-cart-con">
+                                <div className="shop-cart-icon"><FiShoppingCart /></div>
+                                <p className="shop-cart">cart</p>
+                                <div className="cartNum">{ cart }</div>
+                              </div>
+                         
+                              )
+                          }
+            
               <div className="flex-center gap-5 sort-by-con">
                 <div className="sort">Sort by: </div>
                 <div className="sort-by">
@@ -627,7 +648,7 @@ const applyFilters = async (page: number) => {
 
                             <NavLink to={`/product-details/${item.productId}`}>
                                 <div className="shopProductImage">
-                                <img src={item.productImage} />
+                                   <img src={item.productImage[0]} />
                                 </div>
                             </NavLink>
 
@@ -637,7 +658,11 @@ const applyFilters = async (page: number) => {
                                     <h2>{item.productName}</h2>
                                     <div className="shopPrice">
                                         {/* .toLocaleString() */}
-                                        <span>₦</span> {item.discountPrice.toLocaleString()}
+                                        <span>₦</span> {
+                                          item.discountPrice > 0 ? 
+                                        item.discountPrice.toLocaleString()
+                                        : item.productPrice.toLocaleString()
+                                        }
                                     </div>
                                 </div>
                               </NavLink>
@@ -647,7 +672,7 @@ const applyFilters = async (page: number) => {
                                 <NavLink to={`/product-details/${item.productId}`}>
 
                                 <div className="shopProductDescription">
-                                   {item.productDescription}
+                                  {truncateText(item.productDescription, 10)}
                                 </div>
 
                                 </NavLink>
@@ -658,7 +683,7 @@ const applyFilters = async (page: number) => {
                                     loadingProductId === item.productId ? (
                                        <ButtonPreloader/>
                                     ) : (
-                                      <div className="shopProductIcon" onClick={() => AddToCart(item.productId, item.productName, item.productColor, item.discountPrice, 1, item.productImage, item.productSize, "NGN")}>
+                                      <div className="shopProductIcon" onClick={() => AddToCart(item.productId, item.productName, item.productColor, item.discountPrice > 0 ? item.discountPrice : item.productPrice, 1, item.productImage[0], item.productSize, "NGN")}>
                                         <FiShoppingCart />
                                         <div className="shopPlusIcon"><FaPlus /></div>
                                     </div>   
@@ -686,11 +711,12 @@ const applyFilters = async (page: number) => {
 
 
                 }
+
+
+               
              </div>
         </div>
     </div>
-
-
 
     <div className="shop-pagination">
         {meta && <Pagination meta={meta} onPageChange={setPage} />}

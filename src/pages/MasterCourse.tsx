@@ -168,7 +168,7 @@ function MasterCourse() {
                                         </div>
 
                                         <div className="master-body-date flex-center">
-                                            <div className="master-date">venue:</div>
+                                            <div className="master-date">Type:</div>
                                             <div className="master-date-title flex-center">
                                                 <p>{item.courseType}</p>
                                             </div>
@@ -202,7 +202,7 @@ function MasterCourse() {
                                                                     </div>
                                                                     <div className="course-price">
                                                                     <h1>course price</h1>
-                                                                    <h1>{item.currency}{course.toLocaleString()}</h1>
+                                                                    <h1  className='line-through'>{item.currency}{course.toLocaleString()}</h1>
                                                                     </div>
                                                                 </div>
                                                     );
@@ -234,10 +234,6 @@ function MasterCourse() {
 
                                                     }
                                                 })()}
-
-
-
-
 
                             {
                             new Date(item.endDateRaw) > new Date() && (
@@ -302,7 +298,7 @@ function MasterCourse() {
                                         </div>
 
                                         <div className="master-body-date flex-center">
-                                            <div className="master-date">venue:</div>
+                                            <div className="master-date">Type:</div>
                                             <div className="master-date-title flex-center">
                                                 <p>{item.courseType}</p>
                                             </div>
@@ -336,7 +332,7 @@ function MasterCourse() {
                                                                     </div>
                                                                     <div className="course-price">
                                                                     <h1>course price</h1>
-                                                                    <h1>{item.currency}{course.toLocaleString()}</h1>
+                                                                    <h1 className='line-through'>{item.currency}{course.toLocaleString()}</h1>
                                                                     </div>
                                                                 </div>
                                                     );

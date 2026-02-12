@@ -31,6 +31,7 @@ import ButtonPreloader from '../component/ButtonPreloader'
  }
 
 const LandingPage  = () => {
+  
   const navigate = useNavigate();
   const location = useLocation();
   const[hero, setHero] = useState<heroIntern[]>([]);

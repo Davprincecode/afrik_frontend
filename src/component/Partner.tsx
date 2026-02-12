@@ -64,18 +64,27 @@ function Partner() {
         }
          
          <div className="partnerFlexCon">
-            <div className="partnerFlex">
 
+            <div className="partnerFlex">
                 {
                         items.map((item, index) => (
-
                         <div className="partnerImg" key={index}>
                             <img src={item.image} />
                         </div>
                         ))
                 }
-              
             </div>
+
+            <div aria-hidden className="partnerFlex">
+                {
+                        items.map((item, index) => (
+                        <div className="partnerImg" key={index}>
+                            <img src={item.image} />
+                        </div>
+                        ))
+                }
+            </div>
+
         </div>
 
     </div>

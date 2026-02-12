@@ -154,7 +154,7 @@ const { id } = useParams<{ id: string }>();
                             </div>
                 
                                                 <div className="master-body-date flex-center">
-                                                    <div className="master-date">venue:</div>
+                                                    <div className="master-date">Type:</div>
                                                     <div className="master-date-title flex-center">
                                                         <p>{courseType}</p>
                                                     </div>
@@ -188,7 +188,7 @@ const { id } = useParams<{ id: string }>();
                                                                     </div>
                                                                     <div className="course-price">
                                                                     <p>course price</p>
-                                                                    <h1>{currency}{course.toLocaleString()}</h1>
+                                                                    <h1 className='line-through'>{currency}{course.toLocaleString()}</h1>
                                                                     </div>
                                                                 </div>
                                                     );

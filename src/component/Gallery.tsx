@@ -276,8 +276,8 @@ function Gallery() {
           onClose={closeModal}
           onPrev={goPrev}
           onNext={goNext}
-          hasPrev={currentIndex > 0}
-          hasNext={currentIndex < images.length - 1}
+          hasPrev={(currentIndex + 1) > 0}
+          hasNext={currentIndex < (images.length - 1)}
         />
       )}
         

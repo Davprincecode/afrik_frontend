@@ -10,6 +10,7 @@ import { userAuth } from './context/AuthContext'
 import { button } from 'framer-motion/client'
 import ButtonPreloader from '../component/ButtonPreloader'
 import { useNavigate } from 'react-router-dom'
+import AuthComponent from '../component/AuthComponent'
 
   type TimeSlot = {
     bookingId: string;
@@ -34,23 +35,44 @@ import { useNavigate } from 'react-router-dom'
 const ConsultantDetails  = ({bookTime,  scheduleFunction }: consultantInterface) =>  {
 
   const [loading, setLoading] = useState<boolean>(false)
-  const {baseUrl, token} = userAuth();
-  const [email, setEmail] = useState<string>('');
-  const [name, setName] = useState<string>('');
-  const [phoneNumber, setPhoneNumber] = useState<string>('');
+  const {baseUrl, signin, token, name, email, address1, phoneNumber1} = userAuth();
+  const [userEmail, setEmail] = useState<string>(email);
+  const [userName, setName] = useState<string>(name);
+  const [phoneNumber, setPhoneNumber] = useState<number>(parseInt(phoneNumber1));
   const [orderNote, setOrderNote] = useState<string>('');
+  const [authAction, setAuthAction] = useState<boolean>(false);
+  const [subNav, setSubNav] = useState<boolean>(false);
+          
   const navigate = useNavigate();
   const singleBooking = bookTime[0];
 
+  const validateProductForm = () => {
+      if (!name.trim()) {
+        toast.error("Name is required");
+        return false;
+      }
+      if (!userEmail.trim()) {
+        toast.error("Email is required");
+        return false;
+      }
+      if (!phoneNumber || isNaN(phoneNumber)) {
+        toast.error("Phone number is required");
+        return false;
+      }
+      return true;
+  }
   const url = window.location.origin;
   const fetchData = async () => {
+     if(!validateProductForm()){
+       return;
+    }
         setLoading(true);
           const myHeaders = new Headers();
           myHeaders.append("Content-Type", "application/json");
           myHeaders.append("Authorization", token);
           const raw = JSON.stringify({
-              "email" : email,
-              "name" : name,
+              "email" : userEmail,
+              "name" : userName,
               "phoneNumber" : phoneNumber,
               "orderNote" : orderNote,
               "service_type" : "booking",
@@ -95,13 +117,16 @@ const ConsultantDetails  = ({bookTime,  scheduleFunction }: consultantInterface)
       };
 
   const freeBooking = async () => {
+    if(!validateProductForm()){
+       return;
+    }
         setLoading(true);
           const myHeaders = new Headers();
           myHeaders.append("Content-Type", "application/json");
           myHeaders.append("Authorization", token);
           const raw = JSON.stringify({
-              "email" : email,
-              "name" : name,
+              "email" : userEmail,
+              "name" : userName,
               "phoneNumber" : phoneNumber,
               "orderNote" : orderNote,
               "currency" : singleBooking?.currency,
@@ -119,6 +144,9 @@ const ConsultantDetails  = ({bookTime,  scheduleFunction }: consultantInterface)
           };
           try {
             const response = await fetch(`${baseUrl}/freebooking`, requestOptions); 
+            // const results = await response.text();
+            // console.log(results);
+             
             if (!response.ok) {
               const errorResponse = await response.json();  
               throw new Error(errorResponse.message);
@@ -141,9 +169,12 @@ const ConsultantDetails  = ({bookTime,  scheduleFunction }: consultantInterface)
                   toast.error('An unknown error occurred.');
                 }
           }
-      
       };
   
+     const authFunction = () => {
+        setAuthAction(true);
+      }
+
   return (
   
             <div className="consultant">
@@ -177,15 +208,15 @@ const ConsultantDetails  = ({bookTime,  scheduleFunction }: consultantInterface)
                     <div className="form-cons">
                         <div className="admin-input">
                     <label >name </label>
-                    <input type="text" placeholder='full name' value={name} onChange={(e) => setName(e.target.value)} />
+                    <input type="text" placeholder='full name' value={userName} onChange={(e) => setName(e.target.value)} />
                       </div>
                         <div className="admin-input">
                     <label >email</label>
-                    <input type="text"  placeholder='email' value={email} onChange={(e) => setEmail(e.target.value)} />
+                    <input type="text"  placeholder='email' value={userEmail} onChange={(e) => setEmail(e.target.value)} />
                       </div>
                         <div className="admin-input">
                     <label >phone no</label>
-                    <input type="text"  placeholder='phone no'  value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)}  />
+                    <input type="number"  placeholder='phone no'  value={phoneNumber} onChange={(e) => setPhoneNumber(parseInt(e.target.value))}  />
                       </div>
                     <div className="admin-input">
                     <label >note <span>(optional)</span></label>
@@ -195,6 +226,7 @@ const ConsultantDetails  = ({bookTime,  scheduleFunction }: consultantInterface)
 
                     <div className="admin-input">
                       {
+                        signin ? (
                         loading ? (
                           <ButtonPreloader/>
                         ) : (
@@ -208,11 +240,21 @@ const ConsultantDetails  = ({bookTime,  scheduleFunction }: consultantInterface)
                                     Confirm
                                   </button>
                             )
-                          
-                        )
+                        ) 
+                      ) : (
+                                <div className="master-btn" onClick={authFunction}>
+                                    confirm
+                                </div>
+                                )
                       }
                         
                     </div>
+
+                  {
+                       !signin && (
+                           <AuthComponent authAction={authAction} setAuthAction={setAuthAction} setSubNav={setSubNav}/>
+                       )
+                   } 
 
                 </div>
 

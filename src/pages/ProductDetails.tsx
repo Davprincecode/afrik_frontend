@@ -15,6 +15,8 @@ import { toast } from 'react-toastify'
 import ButtonPreloader from '../component/ButtonPreloader'
 import AuthComponent from '../component/AuthComponent'
 import { FaXTwitter } from 'react-icons/fa6'
+import Carousel from 'react-multi-carousel'
+import { p } from 'framer-motion/client'
 
 
 
@@ -23,7 +25,7 @@ import { FaXTwitter } from 'react-icons/fa6'
     productName: string;
     productColor: string;
     productDescription: string;
-    productImage: string;
+    productImage: string[];
     discountPrice: number;
     productPrice: number;
     productSize: string;
@@ -52,7 +54,7 @@ function ProductDetails() {
     const [productName, setProductName] =  useState<string>('');
     const [productColor, setProductColor] =  useState<string>('');
     const [productDescription, setProductDesription] =  useState<string>('');
-    const [productImage, setProductImage] =  useState<string>('');
+    const [productImage, setProductImage] =  useState<string[]>([]);
     const [currency, setCurrency] =  useState<string>('');
     const [discountPrice, setDiscountPrice] =  useState<number>(0);
     const [productPrice, setProductPrice] =  useState<number>(0);
@@ -73,6 +75,8 @@ function ProductDetails() {
      const [totalReviews, setTotalReviews] = useState<number>(0);
      const [percentages, setPercentages] = useState<RatingBreakdown>([]);
      const [ratingBreakdown, setRatingBreakdown] = useState<RatingBreakdown>([]);
+     const [sizeMeasurement, setSizeMeasurement] = useState<string>('');
+
     const { pathname } = useLocation();
     const {baseUrl, signin,  cart, setCart, token} = userAuth();
     const currentUrl = encodeURIComponent(window.location.href);
@@ -107,7 +111,7 @@ function ProductDetails() {
                     const errorResponse = await response.json();
                     throw new Error(errorResponse.message);
                     }
-                        const result = await response.json(); 
+                        const result = await response.json();      
                         setId(result.data.product.productId);
                         setProductName(result.data.product.productName);
                         setProductColor(result.data.product.productColor);
@@ -122,7 +126,9 @@ function ProductDetails() {
                         setStock(result.data.product.stock);
                         setSimilarProducts(result.data.similarProduct); 
                         setSubProducts(prev  => [ result.data.product]);
-                        setSubProducts(prev => [...prev, ...result.data.subProduct]); 
+                        setSubProducts(prev => [...prev, ...result.data.subProduct]);
+                        setSizeMeasurement(result.data.product.sizeMeasurement);
+                        // setSubProducts(result.data.subProduct); 
                         setLoading(false);
                 } catch (error) {
                     setLoading(false);
@@ -135,7 +141,7 @@ function ProductDetails() {
                 }
         }
 
-        const getReview = async () => {
+        const getReview = async () => {         
                 setLoading(true);
                 const myHeaders = new Headers();
                 myHeaders.append("Content-Type", "application/json");
@@ -152,7 +158,7 @@ function ProductDetails() {
                     const errorResponse = await response.json();
                     throw new Error(errorResponse.message);
                     }
-                        const result = await response.json(); 
+                        const result = await response.json();   
                            setAverageRating(result.averageRating);
                             setTotalReviews(result.totalReviews);
                             setPercentages(result.percentages);
@@ -170,9 +176,10 @@ function ProductDetails() {
                 }
         }
 
-    const getProduct = (productId : string, productName : string, productColor : string, availableQty : number,
+
+        const getProduct = (productId : string, productName : string, productColor : string, availableQty : number,
         availableStockUnlimited : boolean, productDescription : string, productSize : string,
-        productPrice : number, discount : number, productImage:string, stock:string) => {
+        productPrice : number, discount : number, productImage:string[], stock:string) => {
             // addToSubProduct();
             // removeSubProduct(productId);
             // setProductId(productId);
@@ -330,6 +337,32 @@ function ProductDetails() {
         setAuthAction(true);
       }
 
+      function truncateText(text : string, wordLimit = 60) { 
+            if (!text) return ""; 
+            const words = text.split(" "); 
+            if (words.length <= wordLimit) return text; 
+            return words.slice(0, wordLimit).join(" ") + "..."; 
+        }
+
+      const responsive = {
+            superLargeDesktop: {
+            breakpoint: { max: 4000, min: 3000 },
+            items: 1
+            },
+            desktop: {
+            breakpoint: { max: 3000, min: 1024 },
+            items: 1
+            },
+            tablet: {
+            breakpoint: { max: 1024, min: 464 },
+            items: 1
+            },
+            mobile: {
+            breakpoint: { max: 464, min: 0 },
+            items: 1
+            }
+}
+
   return (
     <div className="productDetails pageNav">
        <Header/>
@@ -341,14 +374,26 @@ function ProductDetails() {
                <span> Home </span> / Shop
             </div>
 
-
-            <NavLink to="/cart">
+            {
+                signin ? (
+                <NavLink to="/cart">
                 <div className="flex-center shop-cart-con">
                     <div className="shop-cart-icon"><FiShoppingCart /></div>
                     <p className="shop-cart">cart</p>
                     <div className="cartNum">{cart}</div>
                 </div>
-            </NavLink>
+               </NavLink>
+                ) : (
+
+                <div className="flex-center shop-cart-con">
+                    <div className="shop-cart-icon"><FiShoppingCart /></div>
+                    <p className="shop-cart">cart</p>
+                    <div className="cartNum">{cart}</div>
+                </div>
+           
+                )
+            }
+            
           </div>
 
 
@@ -356,19 +401,42 @@ function ProductDetails() {
           <div className="flex gap-10 prd-wrapper">
 {/* ================================================================= */}
               <div className="prd-con">
+
                 <div className="prd-img-con">
-                    <div className="prd-preview-img">
-                        <img src={productImage} />
+                   <div className="main-img">
+                    <Carousel 
+                        responsive={responsive}
+                        autoPlay={false}
+                        swipeable={true}
+                        draggable={true}
+                        showDots={false}
+                        infinite={true}
+                        partialVisible={false}
+                        autoPlaySpeed={10000}
+                        customTransition="all .5"
+                        transitionDuration={500}
+                        >
+                   {
+                     productImage.map((image, index) => (
+                        <div className="prd-preview-img" key={index} 
+                        // style={{background : 'url("https://api.loveafrikgroup.com/images/1766493803_main.jpeg")'}}
+                        >
+                          <img src={image} />
+                        </div>
+                     ))
+                    }
+                    </Carousel>
                     </div>
+                    
                     <div className="flex-center sub-img-con" >
                     {
-                            subProducts.map((value, index)=> (
+                        subProducts.map((value, index)=> (
+                            
                             <div className={`sub-img ${value.productId === id ? 'sub-active' : ''}`}
-                            key={index} 
-                            onClick={() => getProduct(value.productId, value.productName, value.productColor, value.availableQty, value.availableStockUnlimited, value.productDescription, value.productSize, value.productPrice, value.discountPrice, value.productImage, value.stock) } >
-
-                            <img src={value.productImage} />
-
+                                key={index} 
+                                onClick={() => getProduct(value.productId, value.productName, value.productColor, value.availableQty, value.availableStockUnlimited, value.productDescription, value.productSize, value.productPrice, value.discountPrice, value.productImage, value.stock) } 
+                            >
+                               <img src={value.productImage[0]} />
                             </div>
                             
                         ))
@@ -447,12 +515,30 @@ function ProductDetails() {
                          
                        </div>
                 </div>
-                <div className="prd-price">
+
+                {
+                    discountPrice > 0 ? (
+                        <>
+                       <div className="prd-price">
                     <h2>₦{discountPrice}</h2>
                 </div>
                 <div className="prd-old-price">
                     ₦{productPrice}
                 </div>
+                </>
+                    ) : (
+                        <>
+                    <div className="prd-price">
+                    <h2>₦{productPrice}</h2>
+                    </div>
+                    <div className="prd-old-price">
+                    ₦{discountPrice}
+                    </div>
+                    </>
+                    )
+                }
+                
+
                 <div className="prd-size">
                     size: <span>{productSize}</span>
                 </div>
@@ -463,7 +549,7 @@ function ProductDetails() {
                     {
                         subProducts.map((value, index)=> (
                           <div className={`color ${value.productId === id ? 'active' : ''}`} key={index}>
-                                <img src={value.productImage} />
+                                <img src={value.productImage[0]} />
                                </div>
                         ))
                     }
@@ -508,7 +594,7 @@ function ProductDetails() {
                         stock == "out of stock" ? (
                                <div className="add-to-cart" onClick={() => OutOfStock() }>add to cart</div>
                         ) : (
-                               <div className="add-to-cart" onClick={() => AddToCart(id, productName, productColor, discountPrice, quantity, productImage, productSize, "NGN") }>add to cart</div>
+                               <div className="add-to-cart" onClick={() => AddToCart(id, productName, productColor, discountPrice > 0 ? discountPrice : productPrice, quantity, productImage[0], productSize, "NGN") }>add to cart</div>
                         )
                         ) : (
                            <div className="add-to-cart" onClick={authFunction}>add to cart</div> 
@@ -531,7 +617,7 @@ function ProductDetails() {
                             stock == "out of stock" ? (
                                     <div className="buy-now"  onClick={() => OutOfStock() }>buy now</div>
                                 ) : (
-                                   <div className="buy-now"  onClick={() => BuyNow(id, productName, productColor, discountPrice, quantity, productImage, productSize, "NGN") }>buy now</div> 
+                                   <div className="buy-now"  onClick={() => BuyNow(id, productName, productColor, discountPrice, quantity, productImage[0], productSize, "NGN") }>buy now</div> 
                                 )
                             ) : (
                                 <div className="buy-now"  onClick={authFunction}>buy now</div>    
@@ -623,7 +709,7 @@ function ProductDetails() {
                     </div>
 
                      <div className="measurement" style={{display : measurement ? "block" : "none"}}>
-                            <img src={img} alt="" />
+                            <img src={sizeMeasurement} alt="" />
                         </div>
                 </div>
                 <div className="details">
@@ -744,9 +830,9 @@ function ProductDetails() {
 
                                    <div className="shopProduct"  key={index}>
                                         <NavLink to={`/product-details/${item.productId}`}>
-                                        <div className="shopProductImage">
-                                        <img src={item.productImage} />
-                                        </div>
+                                                    <div className="shopProductImage" key={index}>
+                                                       <img src={item.productImage[0]} />
+                                                    </div>
                                         </NavLink>
 
                                         <div className="shopProductDetails">
@@ -762,7 +848,7 @@ function ProductDetails() {
                                         <div className="shopProductDetail">
                                             <NavLink to={`/product-details/${item.productId}`}>
                                             <div className="shopProductDescription">
-                                            {item.productDescription}
+                                               {truncateText(item.productDescription, 10)}
                                             </div>
                                             </NavLink>
 
@@ -773,7 +859,7 @@ function ProductDetails() {
                                                         loadingProductId === item.productId ? (
                                                               <ButtonPreloader/>
                                                         ) : (
-                                                            <div className="shopProductIcon"  onClick={() => AddToCart(item.productId, item.productName, item.productColor, item.discountPrice, 1, item.productImage, item.productSize, "NGN")}>
+                                                            <div className="shopProductIcon"  onClick={() => AddToCart(item.productId, item.productName, item.productColor, item.discountPrice, 1, item.productImage[0], item.productSize, "NGN")}>
                                                                 <FiShoppingCart />
                                                                 <div className="shopPlusIcon"><FaPlus /></div>
                                                             </div>

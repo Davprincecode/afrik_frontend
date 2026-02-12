@@ -24,7 +24,6 @@ import BlogList from "./pages/BlogList";
 import BlogDetails from "./pages/BlogDetails";
 import AnimatedShuffleList from "./pages/AnimatedShuffleList";
 import ComingSoon from "./component/ComingSoon";
-import Shop from "./pages/Shop";
 import ProductDetails from "./pages/ProductDetails";
 import Cart from "./pages/Cart";
 // import Booking from "./pages/Booking";
@@ -48,7 +47,7 @@ import MessageComponent from "./pages/admin/component/MessageComponent";
 import VerifyCoursePayment from "./pages/payment/VerifyCoursePayment";
 import Shops from "./pages/Shops";
 import VerifyBookingPayment from "./pages/payment/VerifyBookingPayment";
-
+import Shop1 from "./pages/Shop1";
 
 
 
@@ -107,7 +106,11 @@ const {baseUrl} = userAuth();
           <Route path="/our-services" element={<OurServices/>} />
           <Route path="/our-blog" element={<BlogList/>} />
           <Route path="/blog-details/:blogId" element={<BlogDetails/>} />
+
           <Route path="/product" element={<Shops/>} />
+          <Route path="/product1" element={<Shop1/>} />
+
+
           {/* <Route path="/product-details" element={<ProductDetails/>} /> */}
           <Route path="/product-details/:productId" element={<ProductDetails/>} />
           <Route path="/cart" element={<Cart/>} />

@@ -116,7 +116,7 @@ const navSub = () =>{
 
 
 
-                      { signin && ( <li className='auth-notification flex-center justification-center gap-10'><NavLink to="/contact-us">notification</NavLink> <IoMdNotificationsOutline /></li>)}
+                      {/* { signin && ( <li className='auth-notification flex-center justification-center gap-10'><NavLink to="/contact-us">notification</NavLink> <IoMdNotificationsOutline /></li>)} */}
 
                      <div className="auth-mobile-con">
 

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import Header from '../component/Header'
-import { FaCcVisa } from 'react-icons/fa'
+import { FaArrowLeft, FaCcVisa } from 'react-icons/fa'
 import Footer from '../component/Footer'
 import { userAuth } from './context/AuthContext';
 import ButtonPreloader from '../component/ButtonPreloader';
 import { toast } from 'react-toastify';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 interface cartInterface {
    id :  number;
@@ -27,18 +28,18 @@ type StateIntern = {
 
 function Payment() {
 
-const {baseUrl, token} = userAuth();
+const {baseUrl, token, name, email, address1, phoneNumber1} = userAuth();
  const [loading, setLoading] = useState<boolean>(false);
 const [cart, setCart] = useState<cartInterface[]>([]);
 const [total, setTotal] =useState<number>(0);
 const [states, setStates] = useState<StateIntern[]>([]);
- const [name, setName] = useState<string>('');
- const [email, setEmail] = useState<string>('');
- const [address, setAddress] = useState<string>('');
+ const [userName, setName] = useState<string>(name);
+ const [userEmail, setEmail] = useState<string>(email);
+ const [address, setAddress] = useState<string>(address1);
  const [currency, setCurrency] = useState<string>('NGN');
- const [phoneNumber, setPhoneNumber] = useState<number>(0);
+ const [phoneNumber, setPhoneNumber] = useState<number>(parseInt(phoneNumber1));
  const [orderNote, setOrderNote] = useState<string>('');
-
+const navigate = useNavigate();
  const [state, setState] = useState<string>('');
  const [deliveryFee, setDeliveryFee] = useState<number>(0);
  
@@ -118,8 +119,8 @@ const [states, setStates] = useState<StateIntern[]>([]);
         myHeaders.append("Content-Type", "application/json");
         myHeaders.append("Authorization", token);
         const raw = JSON.stringify({
-             "email" : email,
-             "name" : name,
+             "email" : userEmail,
+             "name" : userName,
              "area" : state,
              "address" : address,
              "phoneNumber" : phoneNumber,
@@ -176,8 +177,9 @@ const [states, setStates] = useState<StateIntern[]>([]);
 
       <div className="payment-con">
 
-         <div className="page-title">
-               <span> Cart </span> / shipping / payment
+         <div className="page-title flex justification-between">
+              <p><span> Cart </span> / shipping / payment </p> 
+               <div className='cursor' onClick={() => navigate(-1)}><FaArrowLeft /></div>
         </div>
          
          <div className="billing-con">
@@ -188,11 +190,11 @@ const [states, setStates] = useState<StateIntern[]>([]);
 
                 <div className="formInput">
                     <label >name <span>(First name and Last name)</span>  *</label>
-                    <input type="text" value={name}  placeholder='full name' onChange={(e) => setName(e.target.value)}/>
+                    <input type="text" value={userName}  placeholder='full name' onChange={(e) => setName(e.target.value)}/>
                 </div>
                 <div className="formInput">
                     <label >email</label>
-                    <input type="text" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                    <input type="text" value={userEmail} onChange={(e) => setEmail(e.target.value)}/>
                 </div>
 
             
@@ -259,6 +261,9 @@ const [states, setStates] = useState<StateIntern[]>([]);
                           <h2>Delivery fee</h2>
                           <h2>₦{deliveryFee.toLocaleString()}</h2>
                         </div>
+                        <div className="deliveryNote" style={{ color : "red"}}>
+                       <p>Additional charges may apply for suburban or rural locations based on our dispatch partners’ rates.</p>
+                     </div>
                         {/* <div className="billing-sub-total flex-center justification-between">
                           <h2>shipping</h2>
                           <h2>₦100</h2>
@@ -269,6 +274,8 @@ const [states, setStates] = useState<StateIntern[]>([]);
                         <h1>total</h1>
                         <h1>₦{total.toLocaleString()}</h1>
                      </div>
+
+                     
 
                 </div>
 
@@ -303,7 +310,7 @@ const [states, setStates] = useState<StateIntern[]>([]);
                             ) : (
 
                                 
-                            name !== '' && email !=='' && address !=='' && phoneNumber > 0 && state && deliveryFee >= 0 ? (
+                            userName !== '' && userEmail !=='' && address !=='' && phoneNumber > 0 && state && deliveryFee >= 0 ? (
                             <div className="paymentBtn" onClick={fetchData}>
                                 place order
                             </div>
