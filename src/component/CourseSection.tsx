@@ -7,6 +7,9 @@ import ComingSoon from './ComingSoon';
 import Carousel from 'react-multi-carousel';
 import { userAuth } from '../pages/context/AuthContext'
 import AuthComponent from './AuthComponent'
+import { toast } from 'react-toastify'
+import ButtonPreloader from './ButtonPreloader'
+import { p } from 'framer-motion/client'
 
 
 interface courseIntern {
@@ -24,6 +27,7 @@ interface courseIntern {
     endDate : string;
     startDate : string;
     status : string;
+    commingSoon : string;
  }
 
  
@@ -48,6 +52,7 @@ const CourseSection  = () => {
         items: 1
       }
       }
+
     const [authAction, setAuthAction] = useState<boolean>(false);
     const [subNav, setSubNav] = useState<boolean>(false);
     const[course, setCourse] = useState<courseIntern[]>([]);
@@ -55,6 +60,8 @@ const CourseSection  = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const queryParams = new URLSearchParams(location.search);
       const token = queryParams.get('token');
+
+    const [waitEmail, setwaitEmail] = useState<string>('');
 
   useEffect(() => {
     getData()
@@ -75,7 +82,7 @@ const CourseSection  = () => {
               const errorResponse = await response.json();
               throw new Error(errorResponse.message);
               }
-              const result = await response.json(); 
+              const result = await response.json();
               setCourse(result.data.courseSection);
               setLoading(false);
           } catch (error) {
@@ -83,6 +90,35 @@ const CourseSection  = () => {
           }
   }
 
+     const subscribed = async (courseId :  string) => {
+            setLoading(true);
+                const myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+                const requestOptions: RequestInit = {
+                    method: "GET",
+                    headers: myHeaders,
+                    redirect: "follow"
+                };
+                try {
+                    const response = await fetch(`${baseUrl}/course-waiting/${courseId}/${waitEmail}`, requestOptions);
+                    if (!response.ok) {
+                    const errorResponse = await response.json();
+                    throw new Error(errorResponse.message);
+                    }
+                    const result = await response.json(); 
+                    setwaitEmail('');
+                    toast.success(result.message);
+                    setLoading(false);
+                } catch (error) {
+                  setLoading(false);
+                  if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                  toast.error(error.message);
+                  } else {
+                  toast.error('An unknown error occurred.');
+                  }
+                    
+                }
+        }
   const authFunction = () => {
         setAuthAction(true);
       }
@@ -107,6 +143,7 @@ const CourseSection  = () => {
 
         {
           course.map((item, index)=>(
+
             <div className='bookingSection' key={index}>
             <div className="rightBooking">
                 <img src={item.courseImage} />
@@ -128,8 +165,33 @@ const CourseSection  = () => {
                         </NavLink>
                     </p>
                 </div>
+                      {
+                        item.commingSoon && (
+                            <div className="incomingWrapper">
+                            <div className="coming-soon">
+                            coming soon
+                            </div>
 
-                 
+                            <div className="footerNewsList commingsooninput">
+                            <p>Get notified when this <span>Masterclass</span> is Live!</p>
+                            <div className="footerInput flex-center">
+                            <input type="email" placeholder="Enter your email" value={waitEmail} onChange={(e) => setwaitEmail(e.target.value)}/>
+                            {
+                            loading ? (
+                            <div className="footerBtn">
+                            <ButtonPreloader/>
+                            </div>
+                            ) : (
+                            <div className="footerBtn" onClick={() => subscribed(item.courseId)}>
+                            subscribe
+                            </div>
+                            )
+                            }
+                            </div>
+                            </div>
+                            </div>
+                        )
+                      }
                         {
                         new Date(item.endDateRaw) > new Date() && (
                         signin ? (
@@ -147,8 +209,6 @@ const CourseSection  = () => {
                         )
                         )
                         }
-
-
                 <div className="allCourses">
                   <NavLink to="/master-course">all courses/masterclasses</NavLink>  
                 </div>

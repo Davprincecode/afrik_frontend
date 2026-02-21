@@ -13,22 +13,32 @@ import { useNavigate } from 'react-router-dom'
 import AuthComponent from '../component/AuthComponent'
 
   type TimeSlot = {
-    bookingId: string;
-    date: string;
-    startTime: string;
-    endTime: string;
-    interval: string;
-    currency: string;
-    price: number;
-    bookingStatus: string;
-    bookingDescription : string;
-    maxDayBeforeBooking : string;
-    maxTimeBeforeBooking : string;
-  };
+    bookingTitle : string;
+  bookingId: string;
+  category : string;
+  date: string;
+  startTime: string;
+  endTime: string;
+  interval: string;
+  currency: string;
+  price: number;
+  bookingStatus: string;
+  bookingDescription : string;
+  maxDayBeforeBooking : string;
+  maxTimeBeforeBooking : string;
+  bookingPrices : priceIntern[]
+};
+interface priceIntern {
+  id : string;
+  bookingId : string;
+  onlinePrice : number;
+  physicalPrice : number;
+  priceName : string;
+}
 
   interface consultantInterface{
-  scheduleFunction : () => void;
-  bookTime : TimeSlot[];
+    scheduleFunction : () => void;
+    bookTime : TimeSlot[];
   }
 
 
@@ -44,7 +54,16 @@ const ConsultantDetails  = ({bookTime,  scheduleFunction }: consultantInterface)
   const [subNav, setSubNav] = useState<boolean>(false);
           
   const navigate = useNavigate();
+
   const singleBooking = bookTime[0];
+
+  const defaultPrice = singleBooking?.bookingPrices.length > 0 && singleBooking?.currency == "FREE" ? 0 : singleBooking?.price;
+
+  const defaultType = singleBooking?.bookingPrices.length > 0 ? '' : singleBooking?.category;
+
+  const [bookingPrice, setBookingPrice] = useState<number>(defaultPrice);
+  const [bookingType, setBookingType] = useState<string>(defaultType);
+  
 
   const validateProductForm = () => {
       if (!name.trim()) {
@@ -75,9 +94,10 @@ const ConsultantDetails  = ({bookTime,  scheduleFunction }: consultantInterface)
               "name" : userName,
               "phoneNumber" : phoneNumber,
               "orderNote" : orderNote,
+              "bookingType" : bookingType,
               "service_type" : "booking",
               "currency" : singleBooking?.currency,
-              "amount" : singleBooking?.price,
+              "amount" : bookingPrice,
               "bookingId" : singleBooking?.bookingId,
               "bookingDate" : singleBooking?.date,
               "bookingStartTime" : singleBooking?.startTime,
@@ -134,7 +154,8 @@ const ConsultantDetails  = ({bookTime,  scheduleFunction }: consultantInterface)
               "bookingId" : singleBooking?.bookingId,
               "bookingDate" : singleBooking?.date,
               "bookingStartTime" : singleBooking?.startTime,
-              "bookingEndTime" : singleBooking?.endTime
+              "bookingEndTime" : singleBooking?.endTime,
+              "bookingType" : bookingType
           });
           const requestOptions: RequestInit = {
               method: "POST",
@@ -144,8 +165,8 @@ const ConsultantDetails  = ({bookTime,  scheduleFunction }: consultantInterface)
           };
           try {
             const response = await fetch(`${baseUrl}/freebooking`, requestOptions); 
-            // const results = await response.text();
-            // console.log(results);
+            const results = await response.json();
+            console.log(results);
              
             if (!response.ok) {
               const errorResponse = await response.json();  
@@ -170,10 +191,34 @@ const ConsultantDetails  = ({bookTime,  scheduleFunction }: consultantInterface)
                 }
           }
       };
-  
+
+  const confirmPrice = () => {
+     toast.error("Please select price");
+  }
      const authFunction = () => {
         setAuthAction(true);
       }
+
+      const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+          const value = e.target.value;
+          const text = e.target.options[e.target.selectedIndex].text;
+           const result = text.slice(text.lastIndexOf("-") + 1).trim();
+           if(value == ""){
+              setBookingPrice(0);
+              setBookingType('');
+           }
+           const course = singleBooking?.bookingPrices.find(item => item.id == value);
+          if(result == "physical"){
+            setBookingPrice(course?.physicalPrice ?? 0);
+            const type = course?.priceName + " " + "-" + " " +"physical"
+            setBookingType(type);
+          }
+          if(result == "online"){
+            setBookingPrice(course?.onlinePrice ?? 0); 
+            const type = course?.priceName + " " + "-" + " " + "online"
+            setBookingType(type);
+          }
+        };
 
   return (
   
@@ -183,7 +228,9 @@ const ConsultantDetails  = ({bookTime,  scheduleFunction }: consultantInterface)
                     <div className="consultant-icon"><FaCalendarAlt /></div>
                     <p className='schedule-name'>schedule a</p>
                     <h2 className='consultant-name'>consultation</h2>
-                    <div className="clock flex-center"><CiClock1 /> <h2>{singleBooking?.interval}</h2></div>
+
+                    <p className='schedule-name schedule-names'>{singleBooking?.bookingTitle}</p>
+                    <div className="clock flex-center" style={{margin : "10px 0px"}}><CiClock1 /> <h2>{singleBooking?.interval}</h2></div>
                     <div className="consultant-bod">
                       {singleBooking?.bookingDescription}
                     </div>
@@ -198,13 +245,32 @@ const ConsultantDetails  = ({bookTime,  scheduleFunction }: consultantInterface)
                             <p>{singleBooking?.date}</p>
                         </div>
                         <div className="time">{singleBooking?.startTime} - {singleBooking?.endTime}</div>
-                        <div className="price-currency flex-center gap-10"><IoMdPricetags /> {singleBooking?.currency}  {singleBooking?.price}</div>
+                        <div className="time">{bookingType}</div>
+                        <div className="price-currency flex-center gap-10"><IoMdPricetags /> {singleBooking?.currency} {singleBooking?.currency !== "FREE" && bookingPrice.toLocaleString() }</div>
                         {/* <div className="flex-center consultant-time gap-10">
                             <TiWorld />
                             <p>time zone europe</p>
                         </div> */}
                     </div>
 
+                    {
+                      singleBooking?.bookingPrices.length > 0 && (
+                          <div className="admin-input">
+                          <label >Select Course/price</label>
+                          <select onChange={handleChange} >
+                            <option value="">select type</option>
+                            {
+                              singleBooking?.bookingPrices.map((prices, index)=>(
+                                  <div key={index}>
+                                  <option value={prices.id} >{prices.priceName} - physical</option>
+                                  <option value={prices.id} >{prices.priceName} - online</option>
+                                  </div>
+                              ))
+                            }
+                          </select>
+                      </div>
+                      )
+                    }
                     <div className="form-cons">
                         <div className="admin-input">
                     <label >name </label>
@@ -230,22 +296,31 @@ const ConsultantDetails  = ({bookTime,  scheduleFunction }: consultantInterface)
                         loading ? (
                           <ButtonPreloader/>
                         ) : (
-                          
-                            bookTime[0]?.price === 0 ? (
-                              <button onClick={freeBooking}>
+                          <button onClick={freeBooking}>
                               Confirm
-                              </button>
-                            ) : (
-                                  <button onClick={fetchData}>
-                                    Confirm
-                                  </button>
-                            )
+                          </button>
+                            // bookTime[0]?.currency == "FREE" && bookingPrice == 0 ? (
+                            //   <button onClick={freeBooking}>
+                            //   Confirm
+                            //   </button>
+                            // ) : (
+                            //   bookingPrice > 0 ? (
+                            //        <button onClick={fetchData}>
+                            //         Confirm
+                            //       </button>
+                            //   ) : (
+                            //      <button onClick={confirmPrice}>
+                            //         Confirm
+                            //       </button>
+                            //   )
+                                 
+                            // )
                         ) 
                       ) : (
-                                <div className="master-btn" onClick={authFunction}>
-                                    confirm
-                                </div>
-                                )
+                            <div className="master-btn" onClick={authFunction}>
+                                confirm
+                            </div>
+                          )
                       }
                         
                     </div>

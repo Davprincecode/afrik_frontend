@@ -7,10 +7,19 @@ import { userAuth } from './context/AuthContext'
 import ButtonPreloader from '../component/ButtonPreloader'
 import { toast } from 'react-toastify'
 import AuthComponent from '../component/AuthComponent'
+import { p } from 'framer-motion/client'
 
 
 
+interface coursePricesIntern{
+    coursePriceOnline: number,
+    coursePricePhysical : number,
+    id: string,
+    priceName: string
+}
 function MasterCourseDetail() {
+    const[coursePrices, setCoursePrices] = useState<coursePricesIntern[]>([]);
+    const[commingSoon, setCommingSoon] = useState<boolean>(false);
     const[courseDescription, setCourseDescription] = useState<string>('');
     const[courseId, setCourseId] = useState<string>('');
     const[courseImage, setCourseImage] = useState<string>('');
@@ -30,39 +39,34 @@ function MasterCourseDetail() {
     const[status, setStatus] = useState<string>('');
     const [authAction, setAuthAction] = useState<boolean>(false);
     const [subNav, setSubNav] = useState<boolean>(false);
+    const [waitEmail, setwaitEmail] = useState<string>('');
+    const {baseUrl, signin,  token} = userAuth();
+    const[loading, setLoading] = useState<boolean>(false);
+    const { id } = useParams<{ id: string }>();
 
-
-const {baseUrl, signin,  token} = userAuth();
-const[loading, setLoading] = useState<boolean>(false);
-
-const { id } = useParams<{ id: string }>();
-
- useEffect(() => {
+        useEffect(() => {
             getData()
             }, [id]);
-    
-      const getData = async () => {
-          setLoading(true);
-              const myHeaders = new Headers();
-              myHeaders.append("Content-Type", "application/json");
+
+        const getData = async () => {
+            setLoading(true);
+                const myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
             //   myHeaders.append("Authorization", token);
-              const requestOptions: RequestInit = {
-                  method: "GET",
-                  headers: myHeaders,
-                  redirect: "follow"
-              };
-              try {
-                  const response = await fetch(`${baseUrl}/page-course/${id}`, requestOptions);
-               
-                  
-                  if (!response.ok) {
-                  const errorResponse = await response.json();
-                  throw new Error(errorResponse.message);
-                  }
-                  const result = await response.json(); 
-               
-                
-                     
+                const requestOptions: RequestInit = {
+                    method: "GET",
+                    headers: myHeaders,
+                    redirect: "follow"
+                };
+                try {
+                    const response = await fetch(`${baseUrl}/page-course/${id}`, requestOptions);
+                    if (!response.ok) {
+                    const errorResponse = await response.json();
+                    throw new Error(errorResponse.message);
+                    }
+                    const result = await response.json(); 
+                    setCoursePrices(result.data.coursePrices);
+                    setCommingSoon(result.data.commingSoon);
                     setCourseDescription(result.data.courseDescription);
                     setCourseId(result.data.courseId);
                     setCourseImage(result.data.courseImage);
@@ -80,22 +84,52 @@ const { id } = useParams<{ id: string }>();
                     setStatus(result.data.status);
                     setEndDateRaw(result.data.endDateRaw);
                     setStartDateRaw(result.data.startDateRaw);
-                  setLoading(false);
-              } catch (error) {
+                    setLoading(false);
+                } catch (error) {
                         setLoading(false);
                         if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
                         toast.error(error.message);
                         } else {
                         toast.error('An unknown error occurred.');
                         }
-                  
-              }
-      }
+                    
+                }
+        }
 
 
-       const authFunction = () => {
+        const subscribed = async (courseId :  string) => {
+                   setLoading(true);
+                       const myHeaders = new Headers();
+                       myHeaders.append("Content-Type", "application/json");
+                       const requestOptions: RequestInit = {
+                           method: "GET",
+                           headers: myHeaders,
+                           redirect: "follow"
+                       };
+                       try {
+                           const response = await fetch(`${baseUrl}/course-waiting/${courseId}/${waitEmail}`, requestOptions);
+                           if (!response.ok) {
+                           const errorResponse = await response.json();
+                           throw new Error(errorResponse.message);
+                           }
+                           const result = await response.json(); 
+                            setwaitEmail('');
+                           toast.success(result.message);
+                           setLoading(false);
+                       } catch (error) {
+                         setLoading(false);
+                         if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
+                         toast.error(error.message);
+                         } else {
+                         toast.error('An unknown error occurred.');
+                         }
+                           
+                       }
+               }
+
+        const authFunction = () => {
         setAuthAction(true);
-      }
+        }
       
   return (
     <div className='master-con-wrapper pageNav'>
@@ -139,106 +173,160 @@ const { id } = useParams<{ id: string }>();
                       {courseDescription}
                     </p>
                 </div>
-
-                <div className="master-body-footer">
-                
-                            <div className="master-body-date flex-center">
-                                <div className="master-date">date:</div>
-
-                                <div className="master-date-title flex-center">
-                                    <p>{startDate}</p>
-                                    <span className='dateSpace'>-</span>
-                                    <p>{endDate}</p>
-                                </div>
-                                
+              {
+                commingSoon ?
+                (
+                   <div className="incomingWrapper">
+                            <div className="coming-soon">
+                            coming soon
                             </div>
+
+                            <div className="footerNewsList commingsooninput">
+                            <p>Get notified when this <span>Masterclass</span> is Live!</p>
+                            <div className="footerInput flex-center">
+                            <input type="email" placeholder="Enter your email" value={waitEmail} onChange={(e) => setwaitEmail(e.target.value)}/>
+                            {
+                            loading ? (
+                            <div className="footerBtn">
+                            <ButtonPreloader/>
+                            </div>
+                            ) : (
+                            <div className="footerBtn" onClick={() => subscribed(courseId)}>
+                            subscribe
+                            </div>
+                            )
+                            }
+                            </div>
+                            </div>
+                            </div>
+                ) : (
+                    <div className="master-body-footer">
+
+                    <div className="master-body-date flex-center">
+                    <div className="master-date">date:</div>
+
+                    <div className="master-date-title flex-center">
+                    <p>{startDate}</p>
+                    <span className='dateSpace'>-</span>
+                    <p>{endDate}</p>
+                    </div>
+
+                    </div>
+
+                    {
+                    coursePrices.length > 0 ? (
+                    <div className="coursePrices">
+                    <div className="master-date">prices/type : </div>
+                    {
+                    coursePrices.map((prices, index)=>(
+                    <div key={index}>
+
+                        <div className="prices-flex flex">
+                        <p>{prices.priceName}</p>
+                        <p>|</p>
+                        <p className='type'>physical : <span>{currency} {prices.coursePricePhysical.toLocaleString()}</span></p>
+                        </div>
+
+                        <div className="prices-flex flex">
+                        <p>{prices.priceName}</p>
+                        <p>|</p>
+                        <p className='type'>online : <span>{currency} {prices.coursePriceOnline.toLocaleString()}</span></p>
+                        </div>
+                    </div>
+                    ))
+                    }
+                    </div>
+
+                    ) : (
+                    <div>
+                    <div className="master-body-date flex-center">
+                    <div className="master-date">Venue :</div>
+                    <div className="master-date-title flex-center">
+                    <p>{courseType}</p>
+                    </div>
+                    </div>
+
+                    {(() => {
+                    const now = new Date();
+                    const earlyBirdEnd = new Date(earlyBirdEndDate);
+                    // Calculate difference in milliseconds
+                    const diffTime = earlyBirdEnd.getTime() - now.getTime();
+
+                    // Convert to days
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                    // Result
+                    const daysLeftText = diffDays > 0 ? `${diffDays} day${diffDays > 1 ? 's' : ''} left` : 'Early bird ended';
+
+                    const discount = parseFloat(discountPrice);
+                    const course = coursePrice;
+                    const earlyBird = parseFloat(earlyBirdPrice);
+
+                    if (now <= earlyBirdEnd) {
+                    return (
+                    <div className="master-body-date  date-data flex">
+                    <div className="early-bird">
+                    <h1 className='early-bird-title'>
+                    early bird : 
+                    <div className="day-left">{daysLeftText}</div>  
+                    </h1>
+                    <h1>{currency}{earlyBird.toLocaleString()}</h1>
+                    </div>
+                    <div className="course-price">
+                    <p>course price</p>
+                    <h1 className='line-through'>{currency}{course.toLocaleString()}</h1>
+                    </div>
+                    </div>
+                    );
+                    } else if (!isNaN(discount) && discount !== 0) {
+                    return (
+                    <div className="master-body-date date-data flex-center">
+                    <div className="discount-offer">
+                    <p>
+                    discount offer
+                    </p>
+                    <h1>{currency}{discount.toLocaleString()}</h1>
+                    </div>
+                    <div className="course-price line-through">
+                    <p>course price</p>
+                    <h1>{currency}{course.toLocaleString()}</h1>
+                    </div>
+                    </div>
+                    );
+                    } else {
+
+                    return (
+                    <div className="master-body-date date-data flex-center">
+                    <div className="normal-course-price">
+                    <p>course price</p>
+                    <h1>{currency}{course.toLocaleString()}</h1>
+                    </div>
+                    </div>
+                    );
+
+                    }
+                    })()}
+                    </div>
+                    )
+                    }
+
+                    {
+                    new Date(endDateRaw) > new Date() && (
+                    signin ? (
+                        <NavLink to={`/master-course-payment/${courseId}`} className="master-btn">
+                        enrol now
+                        </NavLink>
+                    ) : (
+                        <div className="master-btn" onClick={authFunction}>
+                        enrol now
+                        </div>
+                    )
+                    )
+                    }
+                    </div>
+                )
+              }
                 
-                                                <div className="master-body-date flex-center">
-                                                    <div className="master-date">Type:</div>
-                                                    <div className="master-date-title flex-center">
-                                                        <p>{courseType}</p>
-                                                    </div>
-                                                </div>
-                
-                                                 {(() => {
-                                                    const now = new Date();
-                                                    const earlyBirdEnd = new Date(earlyBirdEndDate);
-                                                    // Calculate difference in milliseconds
-                                                    const diffTime = earlyBirdEnd.getTime() - now.getTime();
-
-                                                    // Convert to days
-                                                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-                                                    // Result
-                                                    const daysLeftText = diffDays > 0 ? `${diffDays} day${diffDays > 1 ? 's' : ''} left` : 'Early bird ended';
-
-                                                    const discount = parseFloat(discountPrice);
-                                                    const course = coursePrice;
-                                                    const earlyBird = parseFloat(earlyBirdPrice);
-                                                      
-                                                    if (now <= earlyBirdEnd) {
-                                                    return (
-                                                                <div className="master-body-date  date-data flex">
-                                                                    <div className="early-bird">
-                                                                    <h1 className='early-bird-title'>
-                                                                    early bird : 
-                                                                    <div className="day-left">{daysLeftText}</div>  
-                                                                    </h1>
-                                                                    <h1>{currency}{earlyBird.toLocaleString()}</h1>
-                                                                    </div>
-                                                                    <div className="course-price">
-                                                                    <p>course price</p>
-                                                                    <h1 className='line-through'>{currency}{course.toLocaleString()}</h1>
-                                                                    </div>
-                                                                </div>
-                                                    );
-                                                    } else if (!isNaN(discount) && discount !== 0) {
-                                                    return (
-                                                        <div className="master-body-date date-data flex-center">
-                                                            <div className="discount-offer">
-                                                            <p>
-                                                            discount offer
-                                                            </p>
-                                                            <h1>{currency}{discount.toLocaleString()}</h1>
-                                                            </div>
-                                                            <div className="course-price line-through">
-                                                            <p>course price</p>
-                                                            <h1>{currency}{course.toLocaleString()}</h1>
-                                                            </div>
-                                                        </div>
-                                                    );
-                                                    } else {
-
-                                                    return (
-                                                        <div className="master-body-date date-data flex-center">
-                                                            <div className="normal-course-price">
-                                                            <p>course price</p>
-                                                            <h1>{currency}{course.toLocaleString()}</h1>
-                                                            </div>
-                                                        </div>
-                                                    );
-
-                                                    }
-                                                })()}
-                
-                                            
-
-                                                {
-                                                new Date(endDateRaw) > new Date() && (
-                                                    signin ? (
-                                                    <NavLink to={`/master-course-payment/${courseId}`} className="master-btn">
-                                                        enrol now
-                                                    </NavLink>
-                                                    ) : (
-                                                    <div className="master-btn" onClick={authFunction}>
-                                                        enrol now
-                                                    </div>
-                                                    )
-                                                )
-                                                }
-
-                
-                </div>
 
             </div>   
 

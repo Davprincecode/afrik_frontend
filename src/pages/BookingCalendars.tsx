@@ -6,7 +6,9 @@ import { userAuth } from "./context/AuthContext";
 import ButtonPreloader from "../component/ButtonPreloader";
 
 type TimeSlot = {
+  bookingTitle : string;
   bookingId: string;
+  category : string;
   date: string;
   startTime: string;
   endTime: string;
@@ -17,27 +19,43 @@ type TimeSlot = {
   bookingDescription : string;
   maxDayBeforeBooking : string;
   maxTimeBeforeBooking : string;
+  bookingPrices : priceIntern[]
+};
+
+interface priceIntern {
+   id : string;
+  bookingId : string;
+  onlinePrice : number;
+  physicalPrice : number;
+  priceName : string;
 };
 
 interface calendarIntern {
+    loading : boolean; 
+    setLoading : (data : boolean) => void;
     bookTime : TimeSlot[];
     SetBookTime : (slots: TimeSlot[]) => void;
     setBookingDescription : (data : string) => void;
-     setInterval : (data : string) => void;
-}
+    setInterval : (data : string) => void;
+    setCategoryPrices : (data : priceIntern[]) => void;
+    setUserCurrency : (data : string) => void;
+    setBookingTitle : (data : string) => void;
+    category : string;
+};
 
-const BookingCalendars = ({bookTime, SetBookTime, setBookingDescription, setInterval} : calendarIntern) => {
+const BookingCalendars = ({loading, setLoading, bookTime, SetBookTime, setBookingDescription, setInterval, setCategoryPrices, setUserCurrency, setBookingTitle, category} : calendarIntern) => {
   const today = new Date();
   const [currentMonth, setCurrentMonth] = useState(today.getMonth());
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
-   const [selectedBookingTime, SetSelectedBookingTime] = useState<TimeSlot[]>([]);
-   const [bookingId, setBookingId] = useState<string>();
-  const [timeSlots, setTimeSlots] = useState<TimeSlot[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [selectedBookingTime, SetSelectedBookingTime] = useState<TimeSlot[]>([]);
+  const [bookingId, setBookingId] = useState<string>();
   const [userLoading, setUserLoading] = useState(false);
- 
+  
+  const [timeSlots, setTimeSlots] = useState<TimeSlot[]>([]);
+  const [bookingType, setBookingType] = useState<string>("physical");
+
   const { baseUrl } = userAuth();
 
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
@@ -45,10 +63,15 @@ const BookingCalendars = ({bookTime, SetBookTime, setBookingDescription, setInte
   const offset = firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1; 
 
     useEffect(()=>{
+      setSelectedDate(null);
+      setSelectedDay(null);
+      setUserCurrency('');
+      setBookingTitle('');
+      setCategoryPrices([]);
     const startDate = currentYear + "-" + (currentMonth + 1) + "-" + "01";
     const endDate = currentYear + "-" + (currentMonth + 1) + "-" + daysInMonth;
     handleMonthlyBooking(startDate, endDate);
-    }, [currentMonth, currentYear])
+    }, [currentMonth, currentYear, category])
 
   const handleDateClick = async (date: string, isPass : boolean, status : string) => {
     SetBookTime([]);
@@ -61,7 +84,10 @@ const BookingCalendars = ({bookTime, SetBookTime, setBookingDescription, setInte
       setLoading(true);
       const dateTime = timeSlots.filter(item => item.date == date);
       SetSelectedBookingTime(dateTime);
+      setBookingTitle(dateTime[0].bookingTitle);
       setBookingDescription(dateTime[0].bookingDescription);
+      setUserCurrency(dateTime[0].currency);
+      setCategoryPrices(dateTime[0].bookingPrices);
       setInterval(dateTime[0].interval);
       setLoading(false);
 
@@ -72,11 +98,13 @@ const BookingCalendars = ({bookTime, SetBookTime, setBookingDescription, setInte
   const handleMonthlyBooking = async (startDate : string, endDate : string) => {
     setLoading(true);
     try {
-      const response = await fetch(`${baseUrl}/bookings/${startDate}/${endDate}`, {
+      const response = await fetch(`${baseUrl}/bookings/${startDate}/${endDate}/${category}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
         redirect: "follow"
       });
+   
+      
       if (!response.ok) {
         const errorResponse = await response.json();
         throw new Error(errorResponse.message);
@@ -86,6 +114,8 @@ const BookingCalendars = ({bookTime, SetBookTime, setBookingDescription, setInte
         setBookingDescription(result.data.lenghth > 0 && result.data[0].bookingDescription);
         setInterval(result.data.lenghth > 0 && result.data[0].interval);
         setTimeSlots(result.data);
+        console.log(result.data);
+      
         SetSelectedBookingTime([]);
         setSelectedDate(null);
         setLoading(false);
@@ -156,17 +186,17 @@ const maxDayBeforeBooking = parseInt(bookingtime.maxDayBeforeBooking);
   };
 
   const changeMonth = (delta: number) => {
-    let newMonth = currentMonth + delta;
-    let newYear = currentYear;
-    if (newMonth < 0) {
-      newMonth = 11;
-      newYear--;
-    } else if (newMonth > 11) {
-      newMonth = 0;
-      newYear++;
-    }
-    setCurrentMonth(newMonth);
-    setCurrentYear(newYear);
+      let newMonth = currentMonth + delta;
+      let newYear = currentYear;
+      if (newMonth < 0) {
+        newMonth = 11;
+        newYear--;
+      } else if (newMonth > 11) {
+        newMonth = 0;
+        newYear++;
+      }
+      setCurrentMonth(newMonth);
+      setCurrentYear(newYear);
   };
 
   return ( 
@@ -214,7 +244,9 @@ const maxDayBeforeBooking = parseInt(bookingtime.maxDayBeforeBooking);
             // bookingtime.maxTimeBeforeBooking
             const isPast = dateObj < new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
+            // ------------------------------------------
             const slotsForDay = timeSlots.filter(slot => slot.date === dateStr);
+
             const allBooked = slotsForDay.length > 0 && slotsForDay.every(slot => slot.bookingStatus === "booked");
             const anyAvailable = slotsForDay.some(slot => slot.bookingStatus === "available");
 

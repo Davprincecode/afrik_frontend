@@ -17,14 +17,19 @@ interface cartInterface {
    quantity :  number;
    total :  number;
 }
-
+interface coursePricesIntern{
+    coursePriceOnline: number,
+    coursePricePhysical : number,
+    id: string,
+    priceName: string
+}
 function  MasterCoursePayment() {
  const navigate = useNavigate();
 const {baseUrl, token, name, email, address1, phoneNumber1} = userAuth();
  const [loading, setLoading] = useState<boolean>(false);
 const [cart, setCart] = useState<cartInterface[]>([]);
 const [total, setTotal] =useState<number>(0);
-
+ const[coursePrices, setCoursePrices] = useState<coursePricesIntern[]>([]);
  const [userName, setName] = useState<string>(name);
  const [userEmail, setEmail] = useState<string>(email);
  const [address, setAddress] = useState<string>(address1);
@@ -71,18 +76,20 @@ const { id } = useParams<{ id: string }>();
                   throw new Error(errorResponse.message);
                   }
                   const result = await response.json();  
-                   
+                 
                     setCourseDescription(result.data.courseDescription);
                     setCourseId(result.data.courseId);
                     setCourseImage(result.data.courseImage);
-
-                                                            
+                    
+                    if(result.data.coursePrices.length > 0){
+                        setCoursePrices(result.data.coursePrices);
+                    }else{
                             const now = new Date();
                             const earlyBirdEnd = new Date(result.data.earlyBirdEndDate);
                             const discount = parseFloat(result.data.discountPrice);
                             const course = result.data.coursePrice;
                             const earlyBird = parseFloat(result.data.earlyBirdPrice);
-
+                            setCourseType(result.data.courseType);
                             if (now <= earlyBirdEnd) {
                                 setCoursePrice(earlyBird);
                             } else if (!isNaN(discount) && discount !== 0) {
@@ -90,12 +97,14 @@ const { id } = useParams<{ id: string }>();
                             } else {
                                setCoursePrice(course);
                             }
+                    }
+                                                            
+                            
                                                             
 
                     // setCoursePrice(result.data.coursePrice);
 
                     setCourseTitle(result.data.courseTitle);
-                    setCourseType(result.data.courseType);
                     setCurrency(result.data.currency);
                     setDiscountPrice(result.data.discountPrice);
                     setEarlyBirdEndDate(result.data.earlyBirdEndDate);
@@ -116,6 +125,7 @@ const { id } = useParams<{ id: string }>();
                   
               }
       }
+
   const validateProductForm = () => {
       if (!userName.trim()) {
         toast.error("Name is required");
@@ -150,6 +160,7 @@ const { id } = useParams<{ id: string }>();
              "amount" : coursePrice,
              "courseId" : courseId,
              "courseName" : courseTitle,
+             "courseType" : courseType,
              "startDate" : startDate,
              "endDate" : endDate,
              "callBackUrl" : `${url}/payment/course/callback`
@@ -201,6 +212,7 @@ const { id } = useParams<{ id: string }>();
              "amount" : coursePrice,
              "courseId" : courseId,
              "courseName" : courseTitle,
+             "courseType" : courseType,
              "startDate" : startDate,
              "endDate" : endDate
          });
@@ -236,7 +248,22 @@ const { id } = useParams<{ id: string }>();
         }
      
      };
-
+const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    const text = e.target.options[e.target.selectedIndex].text;
+     const result = text.slice(text.lastIndexOf("-") + 1).trim();
+     const course = coursePrices.find(item => item.id == value);
+    if(result == "physical"){
+      setCoursePrice(course?.coursePricePhysical ?? 0);
+      const type = course?.priceName + " " + "-" + " " +"physical"
+      setCourseType(type);
+    }
+    if(result == "online"){
+      setCoursePrice(course?.coursePriceOnline ?? 0); 
+      const type = course?.priceName + " " + "-" + " " + "online"
+      setCourseType(type);
+    }
+  };
   return (
     <div className='payment-con-wrapper pageNav'>
       <Header/>
@@ -252,6 +279,27 @@ const { id } = useParams<{ id: string }>();
             <div className="billing-form form-con">
 
                 <div className="form-title">Billing Details</div>
+
+             {
+                coursePrices.length > 0 && (
+                    <div className="formInput">
+                    <label >Select Course Type/price</label>
+
+                    <select onChange={handleChange}>
+                     <option value="">select type</option>
+                     {
+                        coursePrices.map((prices, index)=>(
+                            <div key={index}>
+                            <option value={prices.id} >{prices.priceName} - physical</option>
+                            <option value={prices.id} >{prices.priceName} - online</option>
+                            </div>
+                        ))
+                     }
+                    </select>
+                </div>
+                )
+             }
+                
 
                 <div className="formInput">
                     <label >name <span>(First name and Last name)</span>  *</label>
@@ -292,14 +340,9 @@ const { id } = useParams<{ id: string }>();
                     <div className="billing-product-con">
                         
                             <div className="billing-product flex-center justification-between">
-                                    <p>{courseTitle}
-                                         {/* ({size}) */}
-                                         </p>
+                                    <p>{courseTitle}({courseType})</p>
                                     <p>{currency}{coursePrice}</p>
-                            </div>
-                            
-
-                         
+                            </div>    
                     </div>
                      
                      <div className="billing-total">
@@ -307,10 +350,6 @@ const { id } = useParams<{ id: string }>();
                           <h2>subtotal</h2>
                           <h2>{currency}{coursePrice.toLocaleString()}</h2>
                         </div>
-                        {/* <div className="billing-sub-total flex-center justification-between">
-                          <h2>shipping</h2>
-                          <h2>{currency}100</h2>
-                        </div> */}
                      </div>
 
                      <div className="billing-ground-total flex-center justification-between">
@@ -350,7 +389,18 @@ const { id } = useParams<{ id: string }>();
                               <ButtonPreloader/>
                             ) : (
                             name !== '' && email !=='' && address !=='' && phoneNumber > 0  ? (
-                                coursePrice == 0 ? (
+                                coursePrices.length > 0 ? (
+                                            coursePrice > 0 ? (
+                                            <div className="paymentBtn" onClick={fetchData}>
+                                            place order
+                                            </div>
+                                            ) : (
+                                            <div className="paymentBtn inActive" >
+                                            place order
+                                            </div>
+                                            )
+                                ) : (
+                                    coursePrice == 0 ? (
                                     <div className="paymentBtn" onClick={freeCourse}>
                                          place order
                                     </div>
@@ -359,6 +409,8 @@ const { id } = useParams<{ id: string }>();
                                         place order
                                     </div>
                                )
+                                )
+                                
                             ) : (
                             <div className="paymentBtn inActive" >
                                 place order
