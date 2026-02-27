@@ -114,8 +114,6 @@ const BookingCalendars = ({loading, setLoading, bookTime, SetBookTime, setBookin
         setBookingDescription(result.data.lenghth > 0 && result.data[0].bookingDescription);
         setInterval(result.data.lenghth > 0 && result.data[0].interval);
         setTimeSlots(result.data);
-        console.log(result.data);
-      
         SetSelectedBookingTime([]);
         setSelectedDate(null);
         setLoading(false);

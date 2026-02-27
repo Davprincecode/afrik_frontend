@@ -59,14 +59,15 @@ const ConsultantDetails  = ({bookTime,  scheduleFunction }: consultantInterface)
 
   const defaultPrice = singleBooking?.bookingPrices.length > 0 && singleBooking?.currency == "FREE" ? 0 : singleBooking?.price;
 
-  const defaultType = singleBooking?.bookingPrices.length > 0 ? '' : singleBooking?.category;
+  // const defaultType = singleBooking?.bookingPrices.length > 0 ? '' : singleBooking?.category;
+  const defaultType = singleBooking?.category;
 
   const [bookingPrice, setBookingPrice] = useState<number>(defaultPrice);
   const [bookingType, setBookingType] = useState<string>(defaultType);
   
-
+  
   const validateProductForm = () => {
-      if (!name.trim()) {
+      if (!userName.trim()) {
         toast.error("Name is required");
         return false;
       }
@@ -164,10 +165,7 @@ const ConsultantDetails  = ({bookTime,  scheduleFunction }: consultantInterface)
               redirect: "follow"
           };
           try {
-            const response = await fetch(`${baseUrl}/freebooking`, requestOptions); 
-            const results = await response.json();
-            console.log(results);
-             
+            const response = await fetch(`${baseUrl}/freebooking`, requestOptions);        
             if (!response.ok) {
               const errorResponse = await response.json();  
               throw new Error(errorResponse.message);
@@ -262,8 +260,14 @@ const ConsultantDetails  = ({bookTime,  scheduleFunction }: consultantInterface)
                             {
                               singleBooking?.bookingPrices.map((prices, index)=>(
                                   <div key={index}>
-                                  <option value={prices.id} >{prices.priceName} - physical</option>
-                                  <option value={prices.id} >{prices.priceName} - online</option>
+                                    {
+                                      bookingType == "physical" ? (
+                                        <option value={prices.id} >{prices.priceName} - physical</option>
+                                      ) : (
+                                        <option value={prices.id} >{prices.priceName} - online</option>
+                                      )
+                                    }
+                                  
                                   </div>
                               ))
                             }
@@ -271,6 +275,7 @@ const ConsultantDetails  = ({bookTime,  scheduleFunction }: consultantInterface)
                       </div>
                       )
                     }
+
                     <div className="form-cons">
                         <div className="admin-input">
                     <label >name </label>
@@ -278,7 +283,7 @@ const ConsultantDetails  = ({bookTime,  scheduleFunction }: consultantInterface)
                       </div>
                         <div className="admin-input">
                     <label >email</label>
-                    <input type="text"  placeholder='email' value={userEmail} onChange={(e) => setEmail(e.target.value)} />
+                    <input type="email"  placeholder='email' value={userEmail} onChange={(e) => setEmail(e.target.value)} />
                       </div>
                         <div className="admin-input">
                     <label >phone no</label>
@@ -296,25 +301,25 @@ const ConsultantDetails  = ({bookTime,  scheduleFunction }: consultantInterface)
                         loading ? (
                           <ButtonPreloader/>
                         ) : (
-                          <button onClick={freeBooking}>
+                          // <button onClick={freeBooking}>
+                          //     Confirm
+                          // </button>
+                            bookTime[0]?.currency == "FREE" && bookingPrice == 0 ? (
+                              <button onClick={freeBooking}>
                               Confirm
-                          </button>
-                            // bookTime[0]?.currency == "FREE" && bookingPrice == 0 ? (
-                            //   <button onClick={freeBooking}>
-                            //   Confirm
-                            //   </button>
-                            // ) : (
-                            //   bookingPrice > 0 ? (
-                            //        <button onClick={fetchData}>
-                            //         Confirm
-                            //       </button>
-                            //   ) : (
-                            //      <button onClick={confirmPrice}>
-                            //         Confirm
-                            //       </button>
-                            //   )
+                              </button>
+                            ) : (
+                              bookingPrice > 0 ? (
+                                   <button onClick={fetchData}>
+                                    Confirm
+                                  </button>
+                              ) : (
+                                 <button onClick={confirmPrice}>
+                                    Confirm
+                                  </button>
+                              )
                                  
-                            // )
+                            )
                         ) 
                       ) : (
                             <div className="master-btn" onClick={authFunction}>

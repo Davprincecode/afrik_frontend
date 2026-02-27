@@ -6160,6 +6160,10 @@ margin-top: 60px;
       background: white;
       border-radius: 10px;
       justify-content: space-between;
+
+          min-height: 500px;
+    height: auto;
+    overflow: auto;
     }
     .consultant-detail{
         width: 25%;
@@ -6203,7 +6207,9 @@ margin-top: 60px;
      text-align: left;
     }
     .consultant-calendar{
-      width: 70%;
+      position: fixed;
+      right: 50px;
+      width: 68%;
     }
     .calendar-flex-con{
        display: flex;
@@ -6306,6 +6312,26 @@ margin-top: 60px;
 
   .incomingWrapper{
       margin: 20px 0px;
+  }
+  .consultingPop{
+    text-transform: capitalize;
+    width: 50%;
+    padding-bottom: 40px;
+    /* padding: 10px 40px; */
+  }
+  .physical, .online{
+    cursor: pointer;
+    border: 1px solid var(--border);
+    padding: 10px;
+    width: 150px;
+    text-align: center;
+    border-radius: 50px;
+  }
+  @media(max-width : 530px){
+     .consultingPop{
+    text-transform: capitalize;
+    width: 80%;
+  }
   }
 
   .coming-soon{
@@ -6411,6 +6437,7 @@ margin-top: 60px;
   margin-right: 0px;
 }
     .consultant-calendar{
+      position: unset;
       width: 100%;
     }
     .calendar-flex-con

@@ -10,6 +10,7 @@ import BookingCalendars from './BookingCalendars'
 import ConsultantDetails from './ConsultantDetails'
 import { toast } from 'react-toastify'
 import ButtonPreloader from '../component/ButtonPreloader'
+import ConsultingPopUp from '../component/ConsultingPopUp'
 
 
 type TimeSlot = {
@@ -57,114 +58,126 @@ const errorFunction = () => {
   const categoryFunction = (data : string) => {
      setCategory(data);
   }
+  const [popAction, setPopAction] = useState<boolean>(true);
 
+  const calendarRoute = (data : string) => {
+    setCategory(data);
+     setPopAction(!popAction);
+  }
   return (
     <div className='consultant-con-wrapper pageNav'>
       <Header/>
+      {
+      popAction && (
+      <ConsultingPopUp popAction={popAction} setPopAction={setPopAction} calendarRoute={calendarRoute}/>
+      )
+      }
+  
+
       <div className="consultant-con">
     {
-                    schedule ? (
-                       <ConsultantDetails bookTime={bookTime} scheduleFunction={scheduleFunction}/>
-                    ) : (
-          <div className="consultant">
+          schedule ? (
+              <ConsultantDetails bookTime={bookTime} scheduleFunction={scheduleFunction}/>
+          ) : (
+            <div className="consultant">
 
-              <div className="consultant-detail">
-                  <div className="consultant-icon">
-                    <FaCalendarAlt />
-                     {
-                    !loading && (
-                    <div className="admin-header-list flex-center gap-10">
-                        
-                            <div
-                            className={`header-list ${category === "physical" ? 'header-list-active' : ''}`}
-                            onClick={() => categoryFunction("physical")}
-                            >
-                            physical
-                            </div>
-                            <div
-                            className={`header-list ${category === "online" ? 'header-list-active' : ''}`}
-                            onClick={() => categoryFunction("online")}
-                            >
-                            online
-                            </div>
-                    </div>
-                    )}
-                  </div>
-
-                   {
-                    loading ? (
-                       <ButtonPreloader/>
-                    ) : (
-                      <div className='schedule-details-con'>
-
-                      <div className="schedule-title">
-                        <p className='schedule-name'>Scheduled</p>
-                        <h2 className='consultant-name'>Consultations</h2>
+                <div className="consultant-detail">
+                    <div className="consultant-icon">
+                      <FaCalendarAlt />
+                      {
+                      !loading && (
+                      <div className="admin-header-list flex-center gap-10">
+                          
+                              <div
+                              className={`header-list ${category === "physical" ? 'header-list-active' : ''}`}
+                              onClick={() => categoryFunction("physical")}
+                              >
+                              physical
+                              </div>
+                              <div
+                              className={`header-list ${category === "online" ? 'header-list-active' : ''}`}
+                              onClick={() => categoryFunction("online")}
+                              >
+                              online
+                              </div>
                       </div>
-                  
-                  <p className='schedule-name schedule-names'>{bookingTitle}</p>
-
-                  <div className="clock flex-center"><CiClock1 /> <h2>{interval}</h2></div>
-                  
-                  <div className="consultant-bod">
-                        {bookingDescription}
-                  </div>
+                      )}
+                    </div>
 
                     {
-                    categoryPrices.length > 0 && (
-                    <div className="coursePrices">
-                    <div className="master-date">prices/type : </div>
-                    {
-                    categoryPrices.map((prices, index)=>(
-                    <div key={index}>
-
-                    <div className="prices-flex flex consul-flex">
-                    <p>{prices.priceName}</p>
-                    <p>|</p>
-                    <p className='type'>physical : <span>{userCurrency} {prices.physicalPrice.toLocaleString()}</span></p>
-                    </div>
-
-                    <div className="prices-flex flex">
-                    <p>{prices.priceName}</p>
-                    <p>|</p>
-                    <p className='type'>online : <span>{userCurrency} {prices.onlinePrice.toLocaleString()}</span></p>
-                    </div>
-                    </div>
-                    ))
-                    }
-                    </div>
-
-                    ) }
-
-                    </div>
-                    )
-                   }
-              </div>
-
-                <div className="consultant-calendar">
-                 
-                      <BookingCalendars loading={loading} setLoading={setLoading} bookTime={bookTime} SetBookTime={SetBookTime} setBookingDescription={setBookingDescription} setInterval={setInterval} setCategoryPrices={setCategoryPrices} setUserCurrency={setUserCurrency} setBookingTitle={setBookingTitle} category={category} />
-                 
-                  <div className="nextBtn">
-                    {
-                      bookTime.length > 0 ? (
-                          <div className="nextBook"  onClick={scheduleFunction}>
-                          next
-                        </div>
+                      loading ? (
+                        <ButtonPreloader/>
                       ) : (
-                          <div className="nextBook nextEmpty"  onClick={errorFunction}>
-                          next
+                        <div className='schedule-details-con'>
+
+                        <div className="schedule-title">
+                          <p className='schedule-name'>Scheduled</p>
+                          <h2 className='consultant-name'>Consultations</h2>
                         </div>
+                    
+                    <p className='schedule-name schedule-names'>{bookingTitle}</p>
+
+                    <div className="clock flex-center"><CiClock1 /> <h2>{interval}</h2></div>
+                    
+                    <div className="consultant-bod">
+                          {bookingDescription}
+                    </div>
+
+                      {
+                      categoryPrices.length > 0 && (
+                      <div className="coursePrices">
+                      <div className="master-date">prices/type : </div>
+                      {
+                      categoryPrices.map((prices, index)=>(
+                      <div key={index}>
+
+                      <div className="prices-flex flex consul-flex">
+                      <p>{prices.priceName}</p>
+                      <p>|</p>
+                      <p className='type'>physical : <span>{userCurrency} {prices.physicalPrice.toLocaleString()}</span></p>
+                      </div>
+
+                      <div className="prices-flex flex">
+                      <p>{prices.priceName}</p>
+                      <p>|</p>
+                      <p className='type'>online : <span>{userCurrency} {prices.onlinePrice.toLocaleString()}</span></p>
+                      </div>
+                      </div>
+                      ))
+                      }
+                      </div>
+
+                      ) }
+
+                      </div>
                       )
                     }
+                </div>
+
+                  <div className="consultant-calendar">
+                  
+                        <BookingCalendars loading={loading} setLoading={setLoading} bookTime={bookTime} SetBookTime={SetBookTime} setBookingDescription={setBookingDescription} setInterval={setInterval} setCategoryPrices={setCategoryPrices} setUserCurrency={setUserCurrency} setBookingTitle={setBookingTitle} category={category} />
+                  
+                    <div className="nextBtn">
+                      {
+                        bookTime.length > 0 ? (
+                            <div className="nextBook"  onClick={scheduleFunction}>
+                            next
+                          </div>
+                        ) : (
+                            <div className="nextBook nextEmpty"  onClick={errorFunction}>
+                            next
+                          </div>
+                        )
+                      }
+                    </div>
+
+
                   </div>
 
 
-                </div>
-
-
-            </div>
-                    )}
+              </div>
+          )}
       </div>
       <Footer />
     </div>
